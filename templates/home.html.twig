@@ -5,7 +5,7 @@
 {% block body %}
 <!-- hero -->
 <div class="hero container-fluid bg-secondary d-flex w-100 vh-100 p-3 mx auto flex-column">
-    <div class="content text-center">
+    <div class="content text-center text-light">
         <h1>Share your passion for Snowboarding</h1>
     </div>
     <div id="btnDown">
@@ -14,113 +14,160 @@
         </a>
     </div>
 </div>
-<!-- figures sections -->
-<section class="trick-list py-5 text-center container-fluid">
-    <div class="row py-lg-5">
-        <div class="col-lg-6 col-md-8 mx-auto">
-            <h1 class="fw-light">Tricks List</h1>
-            <p class="lead text-muted">Something short and leading about the collection 
-            below—its contents, the creator, etc. Make it short and sweet, but not too 
-            short so folks don’t simply skip over it entirely.</p>
-        </div>
+<!-- tricks sections -->
+<section class="tricks-list container-fluid text-center py-5">
+    <div class="row py-lg-1">
+      <div class="col-lg-6 col-md-8 mx-auto">
+        <h1 class="fw-light">Tricks list</h1>
+        <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>
+      </div>
     </div>
     <div class="album py-5">
         <div class="container">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                <div class="col">
-                    <div class="card shadow-sm">
-                        <img src="http://via.placeholder.com/300x160">
-                        <div class="card-body">
-                            <p class="card-text"></p>
-                            <div class="d-flex justify-content-between align-items-center">
-                            <p class="text-muted fs-4">Trick name</p>
-                            <div class="btn-group text-secondary fs-3">
-                                <i class="fa-solid fa-pen me-3"></i>
-                                <i class="fa-solid fa-trash-can"></i>
-                            </div> 
+                        <div class="col">
+                            <div class="card shadow-sm">
+                                <img src="http://via.placeholder.com/300x160">
+                                <div class="card-body">
+                                    <p class="card-text"></p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <p class="text-muted fs-4">Trick name</p>
+                                        <div class="btn-group text-secondary fs-3">
+                                            <a class="button-edit" href=""><i class="fa-solid fa-pen me-3"></i></a>
+                                            <a class="button-delete" href=""><i class="fa-solid fa-trash-can"></i></a>
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card shadow-sm">
-                        <img src="http://via.placeholder.com/300x160">
-                        <div class="card-body">
-                            <p class="card-text"></p>
-                            <div class="d-flex justify-content-between align-items-center">
-                            <p class="text-muted fs-4">Trick name</p>
-                            <div class="btn-group text-secondary fs-3">
-                                <i class="fa-solid fa-pen me-3"></i>
-                                <i class="fa-solid fa-trash-can"></i>
-                            </div> 
+                        <div class="col">
+                            <a href=""><div class="card shadow-sm"></a>
+                                <img src="http://via.placeholder.com/300x160">
+                                <div class="card-body">
+                                    <p class="card-text"></p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <p class="text-muted fs-4">Trick name</p>
+                                        <div class="btn-group text-secondary fs-3">
+                                            <a class="button-edit" href=""><i class="fa-solid fa-pen me-3"></i></a>
+                                            <a class="button-delete" href=""><i class="fa-solid fa-trash-can"></i></a>
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card shadow-sm">
-                        <img src="http://via.placeholder.com/300x160">
-                        <div class="card-body">
-                            <p class="card-text"></p>
-                            <div class="d-flex justify-content-between align-items-center">
-                            <p class="text-muted fs-4">Trick name</p>
-                            <div class="btn-group text-secondary fs-3">
-                                <i class="fa-solid fa-pen me-3"></i>
-                                <i class="fa-solid fa-trash-can"></i>
-                            </div> 
+                        <div class="col">
+                            <div class="card shadow-sm">
+                                <img src="http://via.placeholder.com/300x160">
+                                <div class="card-body">
+                                    <p class="card-text"></p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <p class="text-muted fs-4">Trick name</p>
+                                        <div class="btn-group text-secondary fs-3">
+                                            <a class="button-edit" href=""><i class="fa-solid fa-pen me-3"></i></a>
+                                            <a class="button-delete" href=""><i class="fa-solid fa-trash-can"></i></a>
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                     <div class="col">
-                    <div class="card shadow-sm">
-                        <img src="http://via.placeholder.com/300x160">
-                        <div class="card-body">
-                            <p class="card-text"></p>
-                            <div class="d-flex justify-content-between align-items-center">
-                            <p class="text-muted fs-4">Trick name</p>
-                            <div class="btn-group text-secondary fs-3">
-                                <i class="fa-solid fa-pen me-3"></i>
-                                <i class="fa-solid fa-trash-can"></i>
-                            </div> 
+                        <div class="col">
+                            <div class="card shadow-sm">
+                                <img src="http://via.placeholder.com/300x160">
+                                <div class="card-body">
+                                    <p class="card-text"></p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <p class="text-muted fs-4">Trick name</p>
+                                        <div class="btn-group text-secondary fs-3">
+                                            <a class="button-edit" href=""><i class="fa-solid fa-pen me-3"></i></a>
+                                            <a class="button-delete" href=""><i class="fa-solid fa-trash-can"></i></a>
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card shadow-sm">
-                        <img src="http://via.placeholder.com/300x160">
-                        <div class="card-body">
-                            <p class="card-text"></p>
-                            <div class="d-flex justify-content-between align-items-center">
-                            <p class="text-muted fs-4">Trick name</p>
-                            <div class="btn-group text-secondary fs-3">
-                                <i class="fa-solid fa-pen me-3"></i>
-                                <i class="fa-solid fa-trash-can"></i>
-                            </div> 
+                        <div class="col">
+                            <div class="card shadow-sm">
+                                <img src="http://via.placeholder.com/300x160">
+                                <div class="card-body">
+                                    <p class="card-text"></p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <p class="text-muted fs-4">Trick name</p>
+                                        <div class="btn-group text-secondary fs-3">
+                                            <a class="button-edit" href=""><i class="fa-solid fa-pen me-3"></i></a>
+                                            <a class="button-delete" href=""><i class="fa-solid fa-trash-can"></i></a>
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card shadow-sm">
-                        <img src="http://via.placeholder.com/300x160">
-                        <div class="card-body">
-                            <p class="card-text"></p>
-                            <div class="d-flex justify-content-between align-items-center">
-                            <p class="text-muted fs-4">Trick name</p>
-                            <div class="btn-group text-secondary fs-3">
-                                <i class="fa-solid fa-pen me-3"></i>
-                                <i class="fa-solid fa-trash-can"></i>
-                            </div> 
+                        <div class="col">
+                            <div class="card shadow-sm">
+                                <img src="http://via.placeholder.com/300x160">
+                                <div class="card-body">
+                                    <p class="card-text"></p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <p class="text-muted fs-4">Trick name</p>
+                                        <div class="btn-group text-secondary fs-3">
+                                            <a class="button-edit" href=""><i class="fa-solid fa-pen me-3"></i></a>
+                                            <a class="button-delete" href=""><i class="fa-solid fa-trash-can"></i></a>
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card shadow-sm">
+                                    <img src="http://via.placeholder.com/300x160">
+                                <div class="card-body">
+                                    <p class="card-text"></p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <p class="text-muted fs-4">Trick name</p>
+                                        <div class="btn-group text-secondary fs-3">
+                                            <a class="button-edit" href=""><i class="fa-solid fa-pen me-3"></i></a>
+                                            <a class="button-delete" href=""><i class="fa-solid fa-trash-can"></i></a>
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card shadow-sm">
+                                <img src="http://via.placeholder.com/300x160">
+                                <div class="card-body">
+                                    <p class="card-text"></p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <p class="text-muted fs-4">Trick name</p>
+                                        <div class="btn-group text-secondary fs-3">
+                                            <a class="button-edit" href=""><i class="fa-solid fa-pen me-3"></i></a>
+                                            <a class="button-delete" href=""><i class="fa-solid fa-trash-can"></i></a>
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card shadow h-100 bg-secondary d-flex justify-content-center align-items-center">
+                                <a class="trick-add" href="">    
+                                    <span class="fa-stack fa-2x">
+                                        <i class="fas fa-circle fa-stack-2x text-light"></i>
+                                        <i class="fas fa-plus fa-stack-1x"></i> 
+                                    </span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <p>
-        <a href="#" class="btn btn-secondary fs-4 my-2">More</a>
-    </p>
-    <div id="btnUp">
-        <a href="#" class="icon text-dark fs-1">
-            <i class="fa-solid fa-circle-arrow-up"></i>
-        </a>
+        <p>
+            <a href="#" class="btn btn-secondary fs-4 my-5">More</a>
+        </p>
+        <div id="btnUp">
+            <a href="#" class="icon text-dark fs-1">
+                <i class="fa-solid fa-circle-arrow-up"></i>
+            </a>
+        </div>
     </div>
 </section>
+
 {% endblock %}
