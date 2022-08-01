@@ -1,0 +1,38 @@
+:root {
+    --primaryFontFamily: 'Roboto';
+    --secondaryFontFamily: 'Caveat Brush', cursive;
+}
+
+body {
+    font-family: var(--primaryFontFamily);
+    text-decoration: none;
+}
+
+.navbar-brand {
+    font-family: var(--secondaryFontFamily);
+}
+
+.hero {
+    position: relative;
+}
+
+.content {
+    margin: auto;
+}
+
+#btnDown {
+    position: absolute;
+    right: 40px;
+    bottom: 30px;
+}
+
+.tricks-list {
+    position: relative;
+}
+
+ #btnUp {
+    position: absolute;
+    right: 50px;
+    bottom: 10px;
+}
+
