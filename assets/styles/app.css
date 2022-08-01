@@ -58,5 +58,54 @@ body {
     }
 }
 
+.main {
+    padding: 60px 0;
+}
+
+img {
+    width: 350px;
+}
+
+.container {
+    width: 900px;        
+}
+
+.sign-content {
+    padding: 75px 30px;
+}
+
+input {
+    display: block;
+    padding: 6px 30px;
+    width: 100%;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid #999;
+    font-size: 15px;
+}
+
+label {
+    position: absolute;
+    padding-top: 5px;
+}
+
+.btn-info:hover {
+    color: #0DCAF0!important;
+    background: white;
+}
+
+.back-button:hover {
+    background: #0DCAF0!important;
+    color: white!important;
+}
+
+.sign-image-link {
+    display: block;
+}
+
+.sign-image-link:hover {
+    color: #ffc107!important;
+}
+
 
 

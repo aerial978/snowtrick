@@ -11,7 +11,7 @@ class SecurityController extends AbstractController
     #[Route('/login', name: 'login.security')]
     public function index(): Response
     {
-        return $this->render('pages/security/index.html.twig', [
+        return $this->render('pages/security/login.html.twig', [
             'controller_name' => 'SecurityController',
         ]);
     }
