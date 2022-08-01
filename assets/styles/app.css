@@ -36,3 +36,27 @@ body {
     bottom: 10px;
 }
 
+.masthead {
+    padding-top: 20rem;
+    padding-bottom: 6rem;
+    text-align: center;
+    height: 75vh;
+}
+
+.position-relative {
+    position: relative;
+}
+
+.position-absolute {
+    position: absolute;
+    z-index: -1;
+}
+
+@media (min-width: 992px) {
+    .about-text {
+        margin-left: -120px;
+    }
+}
+
+
+

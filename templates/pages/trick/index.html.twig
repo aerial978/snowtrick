@@ -5,7 +5,7 @@
 {% block body %}
 <header class="masthead bg-secondary">
     <div class="container">
-        <div class="masthead-subheading fs-1">Trick name</div>
+        <div class="masthead-subheading text-light fs-1">Trick name</div>
     </div>
 </header>
 <section class="media py-5">
@@ -34,17 +34,17 @@
             </div>
             <div class="col-3">
                 <div class="card">
-                    <img src="../images/land-default.png" class="card-img-top" style="max-width: 18rem;" alt="...">
+                    <img src="../images/video-player2.png" class="card-img-top" style="max-width: 18rem;" alt="...">
                 </div>
             </div>
             <div class="col-3">
                 <div class="card">
-                    <img src="../images/land-default.png" class="card-img-top" style="max-width: 18rem;" alt="...">
+                    <img src="../images/video-player2.png" class="card-img-top" style="max-width: 18rem;" alt="...">
                 </div>
             </div>
             <div class="col-3">
                 <div class="card">
-                    <img src="../images/land-default.png" class="card-img-top" style="max-width: 18rem;" alt="...">
+                    <img src="../images/video-player2.png" class="card-img-top" style="max-width: 18rem;" alt="...">
                 </div>
             </div>
         </div>
@@ -62,28 +62,29 @@
                     <img class="position-absolute w-100 h-100 bg-dark" style="objectif-fit: cover;">
                 </div>
             </div>
-        </div>
-        <div class="col-lg-6 pt-5 pb-lg-5">
-            <div class="about-text bg-secondary p-4 p-lg-5 my-lg-5">
-                <h6 class="text-primary text-uppercase" style="letter-spacing: 5px;"></h6>
-                <h1 class="mb-3">Lorem ipsum dolor sit amet</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-                ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-                laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in 
-                voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat 
-                non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-                ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-                laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in 
-                voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat 
-                non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            </div>
-            <div class="row mb-4">
-                <div class="col-6">
-                    <img class="img-fluid" src="img/about-1.jpg" alt="">
+        
+            <div class="col-lg-6 pt-5 pb-lg-5">
+                <div class="about-text bg-secondary p-4 p-lg-5 my-lg-5">
+                    <h6 class="text-primary text-uppercase" style="letter-spacing: 5px;"></h6>
+                    <h1 class="mb-3">Lorem ipsum dolor sit amet</h1>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
+                    ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+                    laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in 
+                    voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat 
+                    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
+                    ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+                    laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in 
+                    voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat 
+                    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                 </div>
-                <div class="col-6">
-                    <img class="img-fluid" src="img/about-2.jpg" alt="">
+                <div class="row mb-4">
+                    <div class="col-6">
+                        <img class="img-fluid" src="img/about-1.jpg" alt="">
+                    </div>
+                    <div class="col-6">
+                        <img class="img-fluid" src="img/about-2.jpg" alt="">
+                    </div>
                 </div>
             </div>
         </div>
@@ -127,10 +128,73 @@
         <div class="row d-flex justify-content-center">
             <div class="col-md-12 col-lg-10">
                 <div class="card text-dark">
-                    <div class="card-body py-4">
-                        <div class="d-flex flex-row add-comment-section my-5"><img class="img-fluid img-responsive  rounded-circle mx-3">
+                        <div class="d-flex flex-row add-comment-section my-5">
+                            <img class="img-fluid img-responsive rounded-circle mx-3" src="../images/default.png" width="38">
+                            <input type="text" class="form-control mr-3" placeholder="Add message">
+                                <button class="btn btn-primary mx-3" type="button">Submit</button>
+                        </div>
+                        
+                        
+                        <div class="card-body py-4">
+                        <div class="d-flex flex-start py-2">
+                            <img class="rounded-circle shadow-1-strong me-3" src="../images/default.png" alt="avatar" width="60" height="60"/>
+                            <div>
+                                <h6 class="fw-bold mb-1">username</h6>
+                                <div class="d-flex align-items-center mb-3">
+                                    <p class="mb-0">created at</p>
+                                </div>
+                                <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
+                                ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+                                laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in 
+                                voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat 
+                                non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                            </div>
+                        </div>
                     </div>
+                    <div class="card-body py-4">
+                        <div class="d-flex flex-start py-2">
+                            <img class="rounded-circle shadow-1-strong me-3" src="../images/default.png" alt="avatar" width="60" height="60"/>
+                            <div>
+                                <h6 class="fw-bold mb-1">username</h6>
+                                <div class="d-flex align-items-center mb-3">
+                                    <p class="mb-0">created at</p>
+                                </div>
+                                <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
+                                ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+                                laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in 
+                                voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat 
+                                non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body py-4">
+                        <div class="d-flex flex-start py-2">
+                            <img class="rounded-circle shadow-1-strong me-3" src="../images/default.png" alt="avatar" width="60" height="60"/>
+                            <div>
+                                <h6 class="fw-bold mb-1">username</h6>
+                                <div class="d-flex align-items-center mb-3">
+                                    <p class="mb-0">created at</p>
+                                </div>
+                                <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
+                                ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+                                laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in 
+                                voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat 
+                                non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <nav aria-label="page navigation example">
+                <ul class="pagination justify-content-center py-5">
+                    <li class="page-item disabled"><span class="page-link">Previous</span></li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item active" aria-current="page"><span class="page-link">2</span>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+            </nav>
         </div>
     </div>
 </section>
