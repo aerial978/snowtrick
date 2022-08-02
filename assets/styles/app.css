@@ -62,12 +62,17 @@ body {
     padding: 60px 0;
 }
 
-img {
+.login {
+    padding-bottom: 150px;
+}
+
+.sign-image img {
     width: 350px;
 }
 
-.container {
-    width: 900px;        
+.login .container {
+    width: 900px;
+    margin: 0 auto;     
 }
 
 .sign-content {
