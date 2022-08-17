@@ -5,40 +5,34 @@
 {% block body %}
 <body>
     <div class="main">
-        <section class="login">
+        <section class="sign">
             <h1 class="navbar-brand text-success text-center fs-1" href="#">Snowtricks</h1>
-            <div class="container bg-white shadow-lg p-3 mb-5 bg-body rounded">
+            <div class="container">
                 <div class="sign-content">
                     <div class="row">
-                        <div class="sign-form col-md-6 pt-5">
+                        <div class="sign-form col-md-6">
                             <form method="POST">
                                 <div class="form-group my-5">
                                     <label for="username">
                                         <i class="fa-solid fa-user"></i>
                                     </label>
-                                    <input type="text" name="_username" id="username" value="{{ last_username }}" autocomplete="username" placeholder="Username" required>
+                                    <input type="text" name="_username" id="username" value="" autocomplete="username" placeholder="Username" required>
                                 </div>
                                 <div class="form-group my-5">
                                     <label form="password">
                                         <i class="fa-solid fa-sm fa-lock"></i>
                                     </label>
-                                    <input type="password" name="_password" id="password" autocomplete="current-password" placeholder="Password" required>
+                                    <input type="password" name="_password" id="password" value="" autocomplete="current-password" placeholder="Password" required>
                                 </div>
                                 <div class="form-group form-button">
-                                    <button type="submit" class="btn bnt-lg btn-info text-light fs-5">Login</button>
-                                    <a class="back-button btn bnt-lg btn-info text-info fs-5 bg-white border border-info" role="button" href="{{ path('home.index') }}">Back</a>
+                                    <button type="submit" class="btn bnt-lg btn-info">Login</button>
+                                    <a class="back-button btn btn-lg btn-info border border-info bg-white text-info" role="button" href="">Back</a>
                                 </div>
                             </form>
-                        </div>
-                        <div class="sign-image col-md-6">
-                            <figure class="text-center"><img src="../images/snowboarder1.jpg" alt="sign image" class=""></figure>
-                            <a href="" class="sign-image-link text-center text-info fs-5">Forget Password</a>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-    </main>
-</body>
 
 {% endblock %}

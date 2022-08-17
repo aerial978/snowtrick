@@ -5,8 +5,13 @@
 
 body {
     font-family: var(--primaryFontFamily);
+    background:#F8F8FF;
     text-decoration: none;
 }
+
+.navbar {
+    background-color: rgba(0,0,0,.2);
+} 
 
 .navbar-brand {
     font-family: var(--secondaryFontFamily);
@@ -14,10 +19,6 @@ body {
 
 .hero {
     position: relative;
-}
-
-.content {
-    margin: auto;
 }
 
 #btnDown {
@@ -30,17 +31,10 @@ body {
     position: relative;
 }
 
- #btnUp {
+#btnUp {
     position: absolute;
     right: 50px;
     bottom: 10px;
-}
-
-.masthead {
-    padding-top: 20rem;
-    padding-bottom: 6rem;
-    text-align: center;
-    height: 75vh;
 }
 
 .position-relative {
@@ -57,6 +51,16 @@ body {
         margin-left: -120px;
     }
 }
+
+/*
+.hero {
+    background: url('../images/snowboarder5.jpg');
+    background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	height: 100vh;
+	filter: brightness(75%);
+} */
 
 .main {
     padding: 60px 0;
@@ -111,6 +115,3 @@ label {
 .sign-image-link:hover {
     color: #ffc107!important;
 }
-
-
-
