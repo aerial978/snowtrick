@@ -12,6 +12,11 @@
                     <div class="row">
                         <div class="sign-form col-md-6 pt-5">
                             <h2 class="form-title text-info fw-bold pb-3">Sign in</h2>
+                            {% if error %}
+                                <div class="alert alert-danger mt-4">
+                                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                                </div>
+                            {% endif %}
                             <form method="POST">
                                 <div class="form-group my-5">
                                     <label for="username">
