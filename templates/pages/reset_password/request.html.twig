@@ -1,41 +1,46 @@
 {% extends 'baseform.html.twig' %}
 
-{% block title %}Reset your password{% endblock %}
+{% block title %}Forget - Snowtrick{% endblock %}
 
 {% block body %}
-<body>
-    <div class="main">
-        <section class="sign">
-            <h1 class="navbar-brand text-success text-center fs-1" href="#">Snowtricks</h1>
-            {% for flash_error in app.flashes('reset_password_error') %}
-                <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-            {% endfor %}
-            <div class="container bg-white shadow-lg p-3 mb-5 bg-body rounded">
-                <div class="sign-content m-5">
-                    <div class="row">
-                        <div class="sign-form col-md-6">
-                            <h2 class="form-title text-dark border-bottom border-dark fw-bold pb-3">Forget password</h2>
-                            {% for flash_error in app.flashes('reset_password_error') %}
-                                <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-                            {% endfor %}
-                            {{ form_start(requestForm) }}
-                                {{ form_row(requestForm.email) }}
-                                <div>
-                                    <small>
-                                        Enter your email address and we will send you a
-                                        link to reset your password.
-                                    </small>
-                                </div>
-                                <button class="btn btn-info">Submit</button>
-                            {{ form_end(requestForm) }}
-                        </div>
-                        <div class="sign-image d-flex align-items-center justify-content-center flex-column col-md-6">
-                            <figure class="text-center"><img src="../images/snowboarder2.jpg" alt="sign image" class="img-fluid"></figure>
-                        </div>
-                    </div>
-                </div>
-            </div>                
-        </section>
-    </div>
-</body>
+	<body>
+		<div class="main">
+			<section class="sign">
+				<h1 class="navbar-brand text-success text-center fs-1" href="#">Snowtricks</h1>
+				{% for flash_error in app.flashes('reset_password_error') %}
+					<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+				{% endfor %}
+				<div class="container bg-white shadow-lg p-3 mb-5 bg-body rounded">
+					<div class="sign-content m-5">
+						<div class="row">
+							<div class="sign-form col-md-6">
+								<h2 class="form-title text-dark border-bottom border-dark fw-bold pb-3">Forget password</h2>
+								{% for flash_error in app.flashes('reset_password_error') %}
+									<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+								{% endfor %}
+								{{ form_start(requestForm) }}
+                                    <div class="form-group my-3">
+                                        {{ form_label(requestForm.email, 'Email', {'label_attr': {'class': 'mt-3 text-info fs-5 fw-bold'}}) }}									
+                                        {{ form_widget(requestForm.email, {attr:{'class':'form-control mt-3'} }) }}
+                                    </div>
+                                    <div>
+                                        <strong class="text-success">
+                                            Enter your email address. If an account matching your email exists, we will send you a link to reset your password.
+                                        </strong>
+                                    </div>
+                                    <div class="form-group form-button d-flex justify-content-between pt-5">
+                                        <button type="submit" class="btn bnt-lg btn-warning border-warning text-light fs-5">Submit</button>
+                                        <a class="back-button btn bnt-lg text-warning fs-5 border border-warning bg-white" role="button" href="{{ path('home.index') }}">Back</a>
+                                    </div>
+								{{ form_end(requestForm) }}
+							</div>
+							<div class="sign-image d-flex align-items-center justify-content-center flex-column col-md-6">
+								<figure class="text-center"><img src="../images/snowboarder2.jpg" alt="sign image" class="img-fluid"></figure>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+	</body>
 {% endblock %}
