@@ -16,7 +16,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class RegistrationFormType extends AbstractType
 {
@@ -27,6 +26,10 @@ class RegistrationFormType extends AbstractType
                 'attr' => [
                     'minlength' => '8',
                     'maxlength' => '50',
+                    'class' => 'form-control'
+                ],
+                'label_attr' => [
+                    'class' => 'form-label mt-3 text-info fs-5 fw-bold'
                 ],
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -40,25 +43,41 @@ class RegistrationFormType extends AbstractType
                 'attr' => [
                     'minlength' => '2',
                     'maxlength' => '180',
+                    'class' => 'form-control'
                 ],
+                'label_attr' => [
+                    'class' => 'form-label mt-3  text-info fs-5 fw-bold'
+                ],
+                'help' => 'A confirmation message will be sent to this address',
+                'help_attr' => [
+                    'class' => 'text-success fw-bold'
+                ]
             ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
+                'invalid_message' => 'passwords do not match !',
                 'mapped' => false,
                 'attr' => [
                     'autocomplete' => 'new-password',
+                    'class' => 'text-danger'
                 ],
                 'first_options' => [
                     'attr' => [
-                        'class' => 'form-group my-5',
+                        'class' => 'form-control'
                     ],
-                    'label' => 'Password'
+                    'label' => 'Password',
+                    'label_attr' => [
+                        'class' => 'form-label mt-3 text-info fs-5 fw-bold'
+                    ]
                 ],
                 'second_options' => [
                     'attr' => [
-                        'class' => 'form-group my-5',
+                        'class' => 'form-control'
                     ],
                     'label' => 'Password Confirmation',
+                    'label_attr' => [
+                        'class' => 'form-label mt-3 text-info fs-5 fw-bold'
+                    ]
                 ],
                 'constraints' => [
                     new NotBlank([
@@ -66,7 +85,7 @@ class RegistrationFormType extends AbstractType
                     ]),
                     new Length([
                         'min' => 2,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
+                        'minMessage' => 'Your password should be at least {{ limit }} characters !',
                         // max length allowed by Symfony for security reasons
                         'max' => 255,
                     ]),

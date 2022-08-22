@@ -66,7 +66,7 @@ body {
     padding: 60px 0;
 }
 
-.login {
+.sign {
     padding-bottom: 150px;
 }
 
@@ -74,42 +74,42 @@ body {
     width: 350px;
 }
 
-.login .container {
-    width: 900px;
+@media (max-width: 768px) {
+    .sign-image {
+        margin: 40px 0;
+    }
+}
+
+@media (max-width: 576px) {
+    .sign-image {
+        margin-top: 50px;
+    }
+    .sign-image img {
+        width: 250px;
+    } 
+}
+
+.sign .container {
+    width: auto;
     margin: 0 auto;     
 }
 
-.sign-content {
-    padding: 75px 30px;
+@media (max-width: 576px) {
+     .form-button .fs-5 {
+        font-size: 15px!important;
+    }
 }
 
-input {
-    display: block;
-    padding: 6px 30px;
-    width: 100%;
-    border: none;
-    outline: none;
-    border-bottom: 1px solid #999;
-    font-size: 15px;
-}
-
-label {
-    position: absolute;
-    padding-top: 5px;
-}
-
-.btn-info:hover {
-    color: #0DCAF0!important;
-    background: white;
+.btn-warning:hover {
+    color: #ffc107!important;
+    background: white!important;
+    border-color: #ffc107!important;
 }
 
 .back-button:hover {
-    background: #0DCAF0!important;
+    background: #ffc107!important;
     color: white!important;
-}
-
-.sign-image-link {
-    display: block;
+    border-color: #ffc107!important;
 }
 
 .sign-image-link:hover {

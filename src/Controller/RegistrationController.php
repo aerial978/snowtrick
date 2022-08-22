@@ -29,6 +29,7 @@ class RegistrationController extends AbstractController
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
+        $user->setRoles(["ROLE_USER"]);
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
@@ -79,6 +80,6 @@ class RegistrationController extends AbstractController
         //@TODO Modifiez la redirection en cas de succès et gérez ou supprimez le message flash dans vos modèles
         $this->addFlash('success', 'Your email address has been verified.');
 
-        return $this->redirectToRoute('security.registration');
+        return $this->redirectToRoute('home.index');
     }
 }

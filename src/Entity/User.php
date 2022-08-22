@@ -9,10 +9,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[UniqueEntity('username')]
+#[UniqueEntity(fields: ['email'], message: 'This email is already used !')]
+#[UniqueEntity(fields: ['username'], message: 'There is already an account with this username !')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\EntityListeners(['App\EntityListener\UserListener'])]
-#[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -25,7 +25,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Length(min: 8, max: 50)]
     private $username;
 
-    #[ORM\Column(type:'string', length: 255, unique: true)]
+    #[ORM\Column(type:'string', length: 255)]
     #[Assert\Email()]
     #[Assert\Length(min: 2, max: 255)]
     private $email;
