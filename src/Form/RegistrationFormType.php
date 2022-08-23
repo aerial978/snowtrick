@@ -45,7 +45,7 @@ class RegistrationFormType extends AbstractType
                     'class' => 'form-control'
                 ],
                 'label_attr' => [
-                    'class' => 'form-label mt-3  text-info fs-5 fw-bold'
+                    'class' => 'form-label mt-3 text-info fs-5 fw-bold'
                 ],
                 'help' => 'A confirmation message will be sent to this address',
                 'help_attr' => [

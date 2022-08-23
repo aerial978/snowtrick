@@ -20,8 +20,11 @@
 							<div class="sign-form col-md-6">
 								<h2 class="form-title text-dark border-bottom border-dark fw-bold pb-3">Reset password</h2>
 								{{ form_start(resetForm) }}
-								{{ form_row(resetForm.plainPassword) }}
-								<button class="btn btn-primary">Reset password</button>
+									{{ form_row(resetForm.plainPassword) }}
+									<div class="form-group form-button d-flex justify-content-between pt-5">
+										<button type="submit" class="btn bnt-lg btn-warning border-warning text-light fs-5">Submit</button>
+										<a class="back-button btn bnt-lg text-warning fs-5 border border-warning bg-white" role="button" href="{{ path('home.index') }}">Back</a>
+									</div>
 								{{ form_end(resetForm) }}
 							</div>
 						</div>
