@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Category
 {
     #[ORM\Id]
@@ -19,15 +20,18 @@ class Category
     #[ORM\Column(type: 'string', length: 50)]
     private $name;
 
-    #[ORM\Column(type: 'datetime_immutable')]
-    private $createdAt;
+    /*#[ORM\Column(type: 'datetime_immutable')]
+    private $createdAt;*/
+
+    #[ORM\Column(type:'datetime')]
+    protected $createdAt;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Trick::class)]
     private Collection $tricks;
 
     public function __construct()
     {
-        $this->createdAt = new DateTimeImmutable();
+        $this->createdAt = new \DateTime();
         $this->tricks = new ArrayCollection();
     }
 
@@ -48,12 +52,17 @@ class Category
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function onPrePersist()
+    {
+        $this->createdAt = new \DateTime("now");
+    }
+
+    public function getCreatedAt(): ?\DateTime
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    public function setCreatedAt(\DateTime $createdAt): self
     {
         $this->createdAt = $createdAt;
 

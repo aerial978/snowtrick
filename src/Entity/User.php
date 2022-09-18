@@ -15,6 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username !')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\EntityListeners(['App\EntityListener\UserListener'])]
+#[ORM\HasLifecycleCallbacks]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -43,12 +44,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $password = 'password';
 
     #[ORM\Column(type:'string', length: 255, nullable: true)]
-    #[Assert\Length(min: 2, max: 255)]
-    private $picture;
+    private $file;
 
-    #[ORM\Column(type: 'datetime_immutable')]
+    /*#[ORM\Column(type: 'datetime_immutable')]
     #[Assert\NotNull()]
-    private $createdAt;
+    private $createdAt;*/
+
+    #[ORM\Column(type:'datetime')]
+    protected $createdAt;
 
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
@@ -58,7 +61,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
-        $this->createdAt = new \DateTimeImmutable();
+        $this->createdAt = new \DateTime();
         $this->messages = new ArrayCollection();
     }
 
@@ -90,8 +93,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
-
 
     /**
      * A visual identifier that represents this user.
@@ -149,24 +150,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->plainPassword;
     }
 
-    public function getPicture(): ?string
+    public function getFile(): ?string
     {
-        return $this->picture;
+        return $this->file;
     }
 
-    public function setPicture(string $picture): self
+    public function setFile(string $file): self
     {
-        $this->picture = $picture;
+        $this->file = $file;
         
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function onPrePersist()
+    {
+        $this->createdAt = new \DateTime("now");
+    }
+
+    public function getCreatedAt(): ?\DateTime
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    public function setCreatedAt(\DateTime $createdAt): self
     {
         $this->createdAt = $createdAt;
         
