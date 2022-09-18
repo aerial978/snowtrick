@@ -19,8 +19,7 @@ class AppFixtures extends Fixture
 
     public function __construct()
     {
-        $this->faker = Factory::create('fr_FR');
-        
+        $this->faker = Factory::create('fr_FR');   
     }
     
     public function load(ObjectManager $manager): void
@@ -32,7 +31,6 @@ class AppFixtures extends Fixture
                 $user->setRoles(['ROLE_USER']);
                 $user->setPlainPassword('password');
                 $user->setFile('assets/images/default.png');
-                /*$user->setCreatedAt(new \DateTimeImmutable());*/
                 
             $manager->persist($user);
             $this->addReference('user_'.$i,$user);
@@ -41,11 +39,9 @@ class AppFixtures extends Fixture
         for ($i=1; $i< 10; $i++) {
             $category = new Category();
                 $category->setName($this->faker->name());
-                /*$category->setCreatedAt(new \DateTimeImmutable());*/
 
                 $manager->persist($category);
                 $this->addReference('category_'.$i,$category);
-
         }
                 
         for($i=1; $i < 10; $i++) {
@@ -55,7 +51,6 @@ class AppFixtures extends Fixture
                 $trick->setSlug($this->faker->slug());
                 $category = $this->getReference('category_'.$this->faker->numberBetween(1, 9));
                 $trick->setCategory($category);
-                /*$trick->setCreatedAt(new \DateTimeImmutable());*/
 
             $manager->persist($trick);
             $this->addReference('trick_'.$i,$trick);
@@ -68,7 +63,6 @@ class AppFixtures extends Fixture
                 $message->setTrick($trick);
                 $user = $this->getReference('user_'.$this->faker->numberBetween(1, 9));
                 $message->setUser($user);
-                    /*$message->setCreatedAt(new \DateTimeImmutable());*/
             
             $manager->persist($message);
         }
@@ -90,7 +84,6 @@ class AppFixtures extends Fixture
 
             $manager->persist($video);
         }
-
         $manager->flush();
     }
 }
