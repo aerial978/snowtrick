@@ -36,9 +36,9 @@ class AppFixtures extends Fixture
             $this->addReference('user_'.$i,$user);
         }
 
-        for ($i=1; $i< 10; $i++) {
+        for ($i=1; $i < 10; $i++) {
             $category = new Category();
-                $category->setName($this->faker->name());
+                $category->setName($this->faker->word());
 
                 $manager->persist($category);
                 $this->addReference('category_'.$i,$category);
@@ -46,7 +46,7 @@ class AppFixtures extends Fixture
                 
         for($i=1; $i < 10; $i++) {
             $trick = new Trick();
-                $trick->setName($this->faker->name());
+                $trick->setName($this->faker->word());
                 $trick->setDescription($this->faker->text());
                 $trick->setSlug($this->faker->slug());
                 $category = $this->getReference('category_'.$this->faker->numberBetween(1, 9));
@@ -78,7 +78,7 @@ class AppFixtures extends Fixture
 
         for($i=1; $i < 20; $i++) {
             $video = new Video();
-                $video->setVideoLink('https://youtu.be/0uGETVnkujA');
+                $video->setVideoLink('0uGETVnkujA');
                 $trick = $this->getReference('trick_'.$this->faker->numberBetween(1, 9));
                 $video->setTrick($trick);
 

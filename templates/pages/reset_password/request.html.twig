@@ -5,9 +5,11 @@
 
 {% block body %}
 	<body>
-		<div class="main">
+		<div class="main p-2">
 			<section class="sign">
-				<h1 class="navbar-brand text-success text-center fs-1" href="#">Snowtricks</h1>
+				<div class="navbar-brand text-center">
+					<a href="{{ path('home.index') }}" class="fs-1 text-warning text-decoration-none">Snowtricks</a>
+				</div>
 				{% for flash_error in app.flashes('reset_password_error') %}
 					<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
 				{% endfor %}
@@ -30,8 +32,8 @@
 									</strong>
 								</div>
 								<div class="form-group form-button d-flex justify-content-between pt-5">
-									<button type="submit" class="btn bnt-lg btn-warning border-warning text-light fs-5">Submit</button>
-									<a class="back-button btn bnt-lg text-warning fs-5 border border-warning bg-white" role="button" href="{{ path('home.index') }}">Back</a>
+									<button type="submit" class="btn btn-warning btn-lg">Submit</button>
+									<a href="{{ path('home.index') }}" class="text-decoration-none"><button type="button" class="btn btn-lg btn-outline-warning">Back</button></a>
 								</div>
 								{{ form_end(requestForm) }}
 							</div>

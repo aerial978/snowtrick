@@ -5,187 +5,61 @@
 
 {% block body %}
 <!-- hero -->        
-<header class="hero w-100 vh-100 d-flex d-flex justify-content-start align-items-center bg-secondary" style="padding: 8em;">
+<header class="hero w-100 vh-100" id="hero" style="padding: 8em;">
 	<div class="content">
-		<h1 class="text-light">Share your passion for Snowboarding</h1>
+		<h1 class="text-warning fw-bold">Snowboarding</h1>
+		<h2 class="text-info fw-bold">Share your passion</h2>
 	</div>
 	<div id="btnDown">
-		<a href="#" class="icon text-light fs-1">
-			<i class="fa-solid fa-circle-arrow-down"></i>
+		<a href="#tricks-list" class="icon-down">
+			<span class="fa-stack fa-2x" style="--fa-inverse: black;">
+				<i class="fa-solid fa-circle fa-stack-2x text-warning"></i>
+				<i class="fa-solid fa-arrow-down fa-stack-1x fa-lg fa-inverse"></i>
+			</span>
 		</a>
-	</div>
+	</div>	
 </header>
 
 <!-- tricks sections -->
-<section class="tricks-list container-fluid text-center py-5">
+<section class="tricks-list container-fluid text-center py-5" id="tricks-list">
 	<div class="row py-lg-1">
 		<div class="col-lg-6 col-md-8 mx-auto">
-			<h1 class="fw-light">Tricks list</h1>
-			<p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>
+			<h1 class="text-info fw-bold p-3 mb-3">Tricks list</h1>
+			<p class="lead fs-4 p-2 mb-1">Snowboard tricks are aerials or maneuvers performed on snowboards for fun, 
+			or in competitions. Most often, these maneuvers are performed on obstacles such as jumps, halfpipes, quarterpipes, 
+			hips, handrails, funboxes, or ledges, or on the surface of the snow. Many have their origins in precursory board 
+			sports such as skateboarding and surfing.</p>
 		</div>
 	</div>
 	<div class="album py-5">
 		<div class="container">
-			<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-				<div class="col">
-					<div class="card shadow-sm">
-						<img src="http://via.placeholder.com/300x160">
-						<div class="card-body">
-							<p class="card-text"></p>
-							<div class="d-flex justify-content-between align-items-center">
-								<p class="text-muted fs-4">Trick name</p>
-								<div class="btn-group text-secondary fs-3">
-									<a class="button-edit" href="">
-										<i class="fa-solid fa-pen me-3"></i>
-									</a>
-									<a class="button-delete" href="">
-										<i class="fa-solid fa-trash-can"></i>
-									</a>
+			<div class="row g-4">
+				{% for trick in tricks %}	
+					<div class="col-lg-4 col-md-6">
+						<div class="card shadow-sm">
+							<a href=""><img src="{{ trick.pictures[0].pictureLink }}"></a>
+							<div class="card-body">
+								<div class="card-meta d-flex justify-content-between">
+									<p class="text-info fw-bold my-auto fs-5">{{ trick.name }}</p>
+									<div class="btn-group fs-3">
+										<a class="button-edit" href="">
+											<button class="btn btn-lg btn-success me-3"><i class="fa-solid fa-pen text-light"></i></button>
+										</a>
+										<a class="button-delete" href="">
+											<button class="btn btn-lg btn-danger"><i class="fa-solid fa-trash-can text-light"></i></button>
+										</a>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="col">
-					<a href="">
-						<div class="card shadow-sm"></a>
-						<img src="http://via.placeholder.com/300x160">
-						<div class="card-body">
-							<p class="card-text"></p>
-							<div class="d-flex justify-content-between align-items-center">
-								<p class="text-muted fs-4">Trick name</p>
-								<div class="btn-group text-secondary fs-3">
-									<a class="button-edit" href="">
-										<i class="fa-solid fa-pen me-3"></i>
-									</a>
-									<a class="button-delete" href="">
-										<i class="fa-solid fa-trash-can"></i>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col">
-					<div class="card shadow-sm">
-						<img src="http://via.placeholder.com/300x160">
-						<div class="card-body">
-							<p class="card-text"></p>
-							<div class="d-flex justify-content-between align-items-center">
-								<p class="text-muted fs-4">Trick name</p>
-								<div class="btn-group text-secondary fs-3">
-									<a class="button-edit" href="">
-										<i class="fa-solid fa-pen me-3"></i>
-									</a>
-									<a class="button-delete" href="">
-										<i class="fa-solid fa-trash-can"></i>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col">
-					<div class="card shadow-sm">
-						<img src="http://via.placeholder.com/300x160">
-						<div class="card-body">
-							<p class="card-text"></p>
-							<div class="d-flex justify-content-between align-items-center">
-								<p class="text-muted fs-4">Trick name</p>
-								<div class="btn-group text-secondary fs-3">
-									<a class="button-edit" href="">
-										<i class="fa-solid fa-pen me-3"></i>
-									</a>
-									<a class="button-delete" href="">
-										<i class="fa-solid fa-trash-can"></i>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col">
-					<div class="card shadow-sm">
-						<img src="http://via.placeholder.com/300x160">
-						<div class="card-body">
-							<p class="card-text"></p>
-							<div class="d-flex justify-content-between align-items-center">
-								<p class="text-muted fs-4">Trick name</p>
-								<div class="btn-group text-secondary fs-3">
-									<a class="button-edit" href="">
-										<i class="fa-solid fa-pen me-3"></i>
-									</a>
-									<a class="button-delete" href="">
-										<i class="fa-solid fa-trash-can"></i>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col">
-					<div class="card shadow-sm">
-						<img src="http://via.placeholder.com/300x160">
-						<div class="card-body">
-							<p class="card-text"></p>
-							<div class="d-flex justify-content-between align-items-center">
-								<p class="text-muted fs-4">Trick name</p>
-								<div class="btn-group text-secondary fs-3">
-									<a class="button-edit" href="">
-										<i class="fa-solid fa-pen me-3"></i>
-									</a>
-									<a class="button-delete" href="">
-										<i class="fa-solid fa-trash-can"></i>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col">
-					<div class="card shadow-sm">
-						<img src="http://via.placeholder.com/300x160">
-						<div class="card-body">
-							<p class="card-text"></p>
-							<div class="d-flex justify-content-between align-items-center">
-								<p class="text-muted fs-4">Trick name</p>
-								<div class="btn-group text-secondary fs-3">
-									<a class="button-edit" href="">
-										<i class="fa-solid fa-pen me-3"></i>
-									</a>
-									<a class="button-delete" href="">
-										<i class="fa-solid fa-trash-can"></i>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col">
-					<div class="card shadow-sm">
-						<img src="http://via.placeholder.com/300x160">
-						<div class="card-body">
-							<p class="card-text"></p>
-							<div class="d-flex justify-content-between align-items-center">
-								<p class="text-muted fs-4">Trick name</p>
-								<div class="btn-group text-secondary fs-3">
-									<a class="button-edit" href="">
-										<i class="fa-solid fa-pen me-3"></i>
-									</a>
-									<a class="button-delete" href="">
-										<i class="fa-solid fa-trash-can"></i>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col">
-					<div class="card shadow h-100 bg-secondary d-flex justify-content-center align-items-center">
+				{% endfor %}
+				<div class="col-lg-4 col-md-6">
+					<div class="card-add shadow rounded-1 bg-info d-flex justify-content-center align-items-center">
 						<a class="trick-add" href="">
-							<span class="fa-stack fa-2x">
-								<i class="fas fa-circle fa-stack-2x text-light"></i>
-								<i class="fas fa-plus fa-stack-1x"></i>
+							<span class="fa-stack fa-2x" style="--fa-inverse: black;">
+								<i class="fa-solid fa-circle fa-stack-2x text-light"></i>
+								<i class="fa-solid fa-plus fa-stack-1x fa-lg fa-inverse"></i>
 							</span>
 						</a>
 					</div>
@@ -193,12 +67,14 @@
 			</div>
 		</div>
 	</div>
-</div>
-<p>
-	<a href="#" class="btn btn-secondary fs-4 my-5">More</a>
-</p>
-<div id="btnUp">
-	<a href="#" class="icon text-dark fs-1">
-		<i class="fa-solid fa-circle-arrow-up"></i>
-	</a>
-</div></div></section>{% endblock %}
+	<a href="#" class="btn-more btn btn-warning fw-bold fs-4">More</a>
+	<div id="btnUp">
+		<a href="#hero" class="icon-up">
+			<span class="fa-stack fa-2x" style="--fa-inverse: black;">
+				<i class="fa-solid fa-circle fa-stack-2x text-warning"></i>
+				<i class="fa-solid fa-arrow-up fa-stack-1x fa-lg fa-inverse"></i>
+			</span>
+		</a>
+	</div>
+</section>
+{% endblock %}
