@@ -44,7 +44,7 @@ class AppFixtures extends Fixture
                 $this->addReference('category_'.$i,$category);
         }
                 
-        for($i=1; $i < 10; $i++) {
+        for($i=1; $i < 20; $i++) {
             $trick = new Trick();
                 $trick->setName($this->faker->word());
                 $trick->setDescription($this->faker->text());
@@ -70,7 +70,16 @@ class AppFixtures extends Fixture
         for($i=1; $i < 20; $i++) {
             $picture = new Picture();
                 $picture->setPictureLink('https://cdn.pixabay.com/photo/2013/12/12/21/28/snowboard-227541_960_720.jpg');
-                $trick = $this->getReference('trick_'.$this->faker->numberBetween(1, 9));
+                $trick = $this->getReference('trick_'.$i);
+                $picture->setTrick($trick);
+
+            $manager->persist($picture);
+        }
+
+        for($i=1; $i < 40; $i++) {
+            $picture = new Picture();
+                $picture->setPictureLink('https://cdn.pixabay.com/photo/2013/12/12/21/28/snowboard-227541_960_720.jpg');
+                $trick = $this->getReference('trick_'.$this->faker->numberBetween(1, 19));
                 $picture->setTrick($trick);
 
             $manager->persist($picture);

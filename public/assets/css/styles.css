@@ -54,6 +54,10 @@ body {
     height: 100%;
 }
 
+.album .card-body .card-meta a:hover {
+    color: black!important;
+}
+
 #btnUp {
     position: absolute;
     right: 50px;
@@ -133,7 +137,7 @@ body {
 
     .navbar-responsive {
         display: inline;
-        background-color: black;
+        background-color: #ffc107;
     }
 
     .navbar-responsive .navbar-toggler {
@@ -145,7 +149,7 @@ body {
     }
 
     footer {
-        display: none;
+        margin-bottom: 65px;
     }
     
     .content h1 {
@@ -195,10 +199,6 @@ body {
     .sign-image img {
         width: 250px;
     } 
-
-    .tricks-list {
-        margin-bottom: 80px!important;
-    }
 }
 
 .sign .container {
