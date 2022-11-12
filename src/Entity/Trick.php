@@ -39,7 +39,7 @@ class Trick
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
-    #[ORM\ManyToOne(inversedBy: 'tricks')]
+    #[ORM\ManyToOne(inversedBy: 'tricks', fetch: "EAGER" )]
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
 

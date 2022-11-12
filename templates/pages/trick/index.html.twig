@@ -4,121 +4,89 @@
 {% endblock %}
 
 {% block body %}
-	<header class="hero h-75 d-flex justify-content-center align-items-center bg-secondary" style="min-height:600px;">
-		<div class="content text-center">
-			<h1 class="text-light">Trick Name</h1>
-		</div>
-	</header>
-	<section class="media py-5">
-		<div class="container py-lg-5">
-			<div class="text-center mb-3 pb-3">
-				<h6 class="text-primary text-uppercase" style="letter-spacing: 5px;">Medias</h6>
-				<h1>Let's discover the trick together</h1>
+	{% set img = trick.pictures|last %}
+	<header class="hero-trick">
+		<div class="banner">
+			<img src="{{ img.pictureLink }}">
+			<div class="content">
+				{% if app.user %}
+					<div class="btn-group btn-trick bg-warning d-flex justify-content-end p-2">
+						<a class="button-edit" href="">
+							<button class="btn btn-lg btn-success me-3">
+								<i class="fa-solid fa-pen text-light"></i>
+							</button>
+						</a>
+						{% include "pages/trick/delete.html.twig" %}
+					</div>
+				{% endif %}
+				<h1 class="hero-name d-flex justify-content-center text-white">{{ trick.name }}</h1>
 			</div>
 		</div>
-		<div class="container">
-			<div class="row row-cols-1 row-cols-md-4 g-4 pb-5">
-				<div class="col-3">
-					<div class="card">
-						<img src="../images/land-default.png" class="card-img-top" style="max-width: 18rem;" alt="...">
-					</div>
-				</div>
-				<div class="col-3">
-					<div class="card">
-						<img src="../images/land-default.png" class="card-img-top" style="max-width: 18rem;" alt="...">
-					</div>
-				</div>
-				<div class="col-3">
-					<div class="card">
-						<img src="../images/land-default.png" class="card-img-top" style="max-width: 18rem;" alt="...">
-					</div>
-				</div>
-				<div class="col-3">
-					<div class="card">
-						<img src="../images/video-player2.png" class="card-img-top" style="max-width: 18rem;" alt="...">
-					</div>
-				</div>
-				<div class="col-3">
-					<div class="card">
-						<img src="../images/video-player2.png" class="card-img-top" style="max-width: 18rem;" alt="...">
-					</div>
-				</div>
-				<div class="col-3">
-					<div class="card">
-						<img src="../images/video-player2.png" class="card-img-top" style="max-width: 18rem;" alt="...">
+	</header>
+	<section class="trick-media py-5">
+		<div class="container py-lg-5">
+			<div class="text-center mb-3 pb-3">
+				<h6 class="text-warning fw-bold text-uppercase" style="letter-spacing: 5px;">medias</h6>
+				<h1 class="text-info fw-bold">Let's discover the trick together</h1>
+			</div>
+		</div>
+		<div class="media container">
+			<div class="row row-cols-1 row-cols-md-4 g-4 pb-3">
+				{% include "pages/trick/pictures.html.twig" %}
+				{% include "pages/trick/videos.html.twig" %}
+			</div>
+		</div>
+		{% include "pages/trick/media-responsive.html.twig" %}
+	</section>
+	<section class="trick-about">
+		<div class="container-fluid py-5">
+			<div class="about-title text-center mb-3 pb-3">
+				<h6 class="text-warning fw-bold text-uppercase" style="letter-spacing: 5px;">about</h6>
+				<h1 class="text-info fw-bold">Technical Description</h1>
+			</div>
+			<div class="container py-4">
+				<div class="dropdown">
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="about-img position-relative h-100">
+								<img src="{{ img.pictureLink }}" class="position-absolute w-100 h-100 rounded-2 shadow-lg p-3 mb-5 bg-body" style="object-fit:cover;">
+							</div>
+						</div>
+						<div class="col-lg-6 pt-5 pb-lg-5">
+							<div class="about-content bg-warning p-4 p-lg-5 my-lg-5 rounded-2">
+								<h5 class="about-name text-white fw-bold text-uppercase mb-3">{{ trick.name }}</h5>
+								<p class="about-text">{{ trick.description }}</p>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
-	<div class="container-fluid py-5">
-		<div class="text-center mb-3 pb-3">
-			<h6 class="text-primary text-uppercase" style="letter-spacing: 5px;">About</h6>
-			<h1>Technical Description</h1>
-		</div>
-		<div class="container py-5">
-			<div class="row">
-				<div class="col-lg-6" style="min-height: 500px;">
-					<div class="position-relative h-100">
-						<img class="position-absolute w-100 h-100 bg-dark" style="objectif-fit: cover;">
-					</div>
-				</div>
-
-				<div class="col-lg-6 pt-5 pb-lg-5">
-					<div class="about-text bg-secondary p-4 p-lg-5 my-lg-5">
-						<h6 class="text-primary text-uppercase" style="letter-spacing: 5px;"></h6>
-						<h1 class="mb-3">Lorem ipsum dolor sit amet</h1>
-						<p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-                            ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in 
-                            voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat 
-                            non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                        </p>
-						<p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-                            ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in 
-                            voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat 
-                            non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                        </p>
-					</div>
-					<div class="row mb-4">
-						<div class="col-6">
-							<img class="img-fluid" src="img/about-1.jpg" alt="">
-						</div>
-						<div class="col-6">
-							<img class="img-fluid" src="img/about-2.jpg" alt="">
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<section class="trick-meta py-5 bg-secondary">
+	<section class="trick-meta py-5 bg-info">
 		<div class="py-3">
 			<div class="container">
 				<div class="row text-center">
 					<div class="col-md-4">
-						<span class="fa-stack fa-4x">
+						<span class="fa-stack fa-4x text-warning">
 							<i class="fas fa-circle fa-stack-2x"></i>
 							<i class="fas fa-plus fa-stack-1x fa-inverse"></i>
 						</span>
-						<h4 class="my-3">Created at</h4>
+						<h4 class="my-3">{{ trick.createdAt|date('d/m/Y') }}</h4>
 					</div>
 					<div class="col-md-4">
-						<span class="fa-stack fa-4x">
+						<span class="fa-stack fa-4x text-warning">
 							<i class="fas fa-circle fa-stack-2x"></i>
 							<i class="fas fa-person-snowboarding fa-stack-1x fa-inverse"></i>
 						</span>
-						<h4 class="my-3">Group</h4>
+						<h4 class="my-3">{{ trick.category.name }}</h4>
 					</div>
 					<div class="col-md-4">
-						<span class="fa-stack fa-4x">
+						<span class="fa-stack fa-4x text-warning">
 							<i class="fas fa-circle fa-stack-2x"></i>
 							<i class="fas fa-pen fa-stack-1x fa-inverse"></i>
 						</span>
-						<h4 class="my-3">Updated at</h4>
+						<h4 class="my-3">{{ trick.updatedAt|date('d/m/Y') }}</h4>
 					</div>
 				</div>
 			</div>
@@ -126,95 +94,45 @@
 	</section>
 	<section class="trick-messages py-5">
 		<div class="text-center mb-3 py-3">
-			<h6 class="text-primary text-uppercase" style="letter-spacing: 5px;">Blog</h6>
-			<h1>Related Messages</h1>
+			<h6 class="text-warning fw-bold text-uppercase" style="letter-spacing: 5px;">Blog</h6>
+			<h1 class="text-info fw-bold">Related Messages</h1>
 		</div>
 		<div class="container my-5 py-2">
 			<div class="row d-flex justify-content-center">
 				<div class="col-md-12 col-lg-10">
-					<div class="card text-dark">
-						<div class="d-flex flex-row add-comment-section my-5">
-							<img class="img-fluid img-responsive rounded-circle mx-3" src="../images/default.png" alt="avatar" width="60" height="60"/>
-							<input type="text" class="form-control mr-3" placeholder="Add message">
-							<button class="btn btn-primary mx-3" type="button">Submit</button>
-						</div>
-						<div class="card-body py-4">
-							<div class="d-flex flex-start py-2">
-								<img class="rounded-circle shadow-1-strong me-3" src="../images/default.png" alt="avatar" width="60" height="60"/>
-								<div>
-									<h6 class="fw-bold mb-1">username</h6>
-									<div class="d-flex align-items-center mb-3">
-										<p class="mb-0">created at</p>
-									</div>
-									<p class="mb-0">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-                                        ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-                                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in 
-                                        voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat 
-                                        non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                    </p>
-								</div>
+					<div class="card text-dark shadow">
+						{% if trick.messages is empty %}
+							<div class="alert alert-danger mb-0" role="alert">
+								<h4 class="text-center">No message yet !</h4>
 							</div>
-						</div>
-						<div class="card-body py-4">
-							<div class="d-flex flex-start py-2">
-								<img class="rounded-circle shadow-1-strong me-3" src="../images/default.png" alt="avatar" width="60" height="60"/>
-								<div>
-									<h6 class="fw-bold mb-1">username</h6>
-									<div class="d-flex align-items-center mb-3">
-										<p class="mb-0">created at</p>
-									</div>
-									<p class="mb-0">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-                                        ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-                                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in 
-                                        voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat 
-                                        non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                    </p>
+						{% else %}
+							{% if app.user %}
+								<div class="d-flex flex-row add-comment-section rounded bg-warning p-3 m-3 my-5">
+									<img class="img-fluid img-responsive rounded-circle mx-3" src="{{ asset('images/' ~ app.user.file) }}" alt="avatar" width="60" height="60"/>
+									<input type="text" class="form-control mr-3" placeholder="Add message">
+									<button class="btn btn-info btn-lg mx-3" type="button">Send</button>
 								</div>
-							</div>
-						</div>
-						<div class="card-body py-4">
-							<div class="d-flex flex-start py-2">
-								<img class="rounded-circle shadow-1-strong me-3" src="../images/default.png" alt="avatar" width="60" height="60"/>
-								<div>
-									<h6 class="fw-bold mb-1">username</h6>
-									<div class="d-flex align-items-center mb-3">
-										<p class="mb-0">created at</p>
+							{% endif %}
+							{% for message in messages %}
+								<div class="card-body py-4 alert alert-info m-3">
+									<div class="d-flex flex-start py-2">
+										<img class="rounded-circle shadow-1-strong me-3" src="{{ asset('images/' ~ message.user.file) }}" alt="avatar" width="60" height="60"/>
+										<div>
+											<h6 class="fw-bold mb-1"></h6>
+											<div class="d-flex flex-column mb-3">
+												<p class="fw-bold mb-0">{{ message.user.username }}</p>
+												<p class="mb-0">{{ message.createdAt|date('d/m/Y') }}</p>
+											</div>
+											<p class="mb-0">{{ message.content }}</p>
+										</div>
 									</div>
-									<p class="mb-0">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-                                        ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-                                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in 
-                                        voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat 
-                                        non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                    </p>
 								</div>
-							</div>
-						</div>
+							{% endfor %}
+							<div class="pagination justify-content-center py-5">{{ knp_pagination_render(messages) }}</div>
+						{% endif %}	
 					</div>
 				</div>
-				<nav aria-label="page navigation example">
-					<ul class="pagination justify-content-center py-5">
-						<li class="page-item disabled">
-							<span class="page-link">Previous</span>
-						</li>
-						<li class="page-item">
-							<a class="page-link" href="#">1</a>
-						</li>
-						<li class="page-item active" aria-current="page">
-							<span class="page-link">2</span>
-						</li>
-						<li class="page-item">
-							<a class="page-link" href="#">3</a>
-						</li>
-						<li class="page-item">
-							<a class="page-link" href="#">Next</a>
-						</li>
-					</ul>
-				</nav>
 			</div>
 		</div>
 	</section>
-
 {% endblock %}

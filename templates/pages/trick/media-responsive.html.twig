@@ -1,0 +1,39 @@
+<div class="media-responsive container">
+    <div class="dropdown-center">
+        <button class="btn btn-secondary dropdown-toggle w-100 bg-warning border border-none text-dark fs-4 fw-bold" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            See medias
+        </button>
+        <ul class="dropdown-menu bg-info mw-100">
+            <li class="mx-2 bg-info fs-5 fw-bold">Pictures</li>
+            {% for picture in trick.pictures %}
+                <li class="gallery-item dropdown-item bg-warning" data-link="{{ picture.pictureLink }}" data-bs-toggle="modal" data-bs-target="#exampleModal">{{ picture.pictureLink }}</li>	
+            {% endfor %}
+            <li class="mx-2 bg-info fs-5 fw-bold">Videos</li>
+                {% for picture in trick.videos %}
+                    <li>
+                        <a class="dropdown-item bg-warning" href="{{ picture.videoLink }}">{{ picture.videoLink }}</a>
+                    </li>
+                {% endfor %}
+            </li>
+        </ul>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <img src="" class="img-fluid modal-img" alt="modal img">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>	
+		
+		

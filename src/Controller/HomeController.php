@@ -11,19 +11,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
 {
-    #[Route('/', name: 'home.index', methods: ['GET','POST'])]
+    #[Route('/', name: 'home.index', methods: ['GET'])]
     public function index(TrickRepository $trickRepository): Response
     {
-        $activeMenu = 'homemenu';
-        
         $trick = $trickRepository->findAll();
         
-        return $this->render('home.html.twig', [
-            'activemenu' => $activeMenu,
+        return $this->render('pages/home.html.twig', [
+            'activemenu' => 'homemenu',
             'tricks' => $trick
         ]);
     }
-
+/*
     #[Route('/delete/{id}', name:'home.delete', methods: ['GET'])]
     public function delete(trick $trick, EntityManagerInterface $manager): Response
     {
@@ -36,5 +34,5 @@ class HomeController extends AbstractController
         );
     
         return $this->redirectToRoute('home.index');
-    }
+    }*/
 }
