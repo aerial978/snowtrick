@@ -1,0 +1,117 @@
+:root {
+    --primaryFontFamily: 'Roboto';
+    --secondaryFontFamily: 'Caveat Brush', cursive;
+}
+
+body {
+    font-family: var(--primaryFontFamily);
+    background:#F8F8FF;
+    text-decoration: none;
+}
+
+.navbar {
+    background-color: rgba(0,0,0,.2);
+} 
+
+.navbar-brand {
+    font-family: var(--secondaryFontFamily);
+}
+
+.hero {
+    position: relative;
+}
+
+#btnDown {
+    position: absolute;
+    right: 40px;
+    bottom: 30px;
+}
+
+.tricks-list {
+    position: relative;
+}
+
+#btnUp {
+    position: absolute;
+    right: 50px;
+    bottom: 10px;
+}
+
+.position-relative {
+    position: relative;
+}
+
+.position-absolute {
+    position: absolute;
+    z-index: -1;
+}
+
+@media (min-width: 992px) {
+    .about-text {
+        margin-left: -120px;
+    }
+}
+
+/*
+.hero {
+    background: url('../images/snowboarder5.jpg');
+    background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	height: 100vh;
+	filter: brightness(75%);
+} */
+
+.main {
+    padding: 60px 0;
+}
+
+.sign {
+    padding-bottom: 150px;
+}
+
+.sign-image img {
+    width: 350px;
+}
+
+@media (max-width: 768px) {
+    .sign-image {
+        margin: 40px 0;
+    }
+}
+
+@media (max-width: 576px) {
+    .sign-image {
+        margin-top: 50px;
+    }
+    .sign-image img {
+        width: 250px;
+    } 
+}
+
+.sign .container {
+    width: auto;
+    margin: 0 auto;     
+}
+
+@media (max-width: 576px) {
+     .form-button .fs-5 {
+        font-size: 15px!important;
+    }
+}
+
+.btn-warning:hover {
+    color: #ffc107!important;
+    background: white!important;
+    border-color: #ffc107!important;
+}
+
+.back-button:hover {
+    background: #ffc107!important;
+    color: white!important;
+    border-color: #ffc107!important;
+}
+
+.sign-image-link:hover {
+    color: #ffc107!important;
+}

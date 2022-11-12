@@ -1,0 +1,36 @@
+{% extends 'baseform.html.twig' %}
+
+{% block title %}Reset - Snowtrick
+{% endblock %}
+
+{% block body %}
+	<body>
+		<div class="main">
+			<section class="sign">
+				<h1 class="navbar-brand text-success text-center fs-1" href="#">Snowtricks</h1>
+				{% for flash_error in app.flashes('reset_password_error') %}
+					<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+				{% endfor %}
+				<div class="container bg-white shadow-lg p-3 mb-5 bg-body rounded">
+					<div class="sign-content m-5">
+						<div class="row">
+							<div class="sign-image d-flex align-items-center justify-content-center flex-column col-md-6">
+								<figure class="text-center"><img src="../../images/snowboarder4.jpg" alt="sign image" class="img-fluid"></figure>
+							</div>
+							<div class="sign-form col-md-6">
+								<h2 class="form-title text-dark border-bottom border-dark fw-bold pb-3">Reset password</h2>
+								{{ form_start(resetForm) }}
+									{{ form_row(resetForm.plainPassword) }}
+									<div class="form-group form-button d-flex justify-content-between pt-5">
+										<button type="submit" class="btn bnt-lg btn-warning border-warning text-light fs-5">Submit</button>
+										<a class="back-button btn bnt-lg text-warning fs-5 border border-warning bg-white" role="button" href="{{ path('home.index') }}">Back</a>
+									</div>
+								{{ form_end(resetForm) }}
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+	</body>
+{% endblock %}
