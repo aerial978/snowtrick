@@ -17,7 +17,7 @@ class Picture
     private ?string $pictureLink = null;
 
     #[ORM\ManyToOne(inversedBy: 'pictures')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete:"CASCADE")]
     private ?Trick $trick = null;
 
     public function getId(): ?int

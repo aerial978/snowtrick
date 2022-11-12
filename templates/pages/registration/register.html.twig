@@ -4,9 +4,11 @@
 {% endblock %}
 
 {% block body %}
-	<div class="main">
+	<div class="main p-2">
         <section class="sign">
-            <h1 class="navbar-brand text-success text-center fs-1" href="#">Snowtricks</h1>
+		<div class="navbar-brand text-center">
+            <a href="{{ path('home.index') }}" class="fs-1 link-warning text-warning text-decoration-none">Snowtricks</a>
+		</div>
 			{% for flash_error in app.flashes('verify_email_error') %}
 				<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
 			{% endfor %}
@@ -15,7 +17,7 @@
 					<div class="row">
 						<div class="sign-image d-flex align-items-center justify-content-around flex-column col-md-6">
 							<figure class="text-center"><img src="../images/snowboarder3.jpg" alt="sign image" class="img-fluid"></figure>
-							<a href="{{ path('security.login') }}" class="sign-image-link text-center text-info fs-5">Sign in</a>
+							<a href="{{ path('security.login') }}" class="link-warning text-center text-warning fs-4">Already an account ? Sign in</a>
 						</div>
 						<div class="sign-form col-md-6">
 							<h2 class="form-title border-bottom border-dark text-dark fw-bold pb-3">Sign up</h2>
@@ -45,8 +47,8 @@
 								{{ form_widget(registrationForm.plainPassword) }}
 							
 							<div class="form-group form-button d-flex justify-content-between pt-5">
-								<button type="submit" class="btn bnt-lg btn-warning border-warning text-light fs-5">Submit</button>
-								<a class="back-button btn bnt-lg text-warning fs-5 border border-warning bg-white" role="button" href="{{ path('home.index') }}">Back</a>
+								<button type="submit" class="btn btn-warning btn-lg">Submit</button>
+								<a href="{{ path('home.index') }}" class="text-decoration-none"><button type="button" class="btn btn-lg btn-outline-warning">Back</button></a>
 							</div>
 
 							{{ form_end(registrationForm) }}

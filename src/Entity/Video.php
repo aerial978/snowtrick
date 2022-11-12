@@ -17,7 +17,7 @@ class Video
     private ?string $videoLink = null;
 
     #[ORM\ManyToOne(inversedBy: 'videos')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete:"CASCADE")]
     private ?Trick $trick = null;
 
     public function getId(): ?int

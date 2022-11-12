@@ -46,7 +46,7 @@ class Trick
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Message::class, orphanRemoval: true)]
     private Collection $messages;
 
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Picture::class)]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Picture::class, fetch: "EAGER")]
     private Collection $pictures;
 
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Video::class)]
