@@ -23,35 +23,40 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('username', TextType::class, [
                 'attr' => [
-                    'minlength' => '8',
-                    'maxlength' => '50',
                     'class' => 'form-control'
                 ],
+                'required' => false,
                 'label_attr' => [
                     'class' => 'form-label mt-3 text-info fs-5 fw-bold'
                 ],
                 'constraints' => [
-                    new Assert\NotBlank(),
-                    new length([
-                        'min' => 8,
-                        'max' => 50
+                    new NotBlank ([
+                        'message' => 'Please enter a name !',
                     ]),
                 ],
             ])
+
             ->add('email', EmailType::class, [
                 'attr' => [
                     'minlength' => '2',
                     'maxlength' => '180',
                     'class' => 'form-control'
                 ],
+                'required' => false,
                 'label_attr' => [
                     'class' => 'form-label mt-3 text-info fs-5 fw-bold'
                 ],
                 'help' => 'A confirmation message will be sent to this address',
                 'help_attr' => [
                     'class' => 'text-success fw-bold'
+                ],
+                'constraints' => [
+                    new NotBlank ([
+                        'message' => 'Please enter a email !',
+                    ]),
                 ]
             ])
+
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'passwords do not match !',
@@ -60,6 +65,7 @@ class RegistrationFormType extends AbstractType
                     'autocomplete' => 'new-password',
                     'class' => 'text-danger'
                 ],
+                'required' => false,
                 'first_options' => [
                     'attr' => [
                         'class' => 'form-control'
@@ -80,7 +86,7 @@ class RegistrationFormType extends AbstractType
                 ],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter a password',
+                        'message' => 'Please enter a password !',
                     ]),
                     new Length([
                         'min' => 2,

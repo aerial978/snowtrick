@@ -25,26 +25,24 @@
 
 							<div class="form-group my-3">
 								{{ form_label(registrationForm.username) }}
+								{{ form_widget(registrationForm.username) }}
 								<div class="form-error text-danger">
 									{{ form_errors(registrationForm.username) }}
-								</div>
-								{{ form_widget(registrationForm.username) }}
-								
+								</div>	
 							</div>
-
 							<div class="form-group my-3">
 								{{ form_label(registrationForm.email) }}
+								{{ form_widget(registrationForm.email) }}
+								{{ form_help(registrationForm.email) }}
 								<div class="form-error text-danger">
 									{{ form_errors(registrationForm.email) }}
 								</div>
-								{{ form_widget(registrationForm.email) }}
-								{{ form_help(registrationForm.email) }}
 							</div>
-
-								<div class="form-error text-danger">
-									{{ form_errors(registrationForm.plainPassword) }}
-								</div>
-								{{ form_widget(registrationForm.plainPassword) }}
+							
+							{{ form_widget(registrationForm.plainPassword) }}
+							<div class="form-error text-danger">
+								{{ form_errors(registrationForm.plainPassword) }}
+							</div>
 							
 							<div class="form-group form-button d-flex justify-content-between pt-5">
 								<button type="submit" class="btn btn-warning btn-lg">Submit</button>

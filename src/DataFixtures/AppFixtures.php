@@ -48,7 +48,6 @@ class AppFixtures extends Fixture
             $trick = new Trick();
             $trick->setName($this->faker->word());
             $trick->setDescription($this->faker->text());
-            $trick->setSlug($this->faker->slug());
             $category = $this->getReference('category_'.$this->faker->numberBetween(1, 9));
             $trick->setCategory($category);
 

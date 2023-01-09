@@ -24,7 +24,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
     
     #[ORM\Column(type:'string', length: 50, unique: true)]
-    #[Assert\NotBlank()]
     #[Assert\Length(min: 8, max: 50)]
     private $username;
 

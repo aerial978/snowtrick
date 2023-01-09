@@ -6,13 +6,15 @@
         <ul class="dropdown-menu bg-info mw-100">
             <li class="mx-2 bg-info fs-5 fw-bold">Pictures</li>
             {% for picture in trick.pictures %}
-                <li class="gallery-item dropdown-item bg-warning" data-link="{{ picture.pictureLink }}" data-bs-toggle="modal" data-bs-target="#exampleModal">{{ picture.pictureLink }}</li>	
+                {% if 'http' in picture.pictureLink %}
+                    <li class="gallery-item dropdown-item bg-warning" data-link="{{ picture.pictureLink }}" data-bs-toggle="modal" data-bs-target="#exampleModal">{{ picture.pictureLink }}</li>	
+                {% else %}
+                    <li class="gallery-item dropdown-item bg-warning" data-link="{{ asset('images/') }}{{ picture.pictureLink }}" data-bs-toggle="modal" data-bs-target="#exampleModal">{{ picture.pictureLink }}</li>
+                {% endif %}
             {% endfor %}
             <li class="mx-2 bg-info fs-5 fw-bold">Videos</li>
                 {% for picture in trick.videos %}
-                    <li>
-                        <a class="dropdown-item bg-warning" href="{{ picture.videoLink }}">{{ picture.videoLink }}</a>
-                    </li>
+                    <li class="video-item dropdown-item bg-warning" data-link="{{ picture.videoLink }}" data-bs-toggle="modal" data-bs-target="#exampleModal">{{ picture.videoLink }}</li>
                 {% endfor %}
             </li>
         </ul>
@@ -25,7 +27,6 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <img src="" class="img-fluid modal-img" alt="modal img">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

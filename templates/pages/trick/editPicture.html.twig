@@ -1,0 +1,102 @@
+{% for picture in trick.pictures %}
+	<div class="col-lg-3 col-md-6">
+		<div class="card">
+			{% if 'http' in picture.pictureLink %}
+				{# fixture #}
+				<img id="picture{{ picture.id }}" src="{{ picture.pictureLink }}">
+			{% else %}
+				{# upload #}
+				<img id="picture{{ picture.id }}" src="{{ asset('images/') }}{{ picture.pictureLink }}" class="img-fluid">
+			{% endif %}
+			<div class="card-body">
+				<div class="card-meta d-flex justify-content-between alert-info">
+					<div class="btn-group fs-3 bg-warning p-2">
+						<div class="edit-button">
+							<button type="button" class="btn btn-lg btn-success me-3 rounded btn-modify" data-bs-toggle="modal" data-bs-target="#editPictureModal" data-image="{{ picture.id }}">
+								<i class="fa-solid fa-pen text-light"></i>
+							</button>
+						</div>
+						<div class="delete-button">
+							<button type="button" class="btn btn-lg btn-danger rounded">
+								<i class="fa-solid fa-trash-can text-light"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endfor %}
+<!-- Modal -->
+<div class="modal fade" id="editPictureModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="exampleModalLabel"></h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>	
+			<div class="modal-body">
+				<input id="pictureId">
+				<div class="mb-3">
+					<div class="form-group">		
+						{{ form_label(formEdit.image) }}
+						{{ form_widget(formEdit.image) }}
+						{{ form_errors(formEdit.image) }}
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				<button type="submit" id="edit_button" class="btn btn-warning" data-bs-dismiss="modal">Submit</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script>
+$(document).ready(function () { 
+	// créer un evenement au click sur le bouton btn-modify
+	$('.btn-modify').click(function () { 
+		// on recupere la valeur de l'attribut data-image
+		let pictureId = $(this).attr("data-image");
+		// on insere la valeur de l'attribut à l'interieur de l'input pictureId
+		$("#pictureId").val(pictureId);
+	});
+	// soumet le formulaire
+	$('#edit_button').click(function () { 
+		// recupere la valeur de l'input image
+		var picture = $('#trick_image').val();
+		// teste si image existe
+		if (picture.length > 0) { 
+			// recupere l'image soumis dans l'input
+			let imageFile = $('#trick_image')[0].files[0];
+			// creation objet formdata
+			let formData = new FormData();
+			// recupere formData
+			formData.append("image", imageFile);
+			/* au clique sur le bouton #edit_button, récupérer l'ID 
+			qui se trouve dans l'input à l'intérieur de la modal */
+			let pictureId = $('#pictureId').val();
+			/* Faire un autre append sur le formData pour y ajouter 
+			l'ID de l'image */
+			formData.append("pictureId", pictureId);
+			$.ajax({
+				url: "{{ path('app_modify_picture') }}",
+				method: "POST",
+				data: formData,
+				success: function (res) { 
+					/*pointer sur l'image en question qui contient le data-image avec
+					l'ID qui nous intéresse
+					modifier le src : $('#monImage).attr('src', NOUVELLE_VALEUR); */
+					$('#picture' + res.pictureId).attr('src', res.image);
+				},
+				processData: false,
+				cache: false,
+				contentType: false
+			})
+		} else {
+			alert("The field can't be empty !");
+		}
+	});
+});
+</script>

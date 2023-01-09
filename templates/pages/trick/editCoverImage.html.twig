@@ -1,0 +1,108 @@
+<div class="banner">
+	{% if trick.pictures[0] is defined and 'http' in trick.pictures[0].pictureLink %}
+		{# fixture #}
+		<img src="{{ trick.pictures[0].pictureLink }}">
+	{% else %}
+		{% if trick.coverImage %}
+			<img src="{{ asset('images/') }}{{ trick.coverImage }}" class="img-fluid">
+		{% else %}
+			{# upload #}
+			<img src="{{ asset('images/') }}{{ trick.pictures[0].pictureLink }}" class="img-fluid">
+		{% endif %}
+	{% endif %}
+	<div class="d-flex justify-content-center align-items-center">
+		<h1 class="hero-name fw-bold d-flex justify-content-center w-50 text-white border border-info-subtle border-3 rounded-2">{{ trick.name }}</h1>
+	</div>
+	<div class="content">
+		{% if app.user %}
+			<div class="btn-group btn-trick bg-warning d-flex justify-content-end p-2">
+				<div class="edit-button">
+					<button type="button" class="btn btn-lg btn-success me-3 btn-modify" data-bs-toggle="modal" data-bs-target="#editCoverImageModal" data-coverimage="{{ trick.id }}">
+						<i class="fa-solid fa-pen text-light"></i>
+					</button>
+				</div>
+				<div class="delete-button">
+					<button type="button" class="btn btn-lg btn-danger">
+						<i class="fa-solid fa-trash-can text-light"></i>
+					</button>
+				</div>
+			</div>
+			<!-- Edit cover image modal -->
+			<div class="modal fade" id="editCoverImageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="exampleModalLabel"></h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<input id="id">
+							<div class="mb-3">
+								{{ form_label(formEdit.coverImage) }}
+								{{ form_widget(formEdit.coverImage) }}
+								{{ form_errors(formEdit.coverImage) }}
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							<button type="button" id="edit_button_cover" class="btn btn-warning" data-bs-dismiss="modal">Submit</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- End cover image modal -->
+		{% endif %}
+	</div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+<script>
+$(document).ready(function () { 
+	// créer un evenement au click sur le bouton btn-modify
+	$('.btn-modify').click(function () { 
+		// on recupere la valeur de l'attribut data-image
+		let coverImageId = $(this).attr("data-coverimage");
+		
+		// on insere la valeur de l'attribut à l'interieur de l'input pictureId
+		$("#coverImageId").val(coverImageId);
+		console.log(coverImageId);
+	});
+	// soumet le formulaire
+	$('#edit_button_cover').click(function () { 
+		// recupere la valeur de l'input image
+		var coverImage = $('#trick_coverImage').val();
+		// teste si image existe
+		if (coverImage.length > 0) { 
+			// recupere l'image soumis dans l'input
+			let coverImage = $('#trick_coverImage')[0].files[0];
+			// creation objet formdata
+			let formData = new FormData();
+			// recupere formData
+			formData.append("coverImage", coverImage);
+			/* au clique sur le bouton #edit_button_cover, récupérer l'ID 
+			qui se trouve dans l'input à l'intérieur de la modal */
+			let coverImageFile = $('#coverImageFile').val();
+			/* Faire un autre append sur le formData pour y ajouter 
+			l'ID de l'image */
+			formData.append("coverImage", coverImageFile);
+			$.ajax({
+				url: "{{ path('app_modify_cover') }}",
+				method: "POST",
+				data: formData,
+				success: function (res) { 
+					/*pointer sur l'image en question qui contient le data-image avec
+					l'ID qui nous intéresse
+					modifier le src : $('#monImage).attr('src', NOUVELLE_VALEUR); */
+					$('#picture' + res.pictureId).attr('src', res.image);
+				},
+				processData: false,
+				cache: false,
+				contentType: false
+			})
+		} else {
+			alert("The field can't be empty !");
+		}
+	});
+});
+</script>

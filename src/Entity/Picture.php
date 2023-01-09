@@ -30,11 +30,9 @@ class Picture
         return $this->pictureLink;
     }
 
-    public function setPictureLink(string $pictureLink): self
+    public function setPictureLink(string $pictureLink): void
     {
-        $this->pictureLink = $pictureLink;
-
-        return $this;
+        $this->pictureLink = $pictureLink;                                                                                                   
     }
 
     public function getTrick(): ?Trick

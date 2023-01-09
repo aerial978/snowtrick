@@ -2,14 +2,16 @@
 
 namespace App\Entity;
 
-use DateTimeImmutable;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Cocur\Slugify\Slugify;
 use App\Repository\TrickRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: TrickRepository::class)]
+#[UniqueEntity(fields: ['name'], message: 'The trick name already exists !')]
 #[ORM\HasLifecycleCallbacks]
 class Trick
 {
@@ -18,26 +20,22 @@ class Trick
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 50)]
+    #[ORM\Column(type: 'string', length: 50, unique: true)]
     private $name;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $description = null;
+    #[ORM\Column(type: 'string')]
+    private ?string $description;
 
-    /*#[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
-
-    #[ORM\Column]
-    private ?\DateTimeImmutable $updatedAt;*/
-
+    #[Gedmo\Timestampable(on:'create')]
     #[ORM\Column(type:'datetime')]
     protected $createdAt;
 
+    #[Gedmo\Timestampable(on:'update')]
     #[ORM\Column(type:'datetime', nullable : true)]
     protected $updatedAt;
 
-    #[ORM\Column(length: 255)]
-    private ?string $slug = null;
+    #[ORM\Column(length: 255, unique:true)]
+    private ?string $slug;
 
     #[ORM\ManyToOne(inversedBy: 'tricks', fetch: "EAGER" )]
     #[ORM\JoinColumn(nullable: false)]
@@ -49,16 +47,23 @@ class Trick
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Picture::class, fetch: "EAGER")]
     private Collection $pictures;
 
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Video::class)]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Video::class, fetch: "EAGER")]
     private Collection $videos;
+
+    #[ORM\Column(length: 255, nullable : true)]
+    private ?string $cover_image;
 
     public function __construct()
     {
         $this->messages = new ArrayCollection();
         $this->pictures = new ArrayCollection();
         $this->videos = new ArrayCollection();
-        $this->createdAt = new \DateTime();
-        $this->updatedAt = new \DateTime();
+    }
+
+    #[ORM\PrePersist]
+    public function prePersist()
+    {
+        $this->slug = (new Slugify())->slugify($this->name);
     }
 
     public function getId(): ?int
@@ -73,7 +78,7 @@ class Trick
 
     public function setName(string $name): self
     {
-        $this->name = $name;
+        $this->name = strtolower($name);
 
         return $this;
     }
@@ -83,46 +88,46 @@ class Trick
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
         return $this;
     }
-
+/*
     public function onPrePersist()
     {
         $this->createdAt = new \DateTime("now");
-    }
+    }*/
 
     public function getCreatedAt(): ?\DateTime
     {
         return $this->createdAt;
     }
-
+/*
     public function setCreatedAt(\DateTime $createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
-    }
-
+    }*/
+/*
     public function onPreUpdateAt()
     {
         $this->updatedAt = new \DateTime("now");
-    }
+    }*/
 
     public function getUpdatedAt(): ?\DateTime
     {
         return $this->updatedAt;
     }
-
+/*
     public function setUpdatedAt(\DateTime $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 
         return $this;
-    }
+    }*/
 
     public function getSlug(): ?string
     {
@@ -234,6 +239,18 @@ class Trick
                 $video->setTrick(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCoverImage(): ?string
+    {
+        return $this->cover_image;
+    }
+
+    public function setCoverImage(?string $cover_image): self
+    {
+        $this->cover_image = $cover_image;
 
         return $this;
     }

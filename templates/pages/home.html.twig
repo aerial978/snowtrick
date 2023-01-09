@@ -41,25 +41,45 @@
 							{{ message }}
 						</div>
 					{% endfor %}
+					{% if app.user %}
+						<div class="col-lg-4 col-md-6">
+							<div class="card-add shadow rounded-1 bg-info h-100 d-flex justify-content-center align-items-center">
+								<a href="{{ path('trick.new') }}" class="trick-add">
+									<span class="fa-stack fa-2x" style="--fa-inverse: black;">
+										<i class="fa-solid fa-circle fa-stack-2x text-light"></i>
+										<i class="fa-solid fa-plus fa-stack-1x fa-lg fa-inverse"></i>
+									</span>
+								</a>
+							</div>
+						</div>
+					{% endif %}
 					{% if tricks %}
 						{% for trick in tricks %}
 							<div class="col-lg-4 col-md-6">
-								<div class="card shadow-sm">
-									{% if trick.pictures|length > 0 %}
-										<img src="{{ trick.pictures[0].pictureLink }}">
-									{% endif %}
+								<div class="card shadow-sm" id="card">	
+										{% if trick.pictures[0] is defined and 'http' in trick.pictures[0].pictureLink %}
+											{# fixture #}
+											<img src="{{ trick.pictures[0].pictureLink }}">
+										{% else %}
+											{% if trick.coverImage %}
+												<img src="{{ asset('images/') }}{{ trick.coverImage }}" class="img-fluid">
+											{% else %}
+												{# upload #}
+												<img src="{{ asset('images/') }}{{ trick.pictures[0].pictureLink }}" class="img-fluid">
+											{% endif %}
+										{% endif %}
 									<div class="card-body">
 										<div class="card-meta d-flex justify-content-between">
 											<a href="{{ path('trick.index', {'slug': trick.slug}) }}" class="text-info text-decoration-none fw-bold my-auto fs-4">{{ trick.name }}</a>
 											{% if app.user %}
 												<div class="btn-group fs-3 bg-warning p-2">
-													<a class="button-edit" href="">
+													<a class="button-edit" href="{{ path('trick.edit', {'slug': trick.slug}) }}">
 														<button class="btn btn-lg btn-success me-3">
 															<i class="fa-solid fa-pen text-light"></i>
 														</button>
 													</a>
 													{% include "pages/trick/delete.html.twig" %}
-												</div>	
+												</div>
 											{% endif %}
 										</div>
 									</div>
@@ -71,31 +91,38 @@
 							<p>Tricks list is empty !</p>
 						</div>
 					{% endif %}
-					{% if app.user %}
-					<div class="col-lg-4 col-md-6">
-						<div class="card-add shadow rounded-1 bg-info d-flex justify-content-center align-items-center">
-							<a class="trick-add" href="">
-								<span class="fa-stack fa-2x" style="--fa-inverse: black;">
-									<i class="fa-solid fa-circle fa-stack-2x text-light"></i>
-									<i class="fa-solid fa-plus fa-stack-1x fa-lg fa-inverse"></i>
-								</span>
-							</a>
-						</div>
-					</div>
-					{% endif %}
 				</div>
 			</div>
 		</div>
-		<a href="#" class="btn-more btn btn-warning fw-bold fs-4">More</a>
-		{% if tricks|length >= 15 %}
+		<button type="button" id="btn-more" class="btn btn-warning fw-bold fs-4">More</button>
 			<div id="btnUp">
-				<a href="#hero" class="icon-up">
+				<a href="#hero" id="scroll-up" class="icon-up">
 					<span class="fa-stack fa-2x" style="--fa-inverse: black;">
 						<i class="fa-solid fa-circle fa-stack-2x text-warning"></i>
 						<i class="fa-solid fa-arrow-up fa-stack-1x fa-lg fa-inverse"></i>
 					</span>
 				</a>
 			</div>
-		{% endif %}
 	</section>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script>
+	$(".card").slice(8, $(".card").length).hide();
+
+	$("#btn-more").on('click', function (e) {e.preventDefault();
+		$(".card:hidden").slice(0,3).slideDown();
+		if($(".card:hidden").length == 0) {
+			$("#btn-more").hide();
+		}
+		if($(".card").not(':hidden').length >= 15) {
+		$("#scroll-up").show();
+	}
+	});
+</script>
+<style>
+	#scroll-up {
+		display: none;
+	}
+</style>
 {% endblock %}
+
+

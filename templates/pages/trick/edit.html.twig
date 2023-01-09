@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	{% set img = trick.pictures|last %}
+	<header class="hero-trick">
+	{% include "pages/trick/editCoverImage.html.twig" %}
+	</header>
+	{% for message in app.flashes('danger') %}
+		<div class="alert alert-danger mt-4 fs-5">
+			{{ message }}
+		</div>
+	{% endfor %}
+	<section class="media container mt-5 py-5">
+		<div class="row g-4 mb-5 p-3 border rounded-2" style="background-color: #FFF3CD">
+			<div class="title-media picture-title d-flex">
+				<span class="fa-stack fa-2x">
+					<i class="fa-solid fa-square fa-stack-2x"></i>
+					<i class="fa-solid fa-image fa-stack-1x fa-inverse"></i>
+				</span>
+				<h3 class="d-flex align-items-end">Picture</h3>
+			</div>
+			{% include "pages/trick/newPicture.html.twig" %}
+			{% include "pages/trick/editPicture.html.twig" %}	
+		</div>
+		<div class="row g-4 my-4 p-3 border rounded-2" style="background-color: #D1ECF1">
+			<div class="title-media d-flex">
+				<span class="fa-stack fa-2x">
+					<i class="fa-solid fa-square fa-stack-2x"></i>
+					<i class="fa-solid fa-video fa-stack-1x fa-inverse"></i>
+				</span>
+				<h3 class="d-flex align-items-end">Video</h3>
+			</div>
+			<div class="col-lg-3 col-md-6">
+				<div class="card-add shadow rounded-1 bg-info d-flex justify-content-center align-items-center">
+					<a href="" class="trick-add">
+						<span class="fa-stack fa-2x" style="--fa-inverse: black;">
+							<i class="fa-solid fa-circle fa-stack-2x text-light"></i>
+							<i class="fa-solid fa-plus fa-stack-1x fa-lg fa-inverse"></i>
+						</span>
+					</a>
+				</div>
+			</div>
+			{% include "pages/trick/editVideo.html.twig" %}
+		</div>
+	</section>
+	{% include "pages/trick/mediaEditResponsive.html.twig" %}
+		{{ form_start(formEdit) }}	
+		<section class="trick-description py-3">
+			<div class="container d-flex justify-content-center">
+				<div class="form-group w-75 my-2 p-4 rounded shadow" style="background-color: #FFF3CD">
+					<div class="title-description d-flex mb-2">
+						<span class="fa-stack fa-2x">
+							<i class="fa-solid fa-square fa-stack-2x"></i>
+							<i class="fa-solid fa-file-lines fa-stack-1x fa-inverse"></i>
+						</span>
+						<h5 class="d-flex align-items-end">{{ form_label(formEdit.description) }}</h5>
+					</div>
+					{{ form_widget(formEdit.description, {'attr': {'rows':'5'}}) }}
+					<div class="form-error text-danger fw-bolder">
+						{{ form_errors(formEdit.description) }}
+					</div>
+				</div>
+			</div>
+		</section>
+		<section class="trick-group py-3">
+			<div class="container d-flex justify-content-center">
+				<div class="form-group w-50 my-3 p-4 rounded shadow" style="background-color: #D1ECF1">
+					<div class="title-description d-flex mb-2">
+						<span class="fa-stack fa-2x">
+							<i class="fa-solid fa-square fa-stack-2x"></i>
+							<i class="fa-solid fa-tag fa-stack-1x fa-inverse"></i>
+						</span>
+						<h5 class="d-flex align-items-end">{{ form_label(formEdit.category) }}</h5>
+					</div>
+					{{ form_widget(formEdit.category) }}
+					<div class="form-error text-danger fw-bolder">
+						{{ form_errors(formEdit.category) }}
+					</div>
+				</div>
+			</div>
+		</section>
+		<div class="edit-button py-5">
+			<div class="container d-flex justify-content-center">
+				<div class="d-flex justify-content-between" style="width:150px;">
+					<button class="btn btn-danger">Delete</button>
+					{#<button class="btn btn-warning">Save</button>#}
+					<div class="form-group">
+						{{ form_row(formEdit.submit) }}
+					</div>
+				</div>
+			</div>
+		</div>
+	{{ form_end(formEdit) }}
+{% endblock %}
