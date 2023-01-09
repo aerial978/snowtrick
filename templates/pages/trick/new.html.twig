@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+{% set custom_header = 'navbar-form' %}
+{% block body %}
+	<div class="container-fluid" style="background-color:#D1ECF1">
+		<div class="row justify-content-center align-items-center">
+			<div class="col-lg-6 p-5">
+				<div class="">
+					<h3 class="mt-5 pt-5 fw-bolder">Add a trick</h3>
+					{{ form_start(form) }}
+					{#	{% for message in app.flashes('warning') %}
+							<div class="alert alert-warning mt-4">
+								{{ message }}
+							</div>
+						{% endfor %} #}
+						<div class="alert-primary">
+							<div class="form-error text-danger">
+								{{ form_errors(form) }}
+							</div>
+						</div>
+						<div class="form-group">
+							{{ form_label(form.name) }}
+							{{ form_widget(form.name) }}
+							<div class="form-error text-danger fw-bolder">
+								{{ form_errors(form.name) }}
+							</div>
+						</div>
+						<div class="form-group">
+							{{ form_label(form.description) }}
+							{{ form_widget(form.description, {'attr': {'rows':'5'}}) }}
+							<div class="form-error text-danger fw-bolder">
+								{{ form_errors(form.description) }}
+							</div>
+						</div>
+						<div class="form-group">
+							{{ form_label(form.category) }}
+							{{ form_widget(form.category) }}
+							<div class="form-error text-danger fw-bolder">
+								{{ form_errors(form.category) }}
+							</div>
+						</div>
+						<div class="form-group">
+							{{ form_label(form.image) }}
+							{{ form_widget(form.image) }}
+							<div class="form-error text-danger fw-bolder">
+								{{ form_errors(form.image) }}
+							</div>
+						</div>
+
+						<div class="row mt-3">
+							<div class"col-xl-12">
+								<div class="inputVideoType">
+									<label class="mb-2 fw-bold">Video (s)</label>
+									<div class="row duplicate-row mb-3">
+										<div class="col-11">
+											<input type="text" name="video[]" id="" class="form-control"/>
+										</div>
+										<div class="col-1">
+											<button type="button" class="btn btn-danger btn-remove">
+												<i class="fa-solid fa-trash"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<button type="button" class="btn btn-primary mt-1 mb-5" id="addmorebtn">Add more video</div>
+						<div class="form-group pb-1">{{ form_row(form.submit) }}</div>
+					{{ form_end(form) }}
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

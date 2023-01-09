@@ -15,7 +15,7 @@ class Message
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: 'string')]
     private ?string $content = null;
 
     /*#[ORM\Column]
@@ -47,7 +47,7 @@ class Message
         return $this->content;
     }
 
-    public function setContent(string $content): self
+    public function setContent(?string $content): self
     {
         $this->content = $content;
 

@@ -13,7 +13,11 @@ section {
 }
 
 .navbar {
-    background-color: rgba(0,0,0,.2);
+    background-color: rgba(0,0,0,.3);
+}
+
+.navbar-form {
+    background-color: rgb(0,0,0)!important;
 }
 
 .navbar-responsive {
@@ -305,6 +309,12 @@ section {
     background-color : #ffc107!important;
     color: #F8F8FF!important;
 }
+
+.hidden {
+    visibility: hidden;
+}
+
+
 
 
 

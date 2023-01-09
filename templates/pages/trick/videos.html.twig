@@ -1,7 +1,12 @@
-{% for picture in trick.videos %}
+{% for video in trick.videos %}
     <div class="col-lg-3 col-md-6">
-        <div class="">
-            <iframe src="{{ picture.videoLink }}" alt="video"></iframe>
+        <div class="card-gallery h-100">
+        	{% if 'http' in trick.videos[0].videoLink %}
+                <iframe src="{{ video.videoLink }}" alt="video"></iframe>
+            {% else %}
+                <iframe width="325" height="205" src="https://www.youtube.com/embed/{{ video.videoLink }}" title="YouTube video player" frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            {% endif %}
         </div>
     </div>
 {% endfor %}

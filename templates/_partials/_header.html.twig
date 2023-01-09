@@ -1,5 +1,5 @@
 
-<nav class="navbar fixed-top navbar-expand-sm navbar-light p-md-3">
+<nav class="navbar fixed-top navbar-expand-sm p-md-3 {{ custom_header }}">
 	<div class="container" style="max-width:90%;">
 		<div class="navbar-brand text-center">
             <a href="{{ path('home.index') }}" class="fs-1 link-warning text-warning text-decoration-none">Snowtricks</a>
@@ -43,14 +43,4 @@
 		</div>
 	</div>
 </nav>
-<script type="text/javascript">
-	var nav = document.querySelector('nav');
 
-window.addEventListener('scroll', function () {
-if (window.pageYOffset > 100) {
-nav.classList.add('bg-dark', 'shadow');
-} else {
-nav.classList.remove('bg-dark', 'shadow');
-}
-});
-</script>
