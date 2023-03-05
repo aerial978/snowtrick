@@ -1,0 +1,77 @@
+<!-- Modal -->
+<div class="modal fade" id="editVideoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg">
+		<div class="modal-content p-2">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="exampleModalLabel"></h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<iframe class="w-auto" width="325" height="205" id="editVideoPreview" src="" title="YouTube video player" frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			<div class="modal-body">
+				<input type= "hidden" id="videoId">
+				<div class="mb-3">
+					<label for="text" class="form-label fw-bold">YouTube video link</label>
+					<input class="form-control" type="text" id="video_url">
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				<button type="button" id="button_edit" class="btn btn-warning" data-bs-dismiss="modal">Submit</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script>
+$(document).ready(function () { 
+	// créer un evenement au click sur le bouton btn-modify
+	$('.btn-modify').click(function () { 
+		// on recupere la valeur de l'attribut data-video
+		let videoId = $(this).attr("data-video");
+		let videoName = $(this).attr("data-video-name");
+		// on insere la valeur de l'attribut à l'interieur de l'input videoId
+		$("#videoId").val(videoId);
+		if (videoName != undefined) {
+			let url = "https://www.youtube.com/embed/";
+			$("#editVideoPreview").show().attr("src",url + videoName);
+		}
+	});
+	// soumet le formulaire
+	$('#button_edit').click(function () { 
+		// récupére la valeur de l'input video
+		var video = $('#video_url').val();
+		// teste si video existe
+		if (video.length > 0) { 
+			// recupere la video soumis dans l'input
+			let videoUrl = $('#video_url').val();
+			// creation objet formdata
+			let formData = new FormData();
+			// recupere formData
+			formData.append("video_url", videoUrl);
+			/* au clique sur le bouton #edit_button, récupérer l'ID 
+			qui se trouve dans l'input à l'intérieur de la modal */
+			let videoId = $('#videoId').val();
+			/* Faire un autre append sur le formData pour y ajouter 
+			l'ID de l'image */
+			formData.append("videoId", videoId);
+			$.ajax({
+				url: "{{ path('app_modify_video') }}",
+				method: "POST",
+				data: formData,
+				success: function (res) { 
+					/*pointer sur l'image en question qui contient le data-video avec
+					l'ID qui nous intéresse
+					modifier le src : $('#monImage).attr('src', NOUVELLE_VALEUR); */
+					$('#video' + res.videoId).attr('src', res.video_url);
+				},
+				processData: false,
+				cache: false,
+				contentType: false
+			});
+		} else {
+			alert("The field can't be empty !");
+		}
+	});
+});
+</script>

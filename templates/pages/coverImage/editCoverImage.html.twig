@@ -1,0 +1,120 @@
+<div class="banner">
+	{% if trick.pictures[0] is defined and 'http' in trick.pictures[0].pictureLink %}
+		{# fixture #}
+		<img src="{{ trick.pictures[0].pictureLink }}">
+	{% else %}
+		{% if trick.coverImage %}
+			<img id="cover{{ trick.coverImage }}" src="{{ asset('upload/') }}{{ trick.coverImage }}" class="img-fluid">
+		{% else %}
+			{# upload #}
+			{% if trick.pictures is not empty %}
+				{% if trick.coverImage is not null %}
+					<img id="cover{{ trick.coverImage }}" src="{{ asset('upload/') }}{{ trick.pictures[0].pictureLink }}" class="img-fluid">
+				{% else %}
+					<img src="{{ asset('images/snowboarder5.jpg') }}" class="img-fluid">
+				{% endif %}
+			{% else %}
+				<img src="{{ asset('images/snowboarder5.jpg') }}" class="img-fluid">
+			{% endif %}
+		{% endif %}
+	{% endif %}
+	<div class="d-flex justify-content-center align-items-center">
+		<h1 class="hero-name fw-bold d-flex justify-content-center w-50 text-white border border-info-subtle border-3 rounded-2">{{ trick.name }}</h1>
+	</div>
+	<div class="content">
+		{% if app.user %}
+			<div class="btn-group btn-trick bg-warning d-flex justify-content-end p-2">
+				<div class="edit-button">
+					{% if trick.coverImage is not null %}
+						{% set dataImage = trick.coverImage %}
+					{% else %}
+						{% set dataImage = 'default' %}
+					{% endif %}
+					<button type="button" class="btn btn-lg btn-success me-3 btn-modify" data-bs-toggle="modal" data-bs-target="#editCoverImageModal" data-image="{{ dataImage }}">
+						<i class="fa-solid fa-pen text-light"></i>
+					</button>
+				</div>
+				<div class="delete-button">
+					<a href="{{ path('coverimage.delete', {slug: trick.slug}) }}" type="button" class="btn btn-lg btn-danger rounded">
+						<i class="fa-solid fa-trash-can text-light"></i>
+					</a>
+				</div>
+			</div>
+			<!-- Edit cover image modal -->
+			<div class="modal fade" id="editCoverImageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="exampleModalLabel"></h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<input id="trickId" value="{{ trick.id }}" hidden>
+						{{ form_start(formEditCoverImage) }}	
+						<div class="modal-body">
+						<input id="coverImage" hidden>
+							<div class="mb-3">
+								{{ form_label(formEditCoverImage.coverImage) }}
+								{{ form_widget(formEditCoverImage.coverImage) }}
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							<button type="button" id="cover_button" class="btn btn-warning" data-bs-dismiss="modal">Submit</button>
+						</div>
+						{{ form_end(formEditCoverImage) }}
+					</div>
+				</div>
+			</div>
+			<!-- End cover image modal -->
+		{% endif %}
+	</div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script>
+$(document).ready(function () { 
+	// créer un evenement au click sur le bouton btn-modify
+	$('.btn-modify').click(function () { 
+		// on recupere la valeur de l'attribut data-image
+		let coverImage = $(this).attr("data-image");
+		// on insere la valeur de l'attribut à l'interieur de l'input pictureId
+		$("#coverImage").val(coverImage);
+	});
+	// soumet le formulaire
+	$('#cover_button').click(function (e) { 
+		e.preventDefault();
+		// recupere la valeur de l'input image
+		var covImage = $('#coverImage').val();
+		// teste si image existe
+		if (covImage.length > 0) { 
+			// recupere l'image soumis dans l'input
+			let coverFile = $('form[name="cover_image"] :input')[1].files[0];
+			// creation objet formdata
+			let trickId = $('#trickId').val();
+			let formData = new FormData();
+			// recupere formData
+			formData.append("cover", coverFile);
+			formData.append("trickId", trickId);
+			/* au clique sur le bouton #edit_button, récupérer l'ID 
+			qui se trouve dans l'input à l'intérieur de la modal */
+			/* Faire un autre append sur le formData pour y ajouter 
+			l'ID de l'image */
+			formData.append("coverImage", covImage);
+			$.ajax({
+				url: "{{ path('app_modify_cover') }}",
+				method: "POST",
+				data: formData,
+				success: function (res) {
+					window.location.reload();
+				},
+				processData: false,
+				cache: false,
+				contentType: false
+			});
+		} else {
+			alert("The field can't be empty !");
+		}
+	});
+});
+</script>
+
+

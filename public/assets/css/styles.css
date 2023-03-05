@@ -314,6 +314,15 @@ section {
     visibility: hidden;
 }
 
+#editPicturePreview {
+    display: none;
+}
+
+#editVideoPreview {
+    display: none;
+}
+
+
 
 
 

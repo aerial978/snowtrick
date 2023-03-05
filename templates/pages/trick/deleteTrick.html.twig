@@ -1,0 +1,18 @@
+<div class="modal fade" id="deleteModal{{ trick.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-danger fw-bold fs-4" id="exampleModalLabel">Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body fs-5">
+                <p>Do you really want to delete this trick :</p>
+                <h4 class="text-info text-center fw-bold">{{ trick.name }}</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a href="{{ path('trick.delete', {slug: trick.slug}) }}" type="button" class="btn btn-danger">Confirm</a>
+            </div>
+        </div>
+    </div>
+</div>

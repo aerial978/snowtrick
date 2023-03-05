@@ -16,7 +16,7 @@ $('.img-thumbnail').on('click',function(){
     $('.modal-img').attr('src',pictureSrc);
 });
 
-/* Index media responsive */
+/* Index display media responsive */
 
 $('.gallery-item').on('click',function(){
     let pictureLink = $(this).attr('data-link');
@@ -31,7 +31,7 @@ $('.video-item').on('click',function(){
     let video = document.createElement('iframe');
     video.src = 'https://www.youtube.com/embed/'+videoLink;
     video.id = "modal-video";
-    video.width = "325";
+    video.width = "300";
     video.height = "205";
     video.title = "YouTube video player";
     video.frameborder = "0";

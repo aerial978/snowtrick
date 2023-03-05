@@ -1,0 +1,33 @@
+{% if pictures is not empty %}
+	{% for picture in pictures %}
+		<div class="col-lg-3 col-md-6 h-100 px-3">
+			<div class="card-gallery">
+				{% if 'http' in picture.pictureLink %}
+					<img src="{{ picture.pictureLink }}" type="button" class="img-fluid img-thumbnail shadow" alt="picture" data-bs-toggle="modal" data-bs-target="#pictureModal">
+				{% else %}
+					<img src="{{ asset('upload/')~picture.pictureLink }}" type="button" class="img-fluid img-thumbnail shadow" alt="picture" data-bs-toggle="modal" data-bs-target="#pictureModal">
+				{% endif %}
+			</div>
+		</div>
+		<!-- Modal -->
+		<div class="modal fade" id="pictureModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body d-flex justify-content-center">
+						<img src="{{ picture.pictureLink }}" class=" img-fluid modal-img" alt="modal img">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+{% else %}
+	<div class="alert alert-danger" role="alert">
+		<h4 class="text-center">No picture yet !</h4>
+	</div>
+{% endif %}
