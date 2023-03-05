@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\VideoRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: VideoRepository::class)]
 class Video
@@ -15,6 +16,14 @@ class Video
 
     #[ORM\Column(length: 255)]
     private ?string $videoLink = null;
+
+    #[Gedmo\Timestampable(on:'create')]
+    #[ORM\Column(type:'datetime', nullable : true)]
+    protected $createdAt;
+
+    #[Gedmo\Timestampable(on:'update')]
+    #[ORM\Column(type:'datetime', nullable : true)]
+    protected $updatedAt;
 
     #[ORM\ManyToOne(inversedBy: 'videos')]
     #[ORM\JoinColumn(nullable: false, onDelete:"CASCADE")]
@@ -35,6 +44,16 @@ class Video
         $this->videoLink = $videoLink;
 
         return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTime
+    {
+        return $this->createdAt;
+    }
+    
+    public function getUpdatedAt(): ?\DateTime
+    {
+        return $this->updatedAt;
     }
 
     public function getTrick(): ?Trick

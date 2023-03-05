@@ -37,7 +37,7 @@
 			<div class="container">
 				<div class="row g-4">
 					{% for message in app.flashes('success') %}
-						<div class="alert alert-success mt-4 fs-5">
+						<div class="alert alert-success text-center mt-4 fs-5">
 							{{ message }}
 						</div>
 					{% endfor %}
@@ -62,15 +62,21 @@
 											<img src="{{ trick.pictures[0].pictureLink }}">
 										{% else %}
 											{% if trick.coverImage %}
-												<img src="{{ asset('images/') }}{{ trick.coverImage }}" class="img-fluid">
+												<img src="{{ asset('upload/') }}{{ trick.coverImage }}" class="img-fluid">
 											{% else %}
 												{# upload #}
-												<img src="{{ asset('images/') }}{{ trick.pictures[0].pictureLink }}" class="img-fluid">
+												{% if trick.pictures[0] is defined %}
+													<img src="{{ asset('upload/') }}{{ trick.pictures[0].pictureLink }}" class="img-fluid">
+												{% else %}
+													<img src="{{ asset('images/snowboarder5.jpg') }}" class="img-fluid">
+												{% endif %}
 											{% endif %}
 										{% endif %}
 									<div class="card-body">
 										<div class="card-meta d-flex justify-content-between">
-											<a href="{{ path('trick.index', {'slug': trick.slug}) }}" class="text-info text-decoration-none fw-bold my-auto fs-4">{{ trick.name }}</a>
+											{% if trick.slug %}
+												<a href="{{ path('trick.index', {'slug': trick.slug}) }}" class="text-info text-decoration-none fw-bold my-auto fs-4">{{ trick.name }}</a>
+											{% endif %}
 											{% if app.user %}
 												<div class="btn-group fs-3 bg-warning p-2">
 													<a class="button-edit" href="{{ path('trick.edit', {'slug': trick.slug}) }}">
@@ -78,7 +84,14 @@
 															<i class="fa-solid fa-pen text-light"></i>
 														</button>
 													</a>
-													{% include "pages/trick/delete.html.twig" %}
+													<a class="button-delete">
+														<button type="button" class="btn btn-lg btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ trick.id }}">
+															<i class="fa-solid fa-trash-can text-light"></i>
+														</button>
+													</a>
+													<!-- modal delete trick confirmation -->
+													{% include "pages/trick/deleteTrick.html.twig" %}
+													<!-- -->
 												</div>
 											{% endif %}
 										</div>

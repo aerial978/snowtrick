@@ -3,21 +3,24 @@
 namespace App\Service;
 
 use App\Entity\Picture;
-use App\Repository\PictureRepository;
 use App\Repository\TrickRepository;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use App\Repository\PictureRepository;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 
 class PictureService extends AbstractController
 {
     private $pictureRepository;
     private $trickRepository;
+    private $filesystem;
     
-    public function __construct(PictureRepository $pictureRepository, TrickRepository $trickRepository)
+    public function __construct(PictureRepository $pictureRepository, TrickRepository $trickRepository, Filesystem $filesystem)
     {
         $this->pictureRepository = $pictureRepository;
         $this->trickRepository = $trickRepository;
+        $this->filesystem = $filesystem;
     }
 
     public function newPicture($trick, $images)
@@ -27,6 +30,8 @@ class PictureService extends AbstractController
             foreach($images as $index => $image) {
                 // Nouveau nom de fichier de l'image (unique)
                 $newImage = uniqid().'.'.$image->guessExtension();
+                $copyImage = uniqid().'.'.$image->guessExtension();
+
                 // Copie l'image dans le dossier image
                 try {
                     $image->move(
@@ -48,7 +53,8 @@ class PictureService extends AbstractController
                 $this->pictureRepository->add($img,true);
 
                 if($index == 0) {
-                    $trick->setCoverImage($newImage);
+                    $this->filesystem->copy('upload/'.$newImage,'upload/'.$copyImage);
+                    $trick->setCoverImage($copyImage);
                     $this->trickRepository->add($trick,true);
                 }
             }

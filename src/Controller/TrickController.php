@@ -3,19 +3,25 @@
 namespace App\Controller;
 
 use App\Entity\Trick;
+use App\Entity\Video;
 use App\Entity\Message;
 use App\Entity\Picture;
 use App\Form\TrickType;
+use App\Form\VideoType;
 use App\Form\MessageType;
 use App\Form\PictureType;
 use App\Form\TrickEditType;
 use App\Form\CoverImageType;
+use App\Form\EditPictureType;
 use App\Service\VideoService;
 use App\Service\PictureService;
 use App\Repository\TrickRepository;
 use App\Repository\MessageRepository;
+use App\Repository\PictureRepository;
+use App\Repository\VideoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,10 +30,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class TrickController extends AbstractController
 {   
     #[Route('/trick/new', name: 'trick.new', methods: ['GET','POST'])]
-    public function new(Request $request, 
-    TrickRepository $trickRepository, 
+    public function new(TrickRepository $trickRepository, 
     PictureService $pictureService, 
-    VideoService $videoService) : Response
+    VideoService $videoService,
+    Request $request) : Response
     {
         $trick = new Trick();
         $form = $this->createForm(TrickType::class, $trick);
@@ -57,55 +63,145 @@ class TrickController extends AbstractController
             return $this->redirectToRoute('home.index');
         }
 
-        return $this->render('pages/trick/new.html.twig', [
+        return $this->render('pages/trick/newTrick.html.twig', [
             'activemenu' => 'trickmenu',
             'form' => $form->createView()
         ]);
     }
 
     #[Route('/trick/edit/{slug}', name:'trick.edit', methods: ['GET','POST'])]
-    public function edit(Trick $trick, PictureService $pictureService, EntityManagerInterface $manager, Request $request) : Response
+    public function edit(
+    Trick $trick,
+    TrickRepository $trickRepository,
+    PictureRepository $pictureRepository,
+    PictureService $pictureService,
+    VideoRepository $videoRepository,
+    VideoService $videoService, 
+    EntityManagerInterface $manager, 
+    Request $request,
+    $slug) : Response
     {
-        // Ajout d'une picture d'un trick
         $picture = new Picture();
+
+        $pictures = $pictureRepository->findBy(['trick'=>$trick],['createdAt'=>'DESC']);
+        $videos = $videoRepository->findBy(['trick'=>$trick],['createdAt'=>'DESC']);
+        
+        // MODIFICATION COVER IMAGE TRICK
+        $formCoverImage = $this->createForm(CoverImageType::class, $picture);
+        $formCoverImage->handleRequest($request);
+
+        if ($formCoverImage->isSubmitted() && $formCoverImage->isValid()) {   
+            
+            // Récupération de l'image(s)
+            $coverImage = $formCoverImage->get('coverImage')->getData();
+            
+            // Utilisation de pictureService
+            $pictureService->newPicture($trick, $coverImage);   
+        }
+        
+        // AJOUT PICTURE TRICK
         $formPicture = $this->createForm(PictureType::class, $picture);
         $formPicture->handleRequest($request);
 
         if ($formPicture->isSubmitted() && $formPicture->isValid()) {
+
+             // Récupération de l'image(s)
             $picture = $formPicture->get('newPictureLink')->getData(); 
- 
+    
             // Utilisation de pictureService
-            $pictureService->newPicture($trick, $picture); 
+            $removePicture = $trickRepository->findOneBySlug($slug);
+            if ($removePicture->getCoverImage()) {
+                $filesystem = new Filesystem();
+                $path = 'upload/'.$removePicture->getCoverImage();
+                $filesystem->remove([$path]);
+            }
+
+            $pictureService->newPicture($trick, [$picture]);
+            return $this->redirectToRoute('trick.edit',['slug'=> $slug]);
+        }
+
+        // MODIFICATION PICTURE TRICK
+        $formEditPicture = $this->createForm(EditPictureType::class, $picture);
+        $formEditPicture->handleRequest($request);
+
+        if ($formEditPicture->isSubmitted() && $formEditPicture->isValid()) {   
+            
+            // Récupération de l'image(s)
+            $images = $formEditPicture->get('editPicture')->getData();
+            
+            // Utilisation de pictureService
+            $pictureService->newPicture($trick, $images);   
+        }
+
+        // AJOUT VIDEO TRICK
+        $video = new Video();
+        $formVideo = $this->createForm(VideoType::class, $video);
+        $formVideo->handleRequest($request);
+
+        if ($formVideo->isSubmitted() && $formVideo->isValid()) {
+
+             // Récupération de l'image(s)
+            $video = $formVideo->get('newVideoLink')->getData(); 
+    
+            // Utilisation de pictureService
+            $videoService->newVideo($trick, [$video]);
+            return $this->redirectToRoute('trick.edit',['slug'=> $slug]);
         }
         
-        // Modification picture, description & categorie d'un trick
+        // MODIFICATION DESCRIPTION & CATEGORIE TRICK
         $formEdit = $this->createForm(TrickEditType::class, $trick);
         $formEdit->handleRequest($request);
 
         if ($formEdit->isSubmitted() && $formEdit->isValid()) {    
             $trick = $formEdit->getData();
-            
-            // Récupération de l'image(s)
-            $images = $formEdit->get('image')->getData();
-            // Utilisation de pictureService
-            $pictureService->newPicture($trick, $images);
            
             $manager->persist($trick);
-            $manager->flush();
-            
+            $manager->flush();   
         } 
         
-        return $this->render('pages/trick/edit.html.twig', [
+        return $this->render('pages/trick/editTrick.html.twig', [
             'activemenu' => 'trickmenu',
             'trick' => $trick,
+            'pictures' => $pictures,
+            'videos' => $videos,
+            'formEditCoverImage' => $formCoverImage->createView(),
+            'formPicture' => $formPicture->createView(),
+            'formEditPicture' => $formEditPicture->createView(),
+            'formVideo' => $formVideo->createView(),
             'formEdit' => $formEdit->createView(),
-            'formPicture' => $formPicture->createView()
+            
         ]);
     }
 
     #[Route('/trick/{slug}', name: 'trick.index', methods: ['GET','POST'])]
-    public function index($slug, Trick $trick, MessageRepository $messageRepository, EntityManagerInterface $manager, PaginatorInterface $paginator, Request $request) : Response
+    public function index($slug, 
+    Trick $trick,
+    PictureService $pictureService,
+    PictureRepository $pictureRepository,
+    VideoRepository $videoRepository,
+    MessageRepository $messageRepository, 
+    EntityManagerInterface $manager, 
+    PaginatorInterface $paginator, 
+    Request $request) : Response
     {         
+        $picture = new Picture();
+
+        $pictures = $pictureRepository->findBy(['trick'=>$trick],['createdAt'=>'DESC']);
+        $videos = $videoRepository->findBy(['trick'=>$trick],['createdAt'=>'DESC']);
+        
+        // MODIFICATION COVER IMAGE TRICK
+        $formCoverImage = $this->createForm(CoverImageType::class, $picture);
+        $formCoverImage->handleRequest($request);
+
+        if ($formCoverImage->isSubmitted() && $formCoverImage->isValid()) {   
+            
+            // Récupération de l'image(s)
+            $coverImage = $formCoverImage->get('coverImage')->getData();
+            
+            // Utilisation de pictureService
+            $pictureService->newPicture($trick, $coverImage);   
+        } 
+        
         $message = new Message();
         $form = $this->createForm(MessageType::class, $message);
         $form->handleRequest($request);
@@ -130,17 +226,34 @@ class TrickController extends AbstractController
             2
         ); 
         
-        return $this->render('pages/trick/index.html.twig', [
+        return $this->render('pages/trick/indexTrick.html.twig', [
             'activemenu' => 'trickmenu',
+            'formEditCoverImage' => $formCoverImage->createView(),
             'trick' => $trick,
+            'pictures' => $pictures,
+            'videos' => $videos,
             'messages' => $messages,
             'form' => $form->createView()
         ]);
     }
 
-    #[Route('/trick/delete/{id}', name:'trick.delete', methods: ['GET'])]
-    public function delete(trick $trick, EntityManagerInterface $manager): Response
-    {
+    #[Route('/trick/delete/{slug}', name:'trick.delete', methods: ['GET'])]
+    public function deleteTrick(Trick $trick, TrickRepository $trickRepository, Filesystem $filesystem, EntityManagerInterface $manager, $slug): Response
+    {        
+        $removePictures = $trickRepository->findOneBySlug($slug);
+        // Delete cover image
+        if ($removePictures->getCoverImage()) {
+            $filesystem = new Filesystem();
+            $path = 'upload/'.$removePictures->getCoverImage();
+            $filesystem->remove([$path]);
+        }
+        // Delete all pictures by trick
+        foreach ($removePictures->getPictures() as $image) {
+            $filesystem = new Filesystem();
+            $path = 'upload/'.$image->getPictureLink();
+            $filesystem->remove([$path]);
+        }
+
         $manager->remove($trick);
         $manager->flush();
 
@@ -148,7 +261,6 @@ class TrickController extends AbstractController
             'success',
             'Delete successfully !'
         );
-    
         return $this->redirectToRoute('home.index');
     }
 }

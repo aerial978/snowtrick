@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Trick;
 use App\Repository\TrickRepository;
 use App\Repository\VideoRepository;
 use App\Repository\PictureRepository;
@@ -14,48 +13,54 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class ApiController extends AbstractController
-{
-    #[Route('/modify/coverimage', name: 'app_modify_cover', methods: ['GET','POST'])]
-    public function modifyCoverImage(Trick $trick, TrickRepository $trickRepository, Request $request): Response
+{   
+    #[Route('/modify/cover', name: 'app_modify_cover', methods: ['POST'])]
+    public function modifyCover(TrickRepository $trickRepository, Request $request): Response
     {
-            $coverImageFile = $request->files->get("coverImage");
-            $trickId = $request->request->get("Id");
+        $coverFile = $request->files->get("cover");
+        // récupérer la cover image dans bdd
+        $coverImage = $request->request->get("coverImage");
+        $trickId = $request->request->get("trickId");
 
-            $coverImage = $trickRepository->findOneBy(['id'=>$trick->getId()]);
-            if ($coverImage) {
+        $cover = $trickRepository->findOneBy(['id'=>$trickId]);
+
+        // FileSystem pour supprimer l'ancienne image
+        if ($coverImage != 'default') {
+            if ($cover && $cover->getCoverImage() != "snowboarder5.jpg") {
                 $filesystem = new Filesystem();
-                $path = 'public/images/'.$coverImageFile->getCoverImage();
+                $path = 'upload/'.$cover->getCoverImage();
                 $filesystem->remove([$path]);
             }
+        }
+                
+        // soumettre la nouvelle image
+        $newCover = uniqid().'.'.$coverFile->guessExtension();
 
-            $newCoverImage = uniqid().'.'.$path->guessExtension();
+        try {
+            $coverFile->move(
+                $this->getParameter('uploads_directory'),$newCover);
+        } catch (FileException $e) {
+            $this->addFlash(
+                'warning',
+                'A problem occurred during the download !'
+            );
+        }
 
-            try {
-                $path->move(
-                    $this->getParameter('uploads_directory'),
-                    $newCoverImage
-                );
-            } catch (FileException $e) {
-                $this->addFlash(
-                    'warning',
-                    'A problem occurred during the download !'
-                );
-            }
+        // remplacer le nom de l'image dans la bdd
+        $cover->setCoverImage($newCover);
+        $trickRepository->add($cover, true);
 
-            $coverImage->setCoverImage($newCoverImage);
-            $trickRepository->add($coverImage, true);
+        /* renvoyer le nom ou le chemin de l'image dans le $this->json()
+        pour le récuperer dans le success AJAX
+        pour récuperer l'url source dynamiquement */
+        $baseurl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath();
 
-    //  }
-
-    $baseurl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath();
-
-    return $this->json([
-        'coverImage' => $baseurl.'/images/'.$coverImageFile,
-        'trickId' => $trickId
-    ]);
-
+        return $this->json([
+            'cover' => $baseurl.'/upload/'.$newCover,
+            'coverImage' => $coverImage
+        ]);
     }
-    
+
     #[Route('/modify/picture', name: 'app_modify_picture', methods: ['POST'])]
     public function modifyPicture(PictureRepository $pictureRepository, Request $request): Response
     {
@@ -67,7 +72,7 @@ class ApiController extends AbstractController
         $picture = $pictureRepository->findOneBy(['id'=>$pictureId]);
         if ($picture) {
             $filesystem = new Filesystem();
-            $path = 'public/images/'.$picture->getPictureLink();
+            $path = 'upload/'.$picture->getPictureLink();
             $filesystem->remove([$path]);
         }
 
@@ -76,9 +81,7 @@ class ApiController extends AbstractController
 
         try {
             $imagefile->move(
-                $this->getParameter('uploads_directory'),
-                $newImage
-            );
+                $this->getParameter('uploads_directory'),$newImage);
         } catch (FileException $e) {
             $this->addFlash(
                 'warning',
@@ -96,7 +99,7 @@ class ApiController extends AbstractController
         $baseurl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath();
 
         return $this->json([
-            'image' => $baseurl.'/images/'.$newImage,
+            'image' => $baseurl.'/upload/'.$newImage,
             'pictureId' => $pictureId
         ]);
     }

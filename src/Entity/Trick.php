@@ -23,11 +23,11 @@ class Trick
     #[ORM\Column(type: 'string', length: 50, unique: true)]
     private $name;
 
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(type: 'text')]
     private ?string $description;
 
     #[Gedmo\Timestampable(on:'create')]
-    #[ORM\Column(type:'datetime')]
+    #[ORM\Column(type:'datetime', nullable : true)]
     protected $createdAt;
 
     #[Gedmo\Timestampable(on:'update')]

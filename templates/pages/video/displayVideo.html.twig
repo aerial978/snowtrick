@@ -1,0 +1,18 @@
+{% if videos is not empty %}
+    {% for video in videos %}
+        <div class="col-lg-4 col-md-6 h-100">
+            <div class="card-gallery">
+                {% if 'http' in trick.videos[0].videoLink %}
+                    <iframe src="{{ video.videoLink }}" alt="video"></iframe>
+                {% else %}
+                    <iframe width="300" height="205" src="https://www.youtube.com/embed/{{ video.videoLink }}" title="YouTube video player" frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+	<div class="alert alert-danger" role="alert">
+		<h4 class="text-center">No video yet !</h4>
+	</div>
+{% endif %}

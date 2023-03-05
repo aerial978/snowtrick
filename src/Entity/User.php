@@ -45,10 +45,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type:'string', length: 255, nullable: true)]
     private $file;
 
-    /*#[ORM\Column(type: 'datetime_immutable')]
-    #[Assert\NotNull()]
-    private $createdAt;*/
-
     #[ORM\Column(type:'datetime')]
     protected $createdAt;
 

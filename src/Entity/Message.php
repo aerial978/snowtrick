@@ -18,9 +18,6 @@ class Message
     #[ORM\Column(type: 'string')]
     private ?string $content = null;
 
-    /*#[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;*/
-
     #[ORM\Column(type:'datetime')]
     protected $createdAt;
 

@@ -1,0 +1,172 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Trick - Snowtricks
+{% endblock %}
+
+{% block body %}
+	{% set img = trick.pictures|last %}
+	<header class="hero-trick">
+		<div class="banner">
+			<!-- modal edit cover image hero -->
+			{% include "pages/coverImage/editCoverImage.html.twig" %} 
+			<!-- -->
+		</div>
+	</header>
+	<section class="trick-media py-5">
+		<div class="container py-lg-5">
+			<div class="text-center mb-3 pb-3">
+				<h6 class="text-warning fw-bold text-uppercase" style="letter-spacing: 5px;">medias</h6>
+				<h1 class="text-info fw-bold">Let's discover the trick together</h1>
+			</div>
+		</div>
+		<div class="media container">
+			<div class="row g-4 mb-5 p-3 border rounded-2 bg-warning">
+			<div class="title-media picture-title d-flex">
+				<span class="fa-stack fa-1x">
+					<i class="fa-solid fa-square fa-stack-2x"></i>
+					<i class="fa-solid fa-image fa-stack-1x fa-inverse"></i>
+				</span>
+				<p class="fs-4 fw-bold">Gallery Pictures</p>
+			</div>
+				<!-- modal display image xl -->
+				{% include "pages/picture/displayPicture.html.twig" %}
+				<!-- -->
+			</div>
+				<div class="row g-4 my-4 p-3 border rounded-2 bg-info">
+				<div class="title-media d-flex">
+					<span class="fa-stack fa-1x">
+						<i class="fa-solid fa-square fa-stack-2x"></i>
+						<i class="fa-solid fa-video fa-stack-1x fa-inverse"></i>
+					</span>
+					<p class="fs-4 fw-bold">Gallery Videos</p>
+				</div>
+				<!-- modal display video xl -->
+				{% include "pages/video/displayVideo.html.twig" %}
+				<!-- -->
+			</div>	
+		</div>
+		{% include "pages/mediaResponsive/mediaDisplayResponsive.html.twig" %}
+	</section>
+	<section class="trick-about">
+		<div class="container-fluid py-5">
+			<div class="about-title text-center mb-3 pb-3">
+				<h6 class="text-warning fw-bold text-uppercase" style="letter-spacing: 5px;">about</h6>
+				<h1 class="text-info fw-bold">Technical Description</h1>
+			</div>
+			<div class="container py-4">
+				<div class="dropdown">
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="about-img position-relative">
+								{% if trick.pictures is not empty %}
+									{% if 'http' in pictures[0].pictureLink %}
+										<img src="{{ pictures[0].pictureLink }}" class="position-absolute img-fluid rounded-2 shadow-lg p-3 mb-5 bg-body">
+									{% else %}
+										<img src="{{ asset('upload/')~pictures[0].pictureLink }}" class="position-absolute img-fluid rounded-2 shadow-lg p-3 mb-5 bg-body">
+									{% endif %}
+								{% else %}
+									<img src="{{ asset('images/snowboarder5.jpg') }}" class="position-absolute img-fluid rounded-2 shadow-lg p-3 mb-5 bg-body">
+								{% endif %}
+							</div>
+						</div>
+						<div class="col-lg-6 pt-5 pb-lg-5">
+							<div class="about-content bg-warning p-4 p-lg-5 my-lg-5 rounded-2">
+								<h5 class="about-name text-white fw-bold text-uppercase mb-3">{{ trick.name }}</h5>
+								<p class="about-text">{{ trick.description }}</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class="trick-meta py-5 bg-info">
+		<div class="py-3">
+			<div class="container">
+				<div class="row text-center">
+					<div class="col-md-4">
+						<span class="fa-stack fa-4x text-warning">
+							<i class="fas fa-circle fa-stack-2x"></i>
+							<i class="fas fa-plus fa-stack-1x fa-inverse"></i>
+						</span>
+						<h4 class="my-3">{{ trick.createdAt|date('d/m/Y') }}</h4>
+					</div>
+					<div class="col-md-4">
+						<span class="fa-stack fa-4x text-warning">
+							<i class="fas fa-circle fa-stack-2x"></i>
+							<i class="fas fa-person-snowboarding fa-stack-1x fa-inverse"></i>
+						</span>
+						<h4 class="my-3">{{ trick.category.name }}</h4>
+					</div>
+					<div class="col-md-4">
+						<span class="fa-stack fa-4x text-warning">
+							<i class="fas fa-circle fa-stack-2x"></i>
+							<i class="fas fa-pen fa-stack-1x fa-inverse"></i>
+						</span>
+						<h4 class="my-3">{{ trick.updatedAt|date('d/m/Y') }}</h4>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class="trick-messages py-5">
+		<div class="text-center mb-3 py-3">
+			<h6 class="text-warning fw-bold text-uppercase" style="letter-spacing: 5px;">Blog</h6>
+			<h1 class="text-info fw-bold">Related Messages</h1>
+		</div>
+		<div class="container my-5 py-2">
+			<div class="row d-flex justify-content-center">
+				<div class="col-md-12 col-lg-10">
+					{% for message in app.flashes('success') %}
+						<div class="text-center alert alert-success mt-4 fs-5">
+							{{ message }}
+						</div>
+					{% endfor %}
+					<div class="card text-dark shadow" id="card-message">
+						{% if app.user %}
+							{{ form_start(form) }}
+								<div class="d-flex add-comment-section rounded bg-warning p-3 m-3 my-5">
+									<img class="img-fluid img-responsive rounded-circle mx-3" src="{{ asset('images/' ~ app.user.file) }}" alt="avatar" width="60" height="60"/>	
+									{{ form_widget(form.content) }}
+									<div>
+										{{ form_row(form.submit) }}
+									</div>
+								</div>
+								<div class="form-error text-danger fw-bolder">
+									{{ form_errors(form.content) }}
+								</div>
+							{{ form_end(form) }}
+						{% endif %}
+							{% if trick.messages is empty %}
+							<div class="alert alert-danger m-3" role="alert">
+								<h4 class="text-center">No message yet !</h4>
+							</div>
+						{% else %}
+							{% for message in messages %}
+								<div class="card-body py-4 alert alert-info m-3">
+									<div class="container">
+										<div class="row flex-start py-2">
+											<div class="d-flex">
+												<div>
+													<img class="rounded-circle shadow-1-strong me-3" src="{{ asset('images/' ~ message.user.file) }}" alt="avatar" width="60" height="60"/>
+												</div>
+												<div class="d-flex flex-column mb-3 p-2">
+													<p class="fw-bold mb-0">{{ message.user.username }}</p>
+													<p class="mb-0">{{ message.createdAt|date('d/m/Y') }}</p>
+												</div>
+											</div>
+											<div class="col-12 bg-white p-3 my-3 rounded-2">
+												<p class="mb-0">{{ message.content }}</p>
+											</div>
+										</div>
+									</div>				
+								</div>	
+							{% endfor %}
+							<div class="pagination justify-content-center py-5">{{ knp_pagination_render(messages) }}</div>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}

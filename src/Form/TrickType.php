@@ -55,18 +55,6 @@ class TrickType extends AbstractType
                 ]),
             ]
         ])
-/*
-        ->add('coverImage', FileType::class, [
-            'required' => false,
-            'attr' => [
-                'class' => 'form-control',
-            ],
-            'label' => 'Cover Image',
-            'label_attr' => [
-                'class' => 'mt-2 mb-2 fw-bold'
-            ],
-            'data_class' => null
-        ])*/
 
         ->add('category', EntityType::class, [  
             'class' => Category::class,
@@ -108,23 +96,6 @@ class TrickType extends AbstractType
                 ]),
             ]
         ])
-/*
-        ->add('video', TextType::class, [
-            'mapped' => false,
-            'required' => false,
-            'attr' => [
-                'class' => 'form-control',
-            ],
-            'label' => 'Video(s)',
-            'label_attr' => [
-                'class' => 'mt-4 mb-2'
-            ],
-            'constraints' => [
-                new Assert\NotBlank([
-                    'message' => 'Please upload a file !'
-                ]),
-            ]
-        ])*/
             
         ->add('submit', SubmitType::class, [
             'attr' => [
