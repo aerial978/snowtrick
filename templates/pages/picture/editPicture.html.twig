@@ -46,10 +46,10 @@ $(document).ready(function () {
 		e.preventDefault();
 		// recupere la valeur de l'input image
 		var picture = $('#pictureId').val();
+		// recupere l'image soumis dans l'input
+		let imageFile = $('form[name="edit_picture"] :input')[1].files[0];
 		// teste si image existe
-		if (picture.length > 0) { 
-			// recupere l'image soumis dans l'input
-			let imageFile = $('form[name="edit_picture"] :input')[1].files[0];
+		if (imageFile != undefined) { 
 			// creation objet formdata
 			let formData = new FormData();
 			// recupere formData

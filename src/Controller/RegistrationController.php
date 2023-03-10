@@ -41,6 +41,7 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
+            $user->setFile('default.png');
 
             $entityManager->persist($user);
             $entityManager->flush();
@@ -53,8 +54,7 @@ class RegistrationController extends AbstractController
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('pages/registration/confirmation_email.html.twig')
             );
-            // do anything else you need here, like send an email
-
+            $this->addFlash('success', 'A confirmation message has been sent to your email address !');
             return $this->redirectToRoute('home.index');
         }
 
@@ -78,7 +78,7 @@ class RegistrationController extends AbstractController
         }
 
         //@TODO Modifiez la redirection en cas de succès et gérez ou supprimez le message flash dans vos modèles
-        $this->addFlash('success', 'Your email address has been verified.');
+       //$this->addFlash('success', 'Your account has been successfully registered, log in now !');
 
         return $this->redirectToRoute('home.index');
     }

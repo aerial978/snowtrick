@@ -84,10 +84,10 @@ $(document).ready(function () {
 		e.preventDefault();
 		// recupere la valeur de l'input image
 		var covImage = $('#coverImage').val();
+		let coverFile = $('form[name="cover_image"] :input')[1].files[0];
 		// teste si image existe
-		if (covImage.length > 0) { 
+		if (coverFile != undefined) { 
 			// recupere l'image soumis dans l'input
-			let coverFile = $('form[name="cover_image"] :input')[1].files[0];
 			// creation objet formdata
 			let trickId = $('#trickId').val();
 			let formData = new FormData();
@@ -112,7 +112,7 @@ $(document).ready(function () {
 			});
 		} else {
 			alert("The field can't be empty !");
-		}
+		} 
 	});
 });
 </script>

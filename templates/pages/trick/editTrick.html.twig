@@ -55,6 +55,7 @@
 						{% endif %}
 						<div class="card-body">
 							<div class="card-meta d-flex justify-content-between alert-info">
+							{% if app.user %}
 								<div class="btn-group fs-3 bg-warning p-2">
 									<div class="edit-button">
 										<button type="button" class="btn btn-lg btn-success me-3 rounded btn-modify" data-bs-toggle="modal" data-bs-target="#editPictureModal" data-image="{{ picture.id }}">
@@ -69,6 +70,7 @@
 										{% endif %}
 									</div>
 								</div>
+							{% endif %}
 							</div>
 						</div>
 					</div>
@@ -108,6 +110,7 @@
 						{% endif %}
 						<div class="card-body">
 							<div class="card-meta d-flex justify-content-between alert-info">
+							{% if app.user %}
 								<div class="btn-group fs-3 bg-warning p-2">
 									<div class="button-edit">
 										<button type="button" class="btn btn-lg btn-success me-3 rounded btn-modify" data-bs-toggle="modal" data-bs-target="#editVideoModal" data-video="{{ video.id }}">
@@ -122,6 +125,7 @@
 										{% endif %}
 									</div>
 								</div>
+							{% endif %}
 							</div>
 						</div>
 					</div>
