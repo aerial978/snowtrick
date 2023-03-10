@@ -27,6 +27,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+
 class TrickController extends AbstractController
 {   
     #[Route('/trick/new', name: 'trick.new', methods: ['GET','POST'])]
@@ -168,8 +169,7 @@ class TrickController extends AbstractController
             'formPicture' => $formPicture->createView(),
             'formEditPicture' => $formEditPicture->createView(),
             'formVideo' => $formVideo->createView(),
-            'formEdit' => $formEdit->createView(),
-            
+            'formEdit' => $formEdit->createView(),    
         ]);
     }
 
@@ -184,6 +184,10 @@ class TrickController extends AbstractController
     PaginatorInterface $paginator, 
     Request $request) : Response
     {         
+        if (!$trick) {
+            throw $this->createNotFoundException('The product does not exist');
+        }
+        
         $picture = new Picture();
 
         $pictures = $pictureRepository->findBy(['trick'=>$trick],['createdAt'=>'DESC']);
@@ -264,3 +268,4 @@ class TrickController extends AbstractController
         return $this->redirectToRoute('home.index');
     }
 }
+
