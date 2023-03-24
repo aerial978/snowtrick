@@ -10,7 +10,7 @@ use App\Form\TrickType;
 use App\Form\VideoType;
 use App\Form\MessageType;
 use App\Form\PictureType;
-use App\Form\TrickEditType;
+use App\Form\EditTrickType;
 use App\Form\CoverImageType;
 use App\Form\EditPictureType;
 use App\Service\VideoService;
@@ -26,7 +26,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
 
 class TrickController extends AbstractController
 {   
@@ -70,6 +69,71 @@ class TrickController extends AbstractController
         ]);
     }
 
+    #[Route('/trick/{slug}', name: 'trick.index', methods: ['GET','POST'])]
+    public function index( 
+    Trick $trick,
+    PictureService $pictureService,
+    PictureRepository $pictureRepository,
+    VideoRepository $videoRepository,
+    MessageRepository $messageRepository, 
+    EntityManagerInterface $manager, 
+    PaginatorInterface $paginator, 
+    Request $request,
+    $slug) : Response
+    {         
+        $picture = new Picture();
+
+        $pictures = $pictureRepository->findBy(['trick'=>$trick],['createdAt'=>'DESC']);
+        $videos = $videoRepository->findBy(['trick'=>$trick],['createdAt'=>'DESC']);
+        
+        // MODIFICATION COVER IMAGE TRICK
+        $formCoverImage = $this->createForm(CoverImageType::class, $picture);
+        $formCoverImage->handleRequest($request);
+
+        if ($formCoverImage->isSubmitted() && $formCoverImage->isValid()) {   
+            
+            // Récupération de l'image(s)
+            $coverImage = $formCoverImage->get('coverImage')->getData();
+            
+            // Utilisation de pictureService
+            $pictureService->newPicture($trick, $coverImage);   
+        } 
+        
+        $message = new Message();
+        $form = $this->createForm(MessageType::class, $message);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $message->setTrick($trick);
+            $message->setUser($this->getUser());
+
+            $manager->persist($message);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                ' Message was successfully added !'
+            );
+            return $this->redirect($this->generateUrl('trick.index', array('slug'=>$slug)). '#card-message'); 
+        }
+        
+        $messages = $paginator->paginate(
+            $messageRepository->paginationMessage($trick),
+            $request->query->getInt('page', 1),
+            2
+        ); 
+        
+        return $this->render('pages/trick/indexTrick.html.twig', [
+            'activemenu' => 'trickmenu',
+            'formEditCoverImage' => $formCoverImage->createView(),
+            'trick' => $trick,
+            'pictures' => $pictures,
+            'videos' => $videos,
+            'messages' => $messages,
+            'form' => $form->createView()
+        ]);
+    }
+
     #[Route('/trick/edit/{slug}', name:'trick.edit', methods: ['GET','POST'])]
     public function edit(
     Trick $trick,
@@ -109,7 +173,6 @@ class TrickController extends AbstractController
              // Récupération de l'image(s)
             $picture = $formPicture->get('newPictureLink')->getData(); 
     
-            // Utilisation de pictureService
             $removePicture = $trickRepository->findOneBySlug($slug);
             if ($removePicture->getCoverImage()) {
                 $filesystem = new Filesystem();
@@ -117,6 +180,7 @@ class TrickController extends AbstractController
                 $filesystem->remove([$path]);
             }
 
+            // Utilisation de pictureService
             $pictureService->newPicture($trick, [$picture]);
             return $this->redirectToRoute('trick.edit',['slug'=> $slug]);
         }
@@ -150,7 +214,7 @@ class TrickController extends AbstractController
         }
         
         // MODIFICATION DESCRIPTION & CATEGORIE TRICK
-        $formEdit = $this->createForm(TrickEditType::class, $trick);
+        $formEdit = $this->createForm(EditTrickType::class, $trick);
         $formEdit->handleRequest($request);
 
         if ($formEdit->isSubmitted() && $formEdit->isValid()) {    
@@ -170,74 +234,6 @@ class TrickController extends AbstractController
             'formEditPicture' => $formEditPicture->createView(),
             'formVideo' => $formVideo->createView(),
             'formEdit' => $formEdit->createView(),    
-        ]);
-    }
-
-    #[Route('/trick/{slug}', name: 'trick.index', methods: ['GET','POST'])]
-    public function index($slug, 
-    Trick $trick,
-    PictureService $pictureService,
-    PictureRepository $pictureRepository,
-    VideoRepository $videoRepository,
-    MessageRepository $messageRepository, 
-    EntityManagerInterface $manager, 
-    PaginatorInterface $paginator, 
-    Request $request) : Response
-    {         
-        if (!$trick) {
-            throw $this->createNotFoundException('The product does not exist');
-        }
-        
-        $picture = new Picture();
-
-        $pictures = $pictureRepository->findBy(['trick'=>$trick],['createdAt'=>'DESC']);
-        $videos = $videoRepository->findBy(['trick'=>$trick],['createdAt'=>'DESC']);
-        
-        // MODIFICATION COVER IMAGE TRICK
-        $formCoverImage = $this->createForm(CoverImageType::class, $picture);
-        $formCoverImage->handleRequest($request);
-
-        if ($formCoverImage->isSubmitted() && $formCoverImage->isValid()) {   
-            
-            // Récupération de l'image(s)
-            $coverImage = $formCoverImage->get('coverImage')->getData();
-            
-            // Utilisation de pictureService
-            $pictureService->newPicture($trick, $coverImage);   
-        } 
-        
-        $message = new Message();
-        $form = $this->createForm(MessageType::class, $message);
-        $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid()) {
-            $message->setTrick($trick);
-            $message->setUser($this->getUser());
-
-            $manager->persist($message);
-            $manager->flush();
-
-            $this->addFlash(
-                'success',
-                ' Message was successfully added !'
-            );
-            return $this->redirect($this->generateUrl('trick.index', array('slug'=>$slug)). '#card-message'); 
-        }
-
-        $messages = $paginator->paginate(
-            $messageRepository->paginationMessage($trick),
-            $request->query->getInt('page', 1),
-            2
-        ); 
-        
-        return $this->render('pages/trick/indexTrick.html.twig', [
-            'activemenu' => 'trickmenu',
-            'formEditCoverImage' => $formCoverImage->createView(),
-            'trick' => $trick,
-            'pictures' => $pictures,
-            'videos' => $videos,
-            'messages' => $messages,
-            'form' => $form->createView()
         ]);
     }
 
