@@ -97,11 +97,10 @@ section {
 }
 
 .hero {
-    background: url('/../../images/snowboarder5.jpg');
+    background-image: linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)),url('/../../images/snowboarder5.jpg');
     background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center;
-    filter: brightness(75%);
 }
 
 .hero-trick {
@@ -110,7 +109,6 @@ section {
 
 .hero-trick img {
     min-height: 100%;
-    width: 100%;
     height: 75vh;
     top: 0;
     left: 0;
@@ -284,6 +282,21 @@ section {
     max-height: 250px;
 }
 
+.card-top {
+    position: relative;
+}
+
+.btn-plus {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.img-bright {
+    filter: brightness(65%);
+}
+
 .about-img {
     min-height: 500px;
     object-fit: cover;
@@ -320,6 +333,81 @@ section {
 
 #editVideoPreview {
     display: none;
+}
+
+.error-section {
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100%;
+}
+
+.error-section p {
+    font-size: 25px;
+}
+
+.error-section .wrapper .button {
+    display: flex;
+    justify-content: center;
+}
+
+.fof {
+    font-size: 300px;
+    background: url('/../../images/mountain.jpg') center no-repeat;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    display: flex;
+    justify-content: center;
+}
+
+@media(max-width: 992px) {
+    .fof {
+        font-size: 250px;
+    }
+
+    .error-section .sorry {
+        font-size: 30px;
+    }
+
+    .error-section p {
+        font-size: 20px;
+    }
+}
+
+@media(max-width: 768px) {
+    .fof {
+        font-size: 200px;
+    }
+
+    .error-section .sorry {
+        font-size: 25px;
+    }
+
+    .error-section p {
+        font-size: 15px;
+    }
+}
+
+@media(max-width: 576px) {
+    .fof {
+        font-size: 150px;
+    }
+
+    .error-section .sorry {
+        font-size: 20px;
+    }
+
+    .error-section p {
+        font-size: 10px;
+    }
+
+    .error-section button a {
+        font-size: 12px;
+    }
 }
 
 

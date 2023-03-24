@@ -42,36 +42,41 @@
 						</div>
 					{% endfor %}
 					{% if app.user %}
+					<!-- button new trick -->
 						<div class="col-lg-4 col-md-6">
-							<div class="card-add shadow rounded-1 bg-info h-100 d-flex justify-content-center align-items-center">
-								<a href="{{ path('trick.new') }}" class="trick-add">
+							<div class="card shadow rounded-2">
+								<img src="{{ asset('images/snowboarder5.jpg')|imagine_filter('trick') }}" class="img-fluid img-bright rounded-2">
+								<a href="{{ path('trick.new') }}" class="trick-add btn-plus">
 									<span class="fa-stack fa-2x" style="--fa-inverse: black;">
 										<i class="fa-solid fa-circle fa-stack-2x text-light"></i>
 										<i class="fa-solid fa-plus fa-stack-1x fa-lg fa-inverse"></i>
 									</span>
-								</a>
+								</a>	
 							</div>
 						</div>
 					{% endif %}
 					{% if tricks %}
+					<!-- list tricks -->
 						{% for trick in tricks %}
 							<div class="col-lg-4 col-md-6">
-								<div class="card shadow-sm" id="card">	
+								<div class="card rounded-2 shadow" id="card">
+								<div class="">
 										{% if trick.pictures[0] is defined and 'http' in trick.pictures[0].pictureLink %}
 											{# fixture #}
-											<img src="{{ trick.pictures[0].pictureLink }}">
+											<img src="{{ trick.pictures[0].pictureLink }}" class="img-fluid rounded-top">
 										{% else %}
 											{% if trick.coverImage %}
-												<img src="{{ asset('upload/') }}{{ trick.coverImage }}" class="img-fluid">
+												<img src="{{ asset('upload/'~trick.coverImage)|imagine_filter('trick') }}" class="img-fluid rounded-top">
 											{% else %}
 												{# upload #}
 												{% if trick.pictures[0] is defined %}
-													<img src="{{ asset('upload/') }}{{ trick.pictures[0].pictureLink }}" class="img-fluid">
+													<img src="{{ asset('upload/'~trick.pictures[0].pictureLink)|imagine_filter('trick') }}" class="img-fluid rounded-top">
 												{% else %}
 													<img src="{{ asset('images/snowboarder5.jpg') }}" class="img-fluid">
 												{% endif %}
 											{% endif %}
 										{% endif %}
+									</div>
 									<div class="card-body">
 										<div class="card-meta d-flex justify-content-between">
 											{% if trick.slug %}
@@ -99,6 +104,7 @@
 								</div>
 							</div>
 						{% endfor %}
+						<!-- end list tricks -->
 					{% else %}
 						<div class="alert alert-danger mt-4 fs-5">
 							<p>Tricks list is empty !</p>

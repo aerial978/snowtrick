@@ -23,7 +23,7 @@
 	</div>
 	<!-- section edit medias full screen -->
 	<section class="media container mt-5">
-		<div class="row g-4 p-3 border rounded-2" style="background-color: #FFF3CD">
+		<div class="row g-4 p-3 border rounded-2 shadow" style="background-color: #FFF3CD">
 			<div class="title-media picture-title d-flex">
 				<span class="fa-stack fa-1x">
 					<i class="fa-solid fa-square fa-stack-2x"></i>
@@ -33,13 +33,14 @@
 			</div>
 			<!-- button new picture -->
 			<div class="col-lg-3 col-md-6">
-				<div class="card-add shadow rounded-1 bg-warning d-flex justify-content-center align-items-center">
-					<a href="" class="trick-add" data-bs-toggle="modal" data-bs-target="#newPictureModal">
+				<div class="card">
+					<img src="{{ asset('images/snowboarder5.jpg')|imagine_filter('media') }}" class="img-fluid img-bright rounded-2">
+					<a href="" class="trick-add btn-plus" data-bs-toggle="modal" data-bs-target="#newPictureModal">
 						<span class="fa-stack fa-2x" style="--fa-inverse: black;">
 							<i class="fa-solid fa-circle fa-stack-2x text-light"></i>
 							<i class="fa-solid fa-plus fa-stack-1x fa-lg fa-inverse"></i>
 						</span>
-					</a>
+					</a>	
 				</div>
 			</div>
 			<!-- list media picture -->
@@ -48,10 +49,10 @@
 					<div class="card">
 						{% if 'http' in picture.pictureLink %}
 							{# fixture #}
-							<img id="picture{{ picture.id }}" src="{{ picture.pictureLink }}">
+							<img id="picture{{ picture.id }}" src="{{ picture.pictureLink }}" class="img-fluid rounded-top">
 						{% else %}
 							{# upload #}
-							<img id="picture{{ picture.id }}" src="{{ asset('upload/') }}{{ picture.pictureLink }}" class="img-fluid">
+							<img id="picture{{ picture.id }}" src="{{ asset('upload/'~picture.pictureLink)|imagine_filter('media') }}" class="img-fluid rounded-top">
 						{% endif %}
 						<div class="card-body">
 							<div class="card-meta d-flex justify-content-between alert-info">
@@ -78,7 +79,7 @@
 			{% endfor %}
 			<!-- end list media picture -->
 		</div>
-		<div class="row g-4 my-4 p-3 border rounded-2" style="background-color: #D1ECF1">
+		<div class="row g-4 my-4 p-3 border rounded-2 shadow" style="background-color: #D1ECF1">
 			<div class="title-media d-flex">
 				<span class="fa-stack fa-1x">
 					<i class="fa-solid fa-square fa-stack-2x"></i>
@@ -88,23 +89,26 @@
 			</div>
 			<!-- button new video -->
 			<div class="col-lg-3 col-md-6">
-				<div class="card-add shadow rounded-1 bg-info d-flex justify-content-center align-items-center">
-					<a href="" class="trick-add" data-bs-toggle="modal" data-bs-target="#newVideoModal">
-						<span class="fa-stack fa-2x" style="--fa-inverse: black;">
-							<i class="fa-solid fa-circle fa-stack-2x text-light"></i>
-							<i class="fa-solid fa-plus fa-stack-1x fa-lg fa-inverse"></i>
-						</span>
-					</a>
+				<div class="card">
+					<img src="{{ asset('images/videoscreen.jpg')|imagine_filter('media') }}" height="205" class="img-fluid img-bright rounded-2">
+						<a href="" class="trick-add btn-plus" data-bs-toggle="modal" data-bs-target="#newVideoModal">
+							<span class="fa-stack fa-2x" style="--fa-inverse: black;">
+								<i class="fa-solid fa-circle fa-stack-2x text-light"></i>
+								<i class="fa-solid fa-plus fa-stack-1x fa-lg fa-inverse"></i>
+							</span>
+						</a>
+					</img>
 				</div>
 			</div>
 			<!-- list media video -->
 			{% for video in videos %}
 				<div class="col-lg-3 col-md-6">
-					<div class="card shadow-sm">
+					<div class="card">
 						{% if 'http' in trick.videos[0].videoLink %}
-							<iframe id="video{{ video.id }}" src="{{ video.videoLink }}" alt="video"></iframe>
+							<iframe id="video{{ video.id }}" height="220" src="{{ video.videoLink }}" alt="video" class="rounded-top" title="YouTube video player" frameborder="0" 
+							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>></iframe>
 						{% else %}
-							<iframe id="video{{ video.id }}" height="205" src="https://www.youtube.com/embed/{{ video.videoLink }}" 
+							<iframe id="video{{ video.id }}" height="220" class="rounded-top" src="https://www.youtube.com/embed/{{ video.videoLink }}" 
 							title="YouTube video player" frameborder="0" 
 							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 						{% endif %}

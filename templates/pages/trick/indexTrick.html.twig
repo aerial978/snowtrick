@@ -62,7 +62,7 @@
 									{% if 'http' in pictures[0].pictureLink %}
 										<img src="{{ pictures[0].pictureLink }}" class="position-absolute img-fluid rounded-2 shadow-lg p-3 mb-5 bg-body">
 									{% else %}
-										<img src="{{ asset('upload/')~pictures[0].pictureLink }}" class="position-absolute img-fluid rounded-2 shadow-lg p-3 mb-5 bg-body">
+										<img src="{{ asset('upload/'~pictures[0].pictureLink)|imagine_filter('description') }}" class="position-absolute img-fluid rounded-2 shadow-lg p-3 mb-5 bg-body">
 									{% endif %}
 								{% else %}
 									<img src="{{ asset('images/snowboarder5.jpg') }}" class="position-absolute img-fluid rounded-2 shadow-lg p-3 mb-5 bg-body">

@@ -1,20 +1,20 @@
 <div class="banner">
 	{% if trick.pictures[0] is defined and 'http' in trick.pictures[0].pictureLink %}
 		{# fixture #}
-		<img src="{{ trick.pictures[0].pictureLink }}">
+		<img src="{{ trick.pictures[0].pictureLink }}" alt="cover-image" class="w-100 img-fluid">
 	{% else %}
 		{% if trick.coverImage %}
-			<img id="cover{{ trick.coverImage }}" src="{{ asset('upload/') }}{{ trick.coverImage }}" class="img-fluid">
+			<img id="cover{{ trick.coverImage }}" src="{{ asset('upload/'~trick.coverImage)|imagine_filter('coverimage') }}" alt="cover-image" class="w-100 img-fluid">
 		{% else %}
 			{# upload #}
 			{% if trick.pictures is not empty %}
 				{% if trick.coverImage is not null %}
-					<img id="cover{{ trick.coverImage }}" src="{{ asset('upload/') }}{{ trick.pictures[0].pictureLink }}" class="img-fluid">
+					<img id="cover{{ trick.coverImage }}" src="{{ asset('upload/'~trick.pictures[0].pictureLink)|imagine_filter('coverimage') }}" alt="cover-image" class="w-100 img-fluid">
 				{% else %}
-					<img src="{{ asset('images/snowboarder5.jpg') }}" class="img-fluid">
+					<img src="{{ asset('images/snowboarder5.jpg')|imagine_filter('coverimage') }}" alt="cover-image" class="w-100 img-fluid">
 				{% endif %}
 			{% else %}
-				<img src="{{ asset('images/snowboarder5.jpg') }}" class="img-fluid">
+				<img src="{{ asset('images/snowboarder5.jpg')|imagine_filter('coverimage') }}" alt="cover-image" class="w-100 img-fluid">
 			{% endif %}
 		{% endif %}
 	{% endif %}
@@ -23,7 +23,7 @@
 	</div>
 	<div class="content">
 		{% if app.user %}
-			<div class="btn-group btn-trick bg-warning d-flex justify-content-end p-2">
+			<div class="btn-group btn-trick bg-warning p-2">
 				<div class="edit-button">
 					{% if trick.coverImage is not null %}
 						{% set dataImage = trick.coverImage %}
