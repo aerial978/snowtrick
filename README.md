@@ -80,7 +80,7 @@ Database
   php bin/console app:list-category
 ```
 
-*   Command  : add trick category
+*   Command : add trick category
 
 ```bash
   php bin/console app:create-category
