@@ -74,6 +74,18 @@ Database
   MAILER_DSN=smtp://localhost
 ```
 
+*   Command : add list of categories
+
+```bash
+  php bin/console app:list-category
+```
+
+*   Command  : add trick category
+
+```bash
+  php bin/console app:create-category
+```
+
 ## Usage
 
 ### Roles
