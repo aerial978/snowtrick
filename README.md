@@ -27,7 +27,7 @@ This collaborative website was built for the needs of a business owner passionat
 *   Librairies Installation
 
 ```bash
-    php bin/console composer install
+  composer install
 ```
 
 Git clone the project
