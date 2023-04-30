@@ -1,6 +1,6 @@
 # SNOWTRICKS
 
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/2b6329eead884b348d68e164ac299464)](https://app.codacy.com/gh/aerial978/snowtrick/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/72c2f7e437a541ea907959a0a6890bd4)](https://app.codacy.com/gh/aerial978/snowtrick/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 SnowTricks is a community website for snowboarders created with Symfony PHP framework.
 
