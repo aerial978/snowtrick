@@ -18,9 +18,6 @@
 			{% endif %}
 		{% endif %}
 	{% endif %}
-	<div class="d-flex justify-content-center align-items-center">
-		<h1 class="hero-name fw-bold d-flex justify-content-center w-50 text-white border border-info-subtle border-3 rounded-2">{{ trick.name }}</h1>
-	</div>
 	<div class="content">
 		{% if app.user %}
 			<div class="btn-group btn-trick bg-warning p-2">
@@ -40,6 +37,7 @@
 					</a>
 				</div>
 			</div>
+			
 			<!-- Edit cover image modal -->
 			<div class="modal fade" id="editCoverImageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-lg">

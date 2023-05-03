@@ -1,20 +1,16 @@
 
-<nav class="navbar fixed-top navbar-expand-sm p-md-3 {{ custom_header }}">
+<nav class="navbar fixed-top navbar-expand-sm p-md-3">
 	<div class="container" style="max-width:90%;">
 		<div class="navbar-brand text-center">
             <a href="{{ path('home.index') }}" class="fs-1 link-warning text-warning text-decoration-none">Snowtricks</a>
 		</div>
-	<!--<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button> -->
-
 		<div class="collapse navbar-collapse" id="navbarNav">
 			<ul class="navbar-nav ms-auto">
 				<li class="nav-item">
 					<a class="nav-link link-info text-info fw-bold fs-3 {% if activemenu == 'homemenu' %} active {% endif %}" href="{{ path('home.index') }}">Home</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link link-info text-info fw-bold fs-3 {% if activemenu == 'trickmenu' %} active {% endif %}" href="{{ path('home.index') }}#tricks-list">Tricks</a>
+					<a class="nav-link link-info text-info fw-bold fs-3 {% if activemenu == 'trickmenu' %} active {% endif %}" href="{{ path('home.index') }} #tricks-list">Tricks</a>
 				</li>
 			</ul>
 			<ul class="navbar-nav ms-auto">

@@ -43,10 +43,6 @@ class RegistrationFormType extends AbstractType
                 'label_attr' => [
                     'class' => 'form-label mt-3 text-info fs-5 fw-bold'
                 ],
-                'help' => 'A confirmation message will be sent to this address',
-                'help_attr' => [
-                    'class' => 'text-success fw-bold'
-                ],
                 'constraints' => [
                     new NotBlank ([
                         'message' => 'Please enter a email !',

@@ -35,15 +35,15 @@ class AppFixtures extends Fixture
             $manager->persist($user);
             $this->addReference('user_'.$i, $user);
         }
-
+        
         for ($i=1; $i < 10; $i++) {
             $category = new Category();
-            $category->setName($this->faker->word());
+            $category->setName(false);
 
             $manager->persist($category);
             $this->addReference('category_'.$i, $category);
         }
-                
+              
         for ($i=1; $i < 20; $i++) {
             $trick = new Trick();
             $trick->setName($this->faker->word());

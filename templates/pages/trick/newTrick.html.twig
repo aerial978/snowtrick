@@ -64,7 +64,11 @@
 							</div>
 						</div>
 						<button type="button" class="btn btn-primary mt-1 mb-5" id="addmorebtn">Add more video</div>
-						<div class="form-group pb-1">{{ form_row(form.submit) }}</div>
+						<div class="form-group form-button d-flex justify-content-between">
+							<div class="form-group pb-1">{{ form_row(form.submit) }}</div>
+							<a href="{{ path('home.index') }}" class="text-decoration-none"><button type="button" class="btn btn-warning">Back</button></a>
+						</div>
+						</div>
 					{{ form_end(form) }}
 				</div>
 			</div>

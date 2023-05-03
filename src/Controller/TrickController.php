@@ -11,16 +11,16 @@ use App\Form\VideoType;
 use App\Form\MessageType;
 use App\Form\PictureType;
 use App\Form\EditTrickType;
+use App\Form\NameTrickType;
 use App\Form\CoverImageType;
 use App\Form\EditPictureType;
 use App\Service\VideoService;
 use App\Service\PictureService;
 use App\Repository\TrickRepository;
+use App\Repository\VideoRepository;
 use App\Repository\MessageRepository;
 use App\Repository\PictureRepository;
-use App\Repository\VideoRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -70,14 +70,13 @@ class TrickController extends AbstractController
     }
 
     #[Route('/trick/{slug}', name: 'trick.index', methods: ['GET','POST'])]
-    public function index( 
+    public function show( 
     Trick $trick,
     PictureService $pictureService,
     PictureRepository $pictureRepository,
     VideoRepository $videoRepository,
     MessageRepository $messageRepository, 
     EntityManagerInterface $manager, 
-    PaginatorInterface $paginator, 
     Request $request,
     $slug) : Response
     {         
@@ -117,12 +116,11 @@ class TrickController extends AbstractController
             return $this->redirect($this->generateUrl('trick.index', array('slug'=>$slug)). '#card-message'); 
         }
         
-        $messages = $paginator->paginate(
-            $messageRepository->paginationMessage($trick),
-            $request->query->getInt('page', 1),
-            2
-        ); 
-        
+        // on va chercher le numéro de la page dans l'url, par défaut c'est la page 1
+        $page = $request->query->getInt('page',1);
+        // on va chercher la liste des messages
+        $messages = $messageRepository->findMessagesPaginated($page, $trick->getSlug(), 10);
+
         return $this->render('pages/trick/indexTrick.html.twig', [
             'activemenu' => 'trickmenu',
             'formEditCoverImage' => $formCoverImage->createView(),
@@ -150,6 +148,17 @@ class TrickController extends AbstractController
 
         $pictures = $pictureRepository->findBy(['trick'=>$trick],['createdAt'=>'DESC']);
         $videos = $videoRepository->findBy(['trick'=>$trick],['createdAt'=>'DESC']);
+
+        // MODIFICATION NAME TRICK
+        $formNameEdit = $this->createForm(NameTrickType::class, $trick);
+        $formNameEdit->handleRequest($request);
+
+        if ($formNameEdit->isSubmitted() && $formNameEdit->isValid()) {    
+            $trickName = $formNameEdit->getData();
+           
+            $manager->persist($trickName);
+            $manager->flush();   
+        } 
         
         // MODIFICATION COVER IMAGE TRICK
         $formCoverImage = $this->createForm(CoverImageType::class, $picture);
@@ -230,6 +239,7 @@ class TrickController extends AbstractController
             'pictures' => $pictures,
             'videos' => $videos,
             'formEditCoverImage' => $formCoverImage->createView(),
+            'formNameEdit' => $formNameEdit->createView(),
             'formPicture' => $formPicture->createView(),
             'formEditPicture' => $formEditPicture->createView(),
             'formVideo' => $formVideo->createView(),
