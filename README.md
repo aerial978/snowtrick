@@ -10,7 +10,7 @@ This collaborative website was built for the needs of a business owner passionat
 
 ## Tech Stack
 
-* Frontend : HTML5, CSS3, Bootstrap 5.3, Javascript, Jquery, Toastify 1.12
+* Frontend : HTML5, CSS3, Bootstrap 5.3, Javascript, Jquery, Toastify 1.12, Maildev
 * Backend : PHP 8.1, Symfony 6.1
 
 
