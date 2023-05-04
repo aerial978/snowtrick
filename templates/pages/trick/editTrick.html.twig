@@ -3,9 +3,31 @@
 {% block body %}
 	{% set img = trick.pictures|last %}
 	<header class="hero-trick">
-		<div class="banner">
+		<div class="banner">	
 			<!-- modal edit cover image hero -->
 			{% include "pages/coverImage/editCoverImage.html.twig" %}
+			{{ form_start(formNameEdit) }}
+			<section class="trick-name hero-name py-3">
+				<div class="container d-flex justify-content-center">
+					<div class="form-group w-75 my-2 p-4 rounded shadow" style="background-color: #D1ECF1">
+						<div class="title-description d-flex mb-2">
+							<span class="fa-stack fa-1x">
+								<i class="fa-solid fa-square fa-stack-2x"></i>
+								<i class="fa-solid fa-person-snowboarding fa-stack-1x fa-inverse"></i>
+							</span>
+							<h5 class="d-flex align-items-end">{{ form_label(formNameEdit.name) }}</h5>
+						</div>
+						{{ form_widget(formNameEdit.name) }}
+						<div class="form-error text-danger fw-bolder">
+							{{ form_errors(formNameEdit.name) }}
+						</div>
+						<div class="form-group d-flex justify-content-end py-3">
+							{{ form_row(formNameEdit.submit) }}
+						</div>
+					</div>
+				</div>
+			</section>
+			{{ form_end(formNameEdit) }}
 			<!-- -->
 		</div>
 	</header>

@@ -9,13 +9,12 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
-
 class PictureService extends AbstractController
 {
     private $pictureRepository;
     private $trickRepository;
     private $filesystem;
-    
+
     public function __construct(PictureRepository $pictureRepository, TrickRepository $trickRepository, Filesystem $filesystem)
     {
         $this->pictureRepository = $pictureRepository;
@@ -26,7 +25,7 @@ class PictureService extends AbstractController
     public function newPicture($trick, $images)
     {
         if (!empty($images)) {
-        // Boucle sur les images (multiple)
+            // Boucle sur les images (multiple)
             foreach($images as $index => $image) {
                 // Nouveau nom de fichier de l'image (unique)
                 $newImage = uniqid().'.'.$image->guessExtension();
@@ -48,14 +47,14 @@ class PictureService extends AbstractController
                 // Création image dans la bdd
                 $img = new Picture();
                 $img->setPictureLink($newImage);
-                $img->setTrick($trick);  
-                
-                $this->pictureRepository->add($img,true);
+                $img->setTrick($trick);
+
+                $this->pictureRepository->add($img, true);
 
                 if($index == 0) {
-                    $this->filesystem->copy('upload/'.$newImage,'upload/'.$copyImage);
+                    $this->filesystem->copy('upload/'.$newImage, 'upload/'.$copyImage);
                     $trick->setCoverImage($copyImage);
-                    $this->trickRepository->add($trick,true);
+                    $this->trickRepository->add($trick, true);
                 }
             }
         } else {

@@ -9,12 +9,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class VideoService extends AbstractController
 {
     private $videoRepository;
-    
+
     public function __construct(VideoRepository $videoRepository)
     {
         $this->videoRepository = $videoRepository;
     }
-    
+
     public function newVideo($trick, array $videoUrl)
     {
         if (!empty($videoUrl)) {
@@ -25,8 +25,8 @@ class VideoService extends AbstractController
 
                     $arguments = explode('&', $explode[1]);
 
-                    foreach ($arguments as $argument){
-                        if (str_starts_with($argument, 'v=')){
+                    foreach ($arguments as $argument) {
+                        if (str_starts_with($argument, 'v=')) {
                             $videoLink = str_replace('v=', '', $argument);
                             // Création video dans la bdd
                             $video = new Video();
@@ -35,7 +35,7 @@ class VideoService extends AbstractController
                             $this->videoRepository->add($video, true);
                         }
                     }
-                }     
+                }
             }
         } else {
             // Erreur message : vous devez uploader au moins une video

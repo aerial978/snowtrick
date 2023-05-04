@@ -32,9 +32,11 @@ section {
     color: #ffc107!important;
 }
 
-/* homepage */
-
 .hero {
+    background-image: linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)),url('/../../images/snowboarder5.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
     display: flex;
     align-items: flex-end;
 }
@@ -73,13 +75,14 @@ section {
     bottom: 10px;
 }
 
-.position-relative {
-    position: relative;
-}
+@media (max-width: 1200px) {
+    .about-text {
+        padding-top: 0!important;   
+    }
 
-.position-absolute {
-    position: absolute;
-    z-index: -1;
+    .about-description {
+        font-size: 17px!important;
+    }
 }
 
 @media (max-width: 992px) {
@@ -88,19 +91,15 @@ section {
         align-items: center;
         text-align: center;
     }
-}
 
-@media (min-width: 992px) {
-    .about-content {
-        margin-left: -120px;
+    .about-img {
+        text-align: center;
     }
-}
 
-.hero {
-    background-image: linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)),url('/../../images/snowboarder5.jpg');
-    background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center;
+    .about-text {
+        padding-top: 35px!important;
+        padding: 35px 40px;
+    }
 }
 
 .hero-trick {
@@ -126,6 +125,17 @@ section {
     position: absolute;
     top: 20%;
     right: 25px;
+}
+
+@media (max-width: 992px) {
+    .about-img {
+        text-align: center;
+    }
+
+    .about-text {
+        padding-top: 35px!important;
+        padding: 35px 40px;
+    }
 }
 
 @media (max-width: 576px) {
@@ -293,12 +303,7 @@ section {
     transform: translate(-50%, -50%);
 }
 
-.img-bright {
-    filter: brightness(65%);
-}
-
 .about-img {
-    min-height: 500px;
     object-fit: cover;
 }
 
@@ -306,14 +311,13 @@ section {
     letter-spacing: 3px;
 }
 
-.pagination > .active > span {
-    background-color : #ffc107!important;
-    color: white!important;
+.pagination > .active > .page-link {
+    background-color: #ffc107!important;
     border-color: #ffc107!important;
+    color: white!important;
 }
 
-.pagination > li > a,
-.pagination > li > span {
+.pagination > li > a {
     color: #ffc107!important;
     border-color: #ffc107!important;
 }
@@ -334,6 +338,8 @@ section {
 #editVideoPreview {
     display: none;
 }
+
+/* error pages */
 
 .error-section {
     text-transform: uppercase;
