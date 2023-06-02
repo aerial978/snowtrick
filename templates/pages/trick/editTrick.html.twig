@@ -290,7 +290,7 @@
 			<div class="d-flex justify-content-between" style="width:200px;">
 				<a href="{{ path('trick.delete', {slug: trick.slug}) }}" type="button" class="btn btn-lg btn-danger" data-bs-toggle="modal" 
 				data-bs-target="#deleteModal{{ trick.id }}">Delete</a>
-				{% include "pages/trick/DeleteTrick.html.twig" %}
+				{% include "pages/trick/deleteTrick.html.twig" %}
 				<div class="form-group">
 					{{ form_row(formEdit.submit) }}
 				</div>
