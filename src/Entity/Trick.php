@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: TrickRepository::class)]
-#[UniqueEntity(fields: ['name'], message: 'The trick name already exists !')]
+/*#[UniqueEntity(fields: ['name'], message: 'The trick name already exists !')]*/
 #[ORM\HasLifecycleCallbacks]
 class Trick
 {

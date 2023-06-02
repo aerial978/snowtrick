@@ -35,17 +35,22 @@
 		</div>
 		<div class="album py-5">
 			<div class="container">
+				{% for message in app.flashes('success') %}
+					<div class="text-center alert alert-success mt-4 fs-5">
+						{{ message }}
+					</div>
+				{% endfor %}
 				<div class="row g-4">
-					{% for message in app.flashes('success') %}
-						<div class="alert alert-success text-center mt-4 fs-5">
-							{{ message }}
+					{% if tricks is empty %}
+						<div class="alert alert-danger mt-4 fs-5">
+							<p>Tricks list is empty !</p>
 						</div>
-					{% endfor %}
+					{% endif %}
 					{% if app.user %}
 					<!-- button new trick -->
 						<div class="col-lg-4 col-md-6">
 							<div class="card shadow rounded-2">
-								<img src="{{ asset('images/snowboarder5.jpg')|imagine_filter('trick') }}" class="img-fluid img-bright rounded-2">
+								<img src="{{ asset('images/snowboarder5.jpg')|imagine_filter('trick') }}" class="img-fluid rounded-2">
 								<a href="{{ path('trick.new') }}" class="trick-add btn-plus">
 									<span class="fa-stack fa-2x" style="--fa-inverse: black;">
 										<i class="fa-solid fa-circle fa-stack-2x text-light"></i>
@@ -60,23 +65,21 @@
 						{% for trick in tricks %}
 							<div class="col-lg-4 col-md-6">
 								<div class="card rounded-2 shadow" id="card">
-								<div class="">
-										{% if trick.pictures[0] is defined and 'http' in trick.pictures[0].pictureLink %}
-											{# fixture #}
-											<img src="{{ trick.pictures[0].pictureLink }}" class="img-fluid rounded-top">
+									{% if trick.pictures[0] is defined and 'http' in trick.pictures[0].pictureLink %}
+										{# fixture #}
+										<img src="{{ trick.pictures[0].pictureLink }}" class="img-fluid rounded-top">
+									{% else %}
+										{% if trick.coverImage %}
+											<img src="{{ asset('upload/'~trick.coverImage)|imagine_filter('trick') }}" class="img-fluid rounded-top">
 										{% else %}
-											{% if trick.coverImage %}
-												<img src="{{ asset('upload/'~trick.coverImage)|imagine_filter('trick') }}" class="img-fluid rounded-top">
+											{# upload #}
+											{% if trick.pictures[0] is defined %}
+												<img src="{{ asset('upload/'~trick.pictures[0].pictureLink)|imagine_filter('trick') }}" class="img-fluid rounded-top">
 											{% else %}
-												{# upload #}
-												{% if trick.pictures[0] is defined %}
-													<img src="{{ asset('upload/'~trick.pictures[0].pictureLink)|imagine_filter('trick') }}" class="img-fluid rounded-top">
-												{% else %}
-													<img src="{{ asset('images/snowboarder5.jpg') }}" class="img-fluid">
-												{% endif %}
+												<img src="{{ asset('images/snowboarder5.jpg') }}" class="img-fluid">
 											{% endif %}
 										{% endif %}
-									</div>
+									{% endif %}
 									<div class="card-body">
 										<div class="card-meta d-flex justify-content-between">
 											{% if trick.slug %}
@@ -104,16 +107,14 @@
 								</div>
 							</div>
 						{% endfor %}
-						<!-- end list tricks -->
-					{% else %}
-						<div class="alert alert-danger mt-4 fs-5">
-							<p>Tricks list is empty !</p>
-						</div>
+						<!-- end list tricks -->						
 					{% endif %}
 				</div>
 			</div>
 		</div>
-		<button type="button" id="btn-more" class="btn btn-warning fw-bold fs-4">More</button>
+		{% if tricks|length >= 15  %}
+			<button type="button" id="btn-more" class="btn btn-warning fw-bold fs-4">More</button>
+		{% endif %}
 			<div id="btnUp">
 				<a href="#hero" id="scroll-up" class="icon-up">
 					<span class="fa-stack fa-2x" style="--fa-inverse: black;">
@@ -125,7 +126,7 @@
 	</section>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script>
-	$(".card").slice(8, $(".card").length).hide();
+	$(".card").slice(15, $(".card").length).hide();
 
 	$("#btn-more").on('click', function (e) {e.preventDefault();
 		$(".card:hidden").slice(0,3).slideDown();
@@ -142,6 +143,49 @@
 		display: none;
 	}
 </style>
+
+{% endblock %}
+
+{% block js %}
+	{% if app.flashes("connection")[0] is defined %}
+		<script>
+			Toastify({
+				text: "Password modified, log in !",
+				duration: 5000,
+				className: "info",
+				position: "right",
+				style: {
+					background: "linear-gradient(to right, #00b09b, #96c93d)",
+				}
+			}).showToast();
+		</script>
+	{% endif %}
+	{% if app.flashes("connected")[0] is defined %}
+		<script>
+			Toastify({
+				text: "You are connected !",
+				duration: 5000,
+				className: "info",
+				position: "right",
+				style: {
+					background: "linear-gradient(to right, #00b09b, #96c93d)",
+				}
+			}).showToast();
+		</script>
+	{% endif %}
+	{% if app.flashes("emailRegistration")[0] is defined %}
+		<script>
+			Toastify({
+				text: "Confirmation email sent !",
+				duration: 5000,
+				className: "info",
+				position: "right",
+				style: {
+					background: "linear-gradient(to right, #00b09b, #96c93d)",
+				}
+			}).showToast();
+		</script>
+	{% endif %}
 {% endblock %}
 
 

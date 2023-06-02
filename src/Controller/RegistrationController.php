@@ -2,31 +2,29 @@
 
 namespace App\Controller;
 
+use DateTime;
+use LogicException;
 use App\Entity\User;
+use App\Service\SendMailService;
 use App\Form\RegistrationFormType;
-use App\Security\EmailVerifier;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mime\Address;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 
 class RegistrationController extends AbstractController
 {
-    private EmailVerifier $emailVerifier;
-
-    public function __construct(EmailVerifier $emailVerifier)
-    {
-        $this->emailVerifier = $emailVerifier;
-    }
-
-    #[Route('/registration', name: 'security.registration', methods: ['GET','POST'])]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    #[Route('/registration', name: 'security.registration')]
+    public function register(
+        Request $request, 
+        UserPasswordHasherInterface $userPasswordHasher, 
+        EntityManagerInterface $entityManager,
+        TokenGeneratorInterface $tokenGeneratorInterface,
+        SendMailService $mail): Response
     {
         $user = new User();
         $user->setRoles(["ROLE_USER"]);
@@ -34,52 +32,79 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
+
+            $tokenRegistration = $tokenGeneratorInterface->generateToken();
+
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
                     $form->get('plainPassword')->getData()
                 )
             );
+
+            $user->setTokenRegistration($tokenRegistration);
             $user->setFile('default.png');
 
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
-                (new TemplatedEmail())
-                    ->from(new Address('snowtricks@gmail.com', 'Snowtricks'))
-                    ->to($user->getEmail())
-                    ->subject('Please Confirm your Email')
-                    ->htmlTemplate('pages/registration/confirmation_email.html.twig')
+            $mail->send(
+                'no-reply@snowtricks.com',
+                $user->getEmail(),
+                'Activating your account on the Snowtricks website',
+                'confirmation_email',
+                [
+                    'user' => $user,
+                    'token' => $tokenRegistration,
+                    'lifetimeToken' => $user->getTokenRegistrationLifetime()->format('d-m-Y à H\hi')
+                ]
             );
-            $this->addFlash('success', 'A confirmation message has been sent to your email address !');
+
+            $this->addFlash('emailRegistration', true);
+
             return $this->redirectToRoute('home.index');
         }
-
+        
         return $this->render('pages/registration/register.html.twig', [
             'registrationForm' => $form->createView(),
-        ]);
+        ]);    
     }
 
-    #[Route('/verify/email', name: 'app_verify_email')]
-    public function verifyUserEmail(Request $request, TranslatorInterface $translator): Response
+    #[Route('/emailVerify/{token}/{id}', name: "email_verify", methods: ['GET'])]
+    public function emailVerify(
+        string $token, 
+        User $user,
+        UserRepository $userRepository,
+        EntityManagerInterface $entityManager): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        if($user->getTokenRegistration() !== $token) {
+            throw new LogicException();
+        }
 
-        // valider le lien de confirmation par e-mail, définit User :: isVerified = true et persiste
-        try {
-            $this->emailVerifier->handleEmailConfirmation($request, $this->getUser());
-        } catch (VerifyEmailExceptionInterface $exception) {
-            $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
+        if($user->getTokenRegistration() === null){
+            throw new LogicException();
+        }
+
+        if(new DateTime('now') > $user->getTokenRegistrationLifetime()){
+            $userId = $userRepository->findOneBy(['id'=>$user->getId()]);
+            $userRepository->remove($userId,true);
+
+            $this->addFlash(
+                'warning',
+                ' Your account activation link is no longer valid, please register again !'
+            );
 
             return $this->redirectToRoute('security.registration');
         }
 
-        //@TODO Modifiez la redirection en cas de succès et gérez ou supprimez le message flash dans vos modèles
-       //$this->addFlash('success', 'Your account has been successfully registered, log in now !');
+        $user->setIsVerified(true);
+        $user->setTokenRegistration(null);
+        $user->setTokenRegistrationLifetime(null);
 
-        return $this->redirectToRoute('home.index');
+        $entityManager->flush();
+
+        $this->addFlash('emailVerify', true);
+
+        return $this->redirectToRoute('security.login');
     }
 }

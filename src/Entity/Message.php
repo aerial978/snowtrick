@@ -15,14 +15,14 @@ class Message
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(type: 'text')]
     private ?string $content = null;
 
     #[ORM\Column(type:'datetime')]
     protected $createdAt;
 
     #[ORM\ManyToOne(inversedBy: 'messages')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete:"CASCADE")]
     private ?Trick $trick = null;
 
     #[ORM\ManyToOne(inversedBy: 'messages', fetch: 'EAGER')]

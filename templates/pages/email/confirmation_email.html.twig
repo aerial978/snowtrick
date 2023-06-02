@@ -1,0 +1,9 @@
+<h1>Confirmation of your user account</h1>
+<p>
+    Hello <strong>{{ user.username }}</strong>, welcome to the Snowtricks website.<br><br>
+    Please confirm your account, by clicking on the link below.<br><br>
+    This link is valid until <strong>{{ lifetimeToken }}</strong><br><br>
+    <a href="{{ absolute_url(path('email_verify', {token: token, id: user.id})) }}">Activate your account</a><br><br>
+    <strong>This is an automatic email, please do not reply to it.</strong><br><br>
+    See you soon on our website.
+</p>
