@@ -8,6 +8,9 @@ Project 6 of the Openclassrooms training "PHP/Symfony Application Developer".
 
 This collaborative website was built for the needs of a business owner passionate about snowboarding. The objective is to make known this sport and help its learning. It intends to use the content provided by Internet users to develop rich content that arouses the interest of users.
 
+## 🔗 Links
+[![website](https://img.shields.io/badge/website-000?style=for-the-badge&logo=ko-fi&logoColor=white)](http://www.snowtricks.michel-hathier.fr/)
+
 ## Tech Stack
 
 * Frontend : HTML5, CSS3, Bootstrap 5.3, Javascript, Jquery, Toastify 1.12, Maildev
