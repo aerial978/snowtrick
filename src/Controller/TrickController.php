@@ -217,7 +217,7 @@ class TrickController extends AbstractController
              // Récupération de l'image(s)
             $video = $formVideo->get('newVideoLink')->getData(); 
     
-            // Utilisation de pictureService
+            // Utilisation de VideoService
             $videoService->newVideo($trick, [$video]);
             return $this->redirectToRoute('trick.edit',['slug'=> $slug]);
         }
