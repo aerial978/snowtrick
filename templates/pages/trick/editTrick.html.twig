@@ -170,7 +170,7 @@
 					See medias
 				</button>
 				<ul class="dropdown-menu bg-info w-100">
-				<!-- list pictures responsive -->
+				<!-- dropdown pictures responsive -->
 					<li class="mx-2 bg-info fs-5 fw-bold py-2">Picture(s)
 						<!-- button new picture -->
 						<a href="" class="trick-add" data-bs-toggle="modal" data-bs-target="#newPictureModal">
@@ -207,8 +207,8 @@
 							</li>
 						{% endif %}
 					{% endfor %}
-					<!-- end list pictures responsive -->
-					<!-- list videos responsive -->
+					<!-- end dropdown pictures responsive -->
+					<!-- dropdown videos responsive -->
 					<li class="mx-2 bg-info fs-5 fw-bold py-2">Video(s)
 						<!-- button new video -->
 						<a href="" class="trick-add" data-bs-toggle="modal" data-bs-target="#newVideoModal">
@@ -232,7 +232,7 @@
 							</div>
 						</li>
 					{% endfor %}
-					<!-- end list videos responsive -->	
+					<!-- end dropdown videos responsive -->	
 				</ul>
 			</div>
 		</div>
@@ -290,7 +290,7 @@
 			<div class="d-flex justify-content-between" style="width:200px;">
 				<a href="{{ path('trick.delete', {slug: trick.slug}) }}" type="button" class="btn btn-lg btn-danger" data-bs-toggle="modal" 
 				data-bs-target="#deleteModal{{ trick.id }}">Delete</a>
-				{% include "pages/trick/DeleteTrick.html.twig" %}
+				{% include "pages/trick/deleteTrick.html.twig" %}
 				<div class="form-group">
 					{{ form_row(formEdit.submit) }}
 				</div>

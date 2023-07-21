@@ -2,21 +2,21 @@
 var nav = document.querySelector('nav');
 
 window.addEventListener('scroll', function () {
-if (window.pageYOffset > 100) {
+if (window.scrollY > 100) {
 nav.classList.add('bg-dark', 'shadow');
 } else {
 nav.classList.remove('bg-dark', 'shadow');
 }
 });
 
-/* Index xl-size display picture modal */
+/* (1) Index xl-size displayPicture.html.twig */
 
 $('.img-thumbnail').on('click',function(){
     let pictureSrc = $(this).attr('src');
     $('.modal-img').attr('src',pictureSrc);
 });
 
-/* Index display media responsive */
+/*  (2) Index mediaDisplayResponsive.html.twig */
 
 $('.gallery-item').on('click',function(){
     let pictureLink = $(this).attr('data-link');
@@ -40,7 +40,7 @@ $('.video-item').on('click',function(){
     $('#exampleModal .modal-body').html(video);
 });
 
-/* New trick - Multi-upload video */
+/*  (3) New trick - Multi-upload video */
 
 $(document).ready(function(){
     $("#addmorebtn").click(function(){
