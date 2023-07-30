@@ -17,16 +17,16 @@ class Picture
     #[ORM\Column(length: 255)]
     private ?string $pictureLink = null;
 
-    #[Gedmo\Timestampable(on:'create')]
-    #[ORM\Column(type:'datetime', nullable : true)]
+    #[Gedmo\Timestampable(on: 'create')]
+    #[ORM\Column(type: 'datetime', nullable : true)]
     protected $createdAt;
 
-    #[Gedmo\Timestampable(on:'update')]
-    #[ORM\Column(type:'datetime', nullable : true)]
+    #[Gedmo\Timestampable(on: 'update')]
+    #[ORM\Column(type: 'datetime', nullable : true)]
     protected $updatedAt;
 
     #[ORM\ManyToOne(inversedBy: 'pictures')]
-    #[ORM\JoinColumn(nullable: false, onDelete:"CASCADE")]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Trick $trick = null;
 
     public function getId(): ?int
@@ -41,14 +41,14 @@ class Picture
 
     public function setPictureLink(string $pictureLink): void
     {
-        $this->pictureLink = $pictureLink;                                                                                                   
+        $this->pictureLink = $pictureLink;
     }
 
     public function getCreatedAt(): ?\DateTime
     {
         return $this->createdAt;
     }
-    
+
     public function getUpdatedAt(): ?\DateTime
     {
         return $this->updatedAt;

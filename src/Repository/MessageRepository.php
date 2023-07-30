@@ -3,9 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Message;
-use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<Message>
@@ -48,21 +48,21 @@ class MessageRepository extends ServiceEntityRepository
         $result = [];
 
         $query = $this->getEntityManager()->createQueryBuilder()
-            ->select('t','m')
-            ->from('App\Entity\Message','m')
-            ->join('m.trick','t')
+            ->select('t', 'm')
+            ->from('App\Entity\Message', 'm')
+            ->join('m.trick', 't')
             ->where("t.slug = '$slug'")
             ->setMaxResults($limit)
             // premier message de la page ou l'on se trouve
             ->setFirstResult(($page * $limit) - $limit)
-            ->orderBy('m.createdAt','DESC');
-        
+            ->orderBy('m.createdAt', 'DESC');
+
         // on utilise le paginator de doctrine et dedans, on passe la requête
         $paginator = new Paginator($query);
         // on effectue la pagination en récupérant les données
         $data = $paginator->getQuery()->getResult();
         // on vérifie si on a des données
-        if(empty($data)) {
+        if (empty($data)) {
             // on renvoie un tableau vide
             return $result;
         }
@@ -73,7 +73,7 @@ class MessageRepository extends ServiceEntityRepository
         $result['pages'] = $pages;
         $result['page'] = $page;
         $result['limit'] = $limit;
-        
+
         return $result;
     }
 

@@ -25,14 +25,13 @@ class UserListener
     }
 
     /**
-     * encode password based on plain password
+     * encode password based on plain password.
      *
-     * @param User $user
      * @return void
      */
     public function encodePassword(User $user)
     {
-        if($user->getPlainPassword() == null) {
+        if (null == $user->getPlainPassword()) {
             return;
         }
 
@@ -42,6 +41,5 @@ class UserListener
                 $user->getPlainPassword()
             )
         );
-
     }
 }

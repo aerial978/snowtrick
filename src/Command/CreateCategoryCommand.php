@@ -4,14 +4,13 @@ namespace App\Command;
 
 use App\Entity\Category;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Question\Question;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'app:create-category',
@@ -27,7 +26,7 @@ class CreateCategoryCommand extends Command
 
         parent::__construct();
     }
-    
+
     protected function configure(): void
     {
         $this->addArgument('name', InputArgument::OPTIONAL, 'Name');
@@ -39,7 +38,7 @@ class CreateCategoryCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $name = $input->getArgument('name');
-        if(!$name) {
+        if (!$name) {
             $question = new Question('New tricks category name : ');
             $name = $helper->ask($input, $output, $question);
         }

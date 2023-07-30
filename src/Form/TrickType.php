@@ -2,18 +2,18 @@
 
 namespace App\Form;
 
-use App\Entity\Trick;
 use App\Entity\Category;
+use App\Entity\Trick;
 use App\Repository\CategoryRepository;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class TrickType extends AbstractType
 {
@@ -27,7 +27,7 @@ class TrickType extends AbstractType
             'required' => false,
             'label' => 'Nom',
             'label_attr' => [
-                'class' => 'form-label mt-2 fw-bold'
+                'class' => 'form-label mt-2 fw-bold',
             ],
             'constraints' => [
                 new Assert\Length([
@@ -35,11 +35,11 @@ class TrickType extends AbstractType
                     'minMessage' => 'Must have at least 2 characters !',
                     'max' => 50]),
                 new Assert\NotBlank([
-                    'message' => 'Please, fill in this field !'
+                    'message' => 'Please, fill in this field !',
                 ]),
-            ]
+            ],
         ])
-        
+
         ->add('description', TextareaType::class, [
             'attr' => [
                 'class' => 'form-control',
@@ -47,16 +47,16 @@ class TrickType extends AbstractType
             'required' => false,
             'label' => 'Description',
             'label_attr' => [
-                'class' => 'form-label mt-2 fw-bold'
+                'class' => 'form-label mt-2 fw-bold',
             ],
             'constraints' => [
                 new Assert\NotNull([
-                    'message' => 'Please, fill in this field !'
+                    'message' => 'Please, fill in this field !',
                 ]),
-            ]
+            ],
         ])
 
-        ->add('category', EntityType::class, [  
+        ->add('category', EntityType::class, [
             'class' => Category::class,
             'attr' => [
                 'class' => 'form-select',
@@ -70,13 +70,13 @@ class TrickType extends AbstractType
                 ->orderBy('c.name', 'ASC');
             },
             'label_attr' => [
-                'class' => 'form-choice mt-2 mb-2 fw-bold'
+                'class' => 'form-choice mt-2 mb-2 fw-bold',
             ],
             'constraints' => [
                 new Assert\NotBlank([
-                    'message' => 'Invalid category !'
+                    'message' => 'Invalid category !',
                 ]),
-            ]
+            ],
         ])
 
         ->add('image', FileType::class, [
@@ -88,20 +88,20 @@ class TrickType extends AbstractType
             ],
             'label' => 'Picture(s)',
             'label_attr' => [
-                'class' => 'mt-2 mb-2 fw-bold'
+                'class' => 'mt-2 mb-2 fw-bold',
             ],
               'constraints' => [
                 new Assert\NotBlank([
                     'message' => 'Please upload at least one file !',
                 ]),
-            ]
+            ],
         ])
-            
+
         ->add('submit', SubmitType::class, [
             'attr' => [
-                'class' => 'btn btn-warning'
+                'class' => 'btn btn-warning',
             ],
-            'label' => 'Submit'
+            'label' => 'Submit',
         ]);
     }
 

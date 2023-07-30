@@ -4,9 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Video;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class VideoController extends AbstractController
 {
@@ -20,8 +20,7 @@ class VideoController extends AbstractController
             'success',
             'Delete successfully !'
         );
-    
-        return $this->redirectToRoute('trick.edit',['slug'=> $slug]);
-    }
 
+        return $this->redirectToRoute('trick.edit', ['slug' => $slug]);
+    }
 }

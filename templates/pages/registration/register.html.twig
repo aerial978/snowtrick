@@ -4,11 +4,11 @@
 {% endblock %}
 
 {% block body %}
-	<div class="main p-2">
-        <section class="sign">
-		<div class="navbar-brand text-center">
-            <a href="{{ path('home.index') }}" class="fs-1 link-warning text-warning text-decoration-none">Snowtricks</a>
-		</div>
+	<div class="main">
+        <div class="sign">
+			<div class="navbar-brand text-center">
+				<a href="{{ path('home.index') }}" class="fs-1 link-warning text-warning text-decoration-none">Snowtricks</a>
+			</div>
 			<div class="container bg-white shadow-lg p-3 mb-5 bg-body rounded">
 				{% for message in app.flashes('warning') %}
 					<div class="text-center alert alert-warning mt-4 fs-5">
@@ -40,23 +40,26 @@
 									{{ form_errors(registrationForm.email) }}
 								</div>
 							</div>
-							
+							<div class="form-group my-3">
+								{{ form_label(registrationForm.profilePicture) }}
+								{{ form_widget(registrationForm.profilePicture) }}
+								<div class="form-error text-danger">
+									{{ form_errors(registrationForm.profilePicture) }}
+								</div>	
+							</div>	
 							{{ form_widget(registrationForm.plainPassword) }}
 							<div class="form-error text-danger">
 								{{ form_errors(registrationForm.plainPassword) }}
 							</div>
-							
 							<div class="form-group form-button d-flex justify-content-between pt-5">
 								<button type="submit" class="btn btn-warning btn-lg">Submit</button>
 								<a href="{{ path('home.index') }}" class="text-decoration-none"><button type="button" class="btn btn-lg btn-outline-warning">Back</button></a>
 							</div>
-
 							{{ form_end(registrationForm) }}
-						</div>
-						
+						</div>	
 					</div>
 				</div>
 			</div>
-		</section>
+		</div>
 	</div>
 {% endblock %}

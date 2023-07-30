@@ -4,9 +4,9 @@ namespace App\Form;
 
 use App\Entity\Picture;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class CoverImageType extends AbstractType
 {
@@ -21,8 +21,8 @@ class CoverImageType extends AbstractType
                 ],
                 'label' => 'Cover Image',
                 'label_attr' => [
-                    'class' => 'mt-2 mb-2 fw-bold'
-                ]
+                    'class' => 'mt-2 mb-2 fw-bold',
+                ],
             ]);
     }
 

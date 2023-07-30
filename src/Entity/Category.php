@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use DateTimeImmutable;
 use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -23,7 +22,7 @@ class Category
     /*#[ORM\Column(type: 'datetime_immutable')]
     private $createdAt;*/
 
-    #[ORM\Column(type:'datetime')]
+    #[ORM\Column(type: 'datetime')]
     protected $createdAt;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Trick::class)]
@@ -54,7 +53,7 @@ class Category
 
     public function onPrePersist()
     {
-        $this->createdAt = new \DateTime("now");
+        $this->createdAt = new \DateTime('now');
     }
 
     public function getCreatedAt(): ?\DateTime

@@ -2,16 +2,16 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Cocur\Slugify\Slugify;
 use App\Repository\TrickRepository;
-use Doctrine\Common\Collections\Collection;
+use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: TrickRepository::class)]
-/*#[UniqueEntity(fields: ['name'], message: 'The trick name already exists !')]*/
+#[UniqueEntity(fields: ['name'], message: 'The trick name already exists !')]
 #[ORM\HasLifecycleCallbacks]
 class Trick
 {
@@ -26,28 +26,28 @@ class Trick
     #[ORM\Column(type: 'text')]
     private ?string $description;
 
-    #[Gedmo\Timestampable(on:'create')]
-    #[ORM\Column(type:'datetime', nullable : true)]
+    #[Gedmo\Timestampable(on: 'create')]
+    #[ORM\Column(type: 'datetime', nullable : true)]
     protected $createdAt;
 
-    #[Gedmo\Timestampable(on:'update')]
-    #[ORM\Column(type:'datetime', nullable : true)]
+    #[Gedmo\Timestampable(on: 'update')]
+    #[ORM\Column(type: 'datetime', nullable : true)]
     protected $updatedAt;
 
-    #[ORM\Column(length: 255, unique:true)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $slug;
 
-    #[ORM\ManyToOne(inversedBy: 'tricks', fetch: "EAGER" )]
+    #[ORM\ManyToOne(inversedBy: 'tricks', fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
 
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Message::class, orphanRemoval: true)]
     private Collection $messages;
 
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Picture::class, fetch: "EAGER")]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Picture::class, fetch: 'EAGER')]
     private Collection $pictures;
 
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Video::class, fetch: "EAGER")]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Video::class, fetch: 'EAGER')]
     private Collection $videos;
 
     #[ORM\Column(length: 255, nullable : true)]
@@ -94,40 +94,40 @@ class Trick
 
         return $this;
     }
-/*
-    public function onPrePersist()
-    {
-        $this->createdAt = new \DateTime("now");
-    }*/
+    /*
+        public function onPrePersist()
+        {
+            $this->createdAt = new \DateTime("now");
+        }*/
 
     public function getCreatedAt(): ?\DateTime
     {
         return $this->createdAt;
     }
-/*
-    public function setCreatedAt(\DateTime $createdAt): self
-    {
-        $this->createdAt = $createdAt;
+    /*
+        public function setCreatedAt(\DateTime $createdAt): self
+        {
+            $this->createdAt = $createdAt;
 
-        return $this;
-    }*/
-/*
-    public function onPreUpdateAt()
-    {
-        $this->updatedAt = new \DateTime("now");
-    }*/
+            return $this;
+        }*/
+    /*
+        public function onPreUpdateAt()
+        {
+            $this->updatedAt = new \DateTime("now");
+        }*/
 
     public function getUpdatedAt(): ?\DateTime
     {
         return $this->updatedAt;
     }
-/*
-    public function setUpdatedAt(\DateTime $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
+    /*
+        public function setUpdatedAt(\DateTime $updatedAt): self
+        {
+            $this->updatedAt = $updatedAt;
 
-        return $this;
-    }*/
+            return $this;
+        }*/
 
     public function getSlug(): ?string
     {

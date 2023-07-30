@@ -2,9 +2,9 @@
 
 namespace App\EventListener;
 
-use Symfony\Component\Security\Http\Event\LogoutEvent;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Security\Http\Event\LogoutEvent;
 
 class LogoutSubscriber extends AbstractController implements EventSubscriberInterface
 {

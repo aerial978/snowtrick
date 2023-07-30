@@ -1,7 +1,7 @@
 <nav class="navbar navbar-responsive fixed-bottom navbar-expand-sm">
 	<div class="container-fluid g-0">
 		<div class="navbar-brand">
-            <a href="{{ path('home.index') }}" class="fs-1 link-warning text-dark text-decoration-none ps-3">Snowtricks</a>
+			<a href="{{ path('home.index') }}" class="fs-1 link-warning text-dark text-decoration-none ps-3">Snowtricks</a>
 		</div>
 		<button class="navbar-toggler me-2 border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon navbar-warning"></span>
@@ -17,26 +17,29 @@
 				</li>
 			</ul>
 			<ul class="navbar-nav">
-                {% if app.user %}
-                    <li class="nav-item">
-                        <div class="nav-link d-flex justify-content-between ps-3 pe-3 bg-warning">
+				{% if app.user %}
+					<li class="nav-item">
+						<div class="nav-link d-flex justify-content-between ps-3 pe-3 bg-warning">
 							<div class="d-flex">
-								<i class="fa-solid fa-circle-user text-dark" style="font-size:35px;"></i>
+								<img src="{{ asset('upload/' ~ app.user.profilePicture) }}" alt="avatar" class="rounded-5" width="50">
 								<p class="d-flex text-dark my-auto ps-2 fs-5">{{ app.user.userIdentifier }}</p>
 							</div>
-                            <a class="nav-link" href="{{ path('security.logout') }}">
-                                <i class="fa-solid fa-right-from-bracket text-danger"></i>
-                            </a>
-                        </div>
-                    </li>
-                {% else %}
-				<li class="nav-item">
-					<a class="nav-link link-info text-dark border-top border-1 border-dark bg-warning fw-bold fs-4 ps-3" href="{{ path('security.registration') }}">Sign up</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link link-info text-dark border-top border-1 border-dark bg-warning fw-bold fs-4 ps-3" href="{{ path('security.login') }}">Sign in</a>
-				</li>
-                {% endif %}
+							<a class="nav-link" href="{{ path('security.logout') }}">
+								<span class="fa-stack fa-1x">
+									<i class="fa-solid fa-square fa-stack-2x fa-inverse"></i>
+									<i class="fa-solid fa-right-from-bracket fa-stack-1x" style="color:red"></i>
+								</span>
+							</a>
+						</div>
+					</li>
+				{% else %}
+					<li class="nav-item">
+						<a class="nav-link link-info text-dark border-top border-1 border-dark bg-warning fw-bold fs-4 ps-3" href="{{ path('security.registration') }}">Sign up</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link link-info text-dark border-top border-1 border-dark bg-warning fw-bold fs-4 ps-3" href="{{ path('security.login') }}">Sign in</a>
+					</li>
+				{% endif %}
 			</ul>
 		</div>
 	</div>

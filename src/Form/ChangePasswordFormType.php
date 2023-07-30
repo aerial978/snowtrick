@@ -7,7 +7,6 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ChangePasswordFormType extends AbstractType
@@ -21,11 +20,11 @@ class ChangePasswordFormType extends AbstractType
                 'first_options' => [
                     'attr' => [
                         'autocomplete' => 'new-password',
-                        'class' => 'form-control'
+                        'class' => 'form-control',
                     ],
                     'label' => 'New password',
                     'label_attr' => [
-                        'class' => 'form-label mt-3 text-info fs-5 fw-bold'
+                        'class' => 'form-label mt-3 text-info fs-5 fw-bold',
                     ],
                     'constraints' => [
                         new Assert\NotBlank([
@@ -42,11 +41,11 @@ class ChangePasswordFormType extends AbstractType
                 'second_options' => [
                     'attr' => [
                         'autocomplete' => 'new-password',
-                        'class' => 'form-control'
+                        'class' => 'form-control',
                     ],
                     'label' => 'Repeat Password',
                     'label_attr' => [
-                        'class' => 'form-label mt-3 text-info fs-5 fw-bold'
+                        'class' => 'form-label mt-3 text-info fs-5 fw-bold',
                     ],
                 ],
                 'invalid_message' => 'The password fields must match !',

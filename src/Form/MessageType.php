@@ -4,10 +4,10 @@ namespace App\Form;
 
 use App\Entity\Message;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class MessageType extends AbstractType
@@ -19,22 +19,22 @@ class MessageType extends AbstractType
                 'label' => false,
                 'required' => false,
                 'attr' => [
-                    'placeholder' => "Add message",
-                    'class' => 'form-control'
+                    'placeholder' => 'Add message',
+                    'class' => 'form-control',
                 ],
                 'constraints' => [
                     new Assert\NotBlank([
                         'message' => 'Please write your message !',
                     ]),
-                ]
+                ],
             ])
 
             ->add('submit', SubmitType::class, [
                 'attr' => [
-                    'class' => 'btn btn-info btn-lg mx-3 p-3'
+                    'class' => 'btn btn-info btn-lg mx-3 p-3',
                 ],
-                'label' => 'Send'
-            ]);    
+                'label' => 'Send',
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
