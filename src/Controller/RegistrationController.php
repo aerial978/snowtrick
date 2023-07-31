@@ -36,7 +36,7 @@ class RegistrationController extends AbstractController
             if (empty($profilePicture)) {
                 $user->setProfilePicture('default.png');
             } else {
-                $newprofilePicture = uniqid() . '.' . $profilePicture->guessExtension();
+                $newprofilePicture = uniqid().'.'.$profilePicture->guessExtension();
 
                 try {
                     $profilePicture->move(

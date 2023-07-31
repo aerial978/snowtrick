@@ -4,15 +4,15 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\File;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\File;
 
 class RegistrationFormType extends AbstractType
 {
@@ -29,7 +29,7 @@ class RegistrationFormType extends AbstractType
                 ],
                 'constraints' => [
                     new Assert\NotBlank([
-                        'message' => 'Please enter a name !'
+                        'message' => 'Please enter a name !',
                     ]),
                 ],
             ])
@@ -71,7 +71,7 @@ class RegistrationFormType extends AbstractType
                             'image/jpg',
                         ],
                         'mimeTypesMessage' => 'please upload an image in gif, png, jpg or jpeg format !',
-                    ])
+                    ]),
                 ],
             ])
 
@@ -114,7 +114,7 @@ class RegistrationFormType extends AbstractType
                     new Assert\Regex([
                         'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/',
                         'message' => 'Your password must contain at least 8 characters, a lowercase letter, an uppercase letter, a number and a special character !',
-                    ]),   
+                    ]),
                 ],
             ]);
     }
