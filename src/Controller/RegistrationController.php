@@ -35,23 +35,22 @@ class RegistrationController extends AbstractController
             $profilePicture = $form->get('profilePicture')->getData();
             if (empty($profilePicture)) {
                 $user->setProfilePicture('default.png');
-            }
+            } else {
+                $newprofilePicture = uniqid() . '.' . $profilePicture->guessExtension();
 
-            $newprofilePicture = uniqid().'.'.$profilePicture->guessExtension();
-
-            try {
-                $profilePicture->move(
-                    $this->getParameter('uploads_directory'),
-                    $newprofilePicture
-                );
-            } catch (FileException $e) {
-                // ... handle exception if something happens during file upload
-                $this->addFlash(
-                    'warning',
-                    'A problem occurred during the download !'
-                );
+                try {
+                    $profilePicture->move(
+                        $this->getParameter('uploads_directory'),
+                        $newprofilePicture
+                    );
+                } catch (FileException $e) {
+                    $this->addFlash(
+                        'warning',
+                        'A problem occurred during the download !'
+                    );
+                }
+                $user->setProfilePicture($newprofilePicture);
             }
-            $user->setProfilePicture($newprofilePicture);
 
             $tokenRegistration = $tokenGeneratorInterface->generateToken();
 

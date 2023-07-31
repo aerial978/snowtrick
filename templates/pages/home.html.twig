@@ -147,19 +147,6 @@
 {% endblock %}
 
 {% block js %}
-	{% if app.flashes("connection")[0] is defined %}
-		<script>
-			Toastify({
-				text: "Password modified, log in !",
-				duration: 5000,
-				className: "info",
-				position: "right",
-				style: {
-					background: "linear-gradient(to right, #00b09b, #96c93d)",
-				}
-			}).showToast();
-		</script>
-	{% endif %}
 	{% if app.flashes("connected")[0] is defined %}
 		<script>
 			Toastify({

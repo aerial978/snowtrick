@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ResetPasswordRequestFormType extends AbstractType
 {
@@ -24,7 +24,7 @@ class ResetPasswordRequestFormType extends AbstractType
                 'class' => 'mt-3 text-info fs-5 fw-bold',
                 ],
                 'constraints' => [
-                    new NotBlank([
+                    new Assert\NotBlank([
                         'message' => 'Please enter your email',
                     ]),
                 ],

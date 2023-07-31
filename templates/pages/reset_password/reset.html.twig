@@ -10,9 +10,9 @@
 				<div class="navbar-brand text-center">
             		<a href="{{ path('home.index') }}" class="fs-1 text-warning text-decoration-none">Snowtricks</a>
 				</div>
-				{% for flash_error in app.flashes('reset_password_error') %}
+			{#	{% for flash_error in app.flashes('reset_password_error') %}
 					<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-				{% endfor %}
+				{% endfor %} #}
 				<div class="container bg-white shadow-lg p-3 mb-5 bg-body rounded">
 					<div class="sign-content m-5">
 						<div class="row">
@@ -22,7 +22,10 @@
 							<div class="sign-form col-md-6">
 								<h2 class="form-title text-dark border-bottom border-dark fw-bold pb-3">Reset password</h2>
 								{{ form_start(resetForm) }}
-									{{ form_row(resetForm.plainPassword) }}
+									{{ form_widget(resetForm.plainPassword) }}
+									<div class="form-error text-danger">
+										{{ form_errors(resetForm.plainPassword) }}
+									</div>
 									<div class="form-group form-button d-flex justify-content-between pt-5">
 										<button type="submit" class="btn btn-warning btn-lg">Submit</button>
 										<a href="{{ path('home.index') }}" class="text-decoration-none"><button type="button" class="btn btn-lg btn-outline-warning">Back</button></a>
