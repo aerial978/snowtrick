@@ -1,27 +1,123 @@
 <!-- Modal -->
 <div class="modal fade" id="newVideoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h1 class="modal-title fs-5" id="exampleModalLabel"></h1>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-            {{ form_start(formVideo) }}
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel"></h1>
+            </div>
+            {{ form_start(formVideo, { 'attr': { 'id': 'videoForm' } }) }}
                 <div class="modal-body">
                     <div class="mb-3">
                         <div class="form-group">
-                            <div class="form-group">
-                                {{ form_label(formVideo.newVideoLink) }}
-								{{ form_widget(formVideo.newVideoLink) }}
-                            </div>
+                            {{ form_label(formVideo.newVideoLink) }}
+                            {{ form_widget(formVideo.newVideoLink) }}
                         </div>
                     </div>
+                    <div id="errorMessages"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-warning" data-bs-dismiss="modal">Submit</button>
+                    <button type="submit" class="btn btn-warning">Submit</button>
                 </div>
-			{{ form_end(formVideo) }}
-		</div>
-	</div>
+            {{ form_end(formVideo) }}
+        </div>
+    </div>
 </div>
+
+<script>
+    // Efface les messages d'erreur
+    function clearErrorMessage() {
+        document.getElementById('errorMessages').innerHTML = '';
+    }
+
+    // Affiche un message d'erreur
+    function displayErrorMessage(message) {
+        var errorMessageHTML = '<div class="alert alert-danger">' + message + '</div>';
+        document.getElementById('errorMessages').innerHTML = errorMessageHTML;
+        document.getElementById('errorMessages').style.display = 'block';
+    }
+
+    // Affiche un message de succès
+    function displaySuccessMessage(message) {
+        var successMessageHTML = '<div class="alert alert-success">' + message + '</div>';
+        document.getElementById('errorMessages').innerHTML = successMessageHTML;
+        document.getElementById('errorMessages').style.display = 'block';
+    }
+
+    // Valide le lien vidéo en utilisant une expression régulière
+    function validateVideoLink(videoLink) {
+        var regex = /^https?:\/\/(?:www\.)?youtube\.com\/watch\?v=[\w\-]+(?:&t=\d+s?)?$/;
+        return regex.test(videoLink);
+    }
+
+    // Gére la soumission du formulaire
+    function submitForm(event) {
+        event.preventDefault();
+        var form = document.getElementById('videoForm');
+        var videoLink = document.getElementById('video_newVideoLink').value;
+
+        // Vérifie si le lien vidéo est vide
+        if (!videoLink) {
+            displayErrorMessage('The field must not be empty !');
+            return;
+        }
+
+        // Vérifie la validité des éléments du formulaire
+        if (!form.checkValidity()) {
+            displayErrorMessage(form.newVideoLink.validationMessage);
+            return;
+        }
+
+        // Valide le format du lien vidéo
+        if (!validateVideoLink(videoLink)) {
+            displayErrorMessage('The format of the video link is incorrect !');
+            return;
+        }
+
+        // Crée une requête XMLHttpRequest pour soumettre les données du formulaire au serveur
+        var xhr = new XMLHttpRequest();
+        xhr.open(form.method, form.action, true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    // Affiche un message de succès et recharger la page après un court délai
+                    displaySuccessMessage('The form has been submitted successfully !');
+                    clearFormFields(); // Efface le champ du formulaire en cas de succès
+                    setTimeout(function () {
+                        location.reload();
+                    }, 2000);
+                } else {
+                    // Affiche les messages d'erreur renvoyés par le serveur
+                    var errorMessages = JSON.parse(xhr.responseText).errors;
+                    var errorMessageHTML = '<div class="alert alert-danger"><ul>';
+                    errorMessages.forEach(function (value) {
+                        errorMessageHTML += '<li>' + value + '</li>';
+                    });
+                    errorMessageHTML += '</ul></div>';
+
+                    document.getElementById('errorMessages').innerHTML = errorMessageHTML;
+                    document.getElementById('errorMessages').style.display = 'block';
+                    document.getElementById('newVideoModal').style.display = 'block';
+                }
+            }
+        };
+        // Envoie les données du formulaire via XMLHttpRequest
+        xhr.send(new URLSearchParams(new FormData(form)));
+    }
+
+    // Réinitialise le champ du formulaire
+    function clearFormFields() {
+        document.getElementById('video_newVideoLink').value = '';
+    }
+
+    // Gére l'événement de masquage du modal
+    function handleModalHidden() {
+        clearErrorMessage(); // Efface les messages d'erreur
+        clearFormFields(); // Efface le champ du formulaire
+    }
+
+    // Ajoute les écouteurs d'événements
+    document.getElementById('newVideoModal').addEventListener('hidden.bs.modal', handleModalHidden);
+    document.getElementById('videoForm').addEventListener('submit', submitForm);
+</script>

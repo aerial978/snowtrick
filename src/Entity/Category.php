@@ -19,9 +19,6 @@ class Category
     #[ORM\Column(type: 'string', length: 50)]
     private $name;
 
-    /*#[ORM\Column(type: 'datetime_immutable')]
-    private $createdAt;*/
-
     #[ORM\Column(type: 'datetime')]
     protected $createdAt;
 

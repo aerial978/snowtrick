@@ -9,7 +9,6 @@ use App\Entity\Video;
 use App\Form\EditTrickType;
 use App\Form\MessageType;
 use App\Form\NameTrickType;
-use App\Form\PictureType;
 use App\Form\TrickType;
 use App\Form\VideoType;
 use App\Repository\MessageRepository;
@@ -29,11 +28,19 @@ class TrickController extends AbstractController
 {
     private $coverImageController;
     private $pictureController;
+    private $videoController;
+    private $videoService;
 
-    public function __construct(CoverImageController $coverImageController, PictureController $pictureController)
-    {
+    public function __construct(
+        CoverImageController $coverImageController,
+        PictureController $pictureController,
+        VideoService $videoService,
+        VideoController $videoController
+    ) {
         $this->coverImageController = $coverImageController;
         $this->pictureController = $pictureController;
+        $this->videoController = $videoController;
+        $this->videoService = $videoService;
     }
 
     #[Route('/trick/new', name: 'trick.new', methods: ['GET', 'POST'])]
@@ -88,7 +95,7 @@ class TrickController extends AbstractController
         $pictures = $pictureRepository->findBy(['trick' => $trick], ['createdAt' => 'DESC']);
         $videos = $videoRepository->findBy(['trick' => $trick], ['createdAt' => 'DESC']);
 
-        // MODIFICATION PICTURE
+        // MODIFICATION COVERIMAGE
         $formCoverImage = $this->coverImageController->editCoverImage($trick, $request, $picture);
 
         $message = new Message();
@@ -107,7 +114,7 @@ class TrickController extends AbstractController
                 ' Message was successfully added !'
             );
 
-            return $this->redirect($this->generateUrl('trick.index', ['slug' => $slug]) . '#card-message');
+            return $this->redirect($this->generateUrl('trick.index', ['slug' => $slug]).'#card-message');
         }
 
         // on va chercher le numéro de la page dans l'url, par défaut c'est la page 1
@@ -151,27 +158,16 @@ class TrickController extends AbstractController
 
             $manager->persist($trickName);
             $manager->flush();
+
+            return $this->redirectToRoute('trick.index', ['slug' => $trick->getSlug()]);
         }
 
         // MODIFICATION COVERIMAGE
         $formCoverImage = $this->coverImageController->editCoverImage($trick, $request, $picture);
 
         // AJOUT PICTURE TRICK
-        $formPicture = $this->createForm(PictureType::class, $picture);
-        $formPicture->handleRequest($request);
-
-        if ($formPicture->isSubmitted() && $formPicture->isValid()) {
-            $picture = $formPicture->get('newPictureLink')->getData();
-
-            $removePicture = $trickRepository->findOneBySlug($slug);
-            if ($removePicture->getCoverImage()) {
-                $filesystem = new Filesystem();
-                $path = 'upload/' . $removePicture->getCoverImage();
-                $filesystem->remove([$path]);
-            }
-
-            $pictureService->newPicture($trick, [$picture]);
-
+        $formPicture = $this->pictureController->addPicture($trick, $picture, $request, $trickRepository, $slug);
+        if (!$formPicture) {
             return $this->redirectToRoute('trick.edit', ['slug' => $slug]);
         }
 
@@ -179,17 +175,8 @@ class TrickController extends AbstractController
         $formEditPicture = $this->pictureController->editPicture($trick, $request, $picture);
 
         // AJOUT VIDEO TRICK
-        $video = new Video();
-        $formVideo = $this->createForm(VideoType::class, $video);
-        $formVideo->handleRequest($request);
-
-        if ($formVideo->isSubmitted() && $formVideo->isValid()) {
-            // Récupération de l'image(s)
-            $video = $formVideo->get('newVideoLink')->getData();
-
-            // Utilisation de VideoService
-            $videoService->newVideo($trick, [$video]);
-
+        $formVideo = $this->addVideo($trick, $request, $slug);
+        if (!$formVideo) {
             return $this->redirectToRoute('trick.edit', ['slug' => $slug]);
         }
 
@@ -211,27 +198,32 @@ class TrickController extends AbstractController
             'videos' => $videos,
             'formEditCoverImage' => $formCoverImage,
             'formNameEdit' => $formNameEdit->createView(),
-            'formPicture' => $formPicture->createView(),
+            'formPicture' => $formPicture,
             'formEditPicture' => $formEditPicture,
-            'formVideo' => $formVideo->createView(),
+            'formVideo' => $formVideo,
             'formEdit' => $formEdit->createView(),
         ]);
     }
 
     #[Route('/trick/delete/{slug}', name: 'trick.delete', methods: ['GET'])]
-    public function deleteTrick(Trick $trick, TrickRepository $trickRepository, Filesystem $filesystem, EntityManagerInterface $manager, $slug): Response
-    {
+    public function deleteTrick(
+        Trick $trick,
+        TrickRepository $trickRepository,
+        Filesystem $filesystem,
+        EntityManagerInterface $manager,
+        $slug
+    ): Response {
         $removePictures = $trickRepository->findOneBySlug($slug);
         // Delete cover image
         if ($removePictures->getCoverImage()) {
             $filesystem = new Filesystem();
-            $path = 'upload/' . $removePictures->getCoverImage();
+            $path = 'upload/'.$removePictures->getCoverImage();
             $filesystem->remove([$path]);
         }
         // Delete all pictures by trick
         foreach ($removePictures->getPictures() as $image) {
             $filesystem = new Filesystem();
-            $path = 'upload/' . $image->getPictureLink();
+            $path = 'upload/'.$image->getPictureLink();
             $filesystem->remove([$path]);
         }
 
@@ -244,5 +236,21 @@ class TrickController extends AbstractController
         );
 
         return $this->redirectToRoute('home.index');
+    }
+
+    private function addVideo($trick, $request)
+    {
+        $video = new Video();
+        $formVideo = $this->createForm(VideoType::class, $video);
+        $formVideo->handleRequest($request);
+
+        if ($formVideo->isSubmitted() && $formVideo->isValid()) {
+            $video = $formVideo->get('newVideoLink')->getData();
+            $this->videoService->newVideo($trick, [$video]);
+
+            return false;
+        }
+
+        return $formVideo->createView();
     }
 }

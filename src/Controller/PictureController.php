@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Picture;
 use App\Entity\Trick;
 use App\Form\EditPictureType;
+use App\Form\PictureType;
 use App\Repository\TrickRepository;
 use App\Service\PictureService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,6 +22,28 @@ class PictureController extends AbstractController
     public function __construct(PictureService $pictureService)
     {
         $this->pictureService = $pictureService;
+    }
+
+    public function addPicture(Trick $trick, Picture $picture, Request $request, TrickRepository $trickRepository, $slug)
+    {
+        $formPicture = $this->createForm(PictureType::class, $picture);
+        $formPicture->handleRequest($request);
+
+        if ($formPicture->isSubmitted() && $formPicture->isValid()) {
+            $picture = $formPicture->get('newPictureLink')->getData();
+
+            $removePicture = $trickRepository->findOneBySlug($slug);
+            if ($removePicture->getCoverImage()) {
+                $filesystem = new Filesystem();
+                $path = 'upload/'.$removePicture->getCoverImage();
+                $filesystem->remove([$path]);
+            }
+            $this->pictureService->newPicture($trick, [$picture]);
+
+            return false;
+        }
+
+        return $formPicture->createView();
     }
 
     public function editPicture(Trick $trick, Request $request, Picture $picture)
@@ -46,7 +69,6 @@ class PictureController extends AbstractController
             $trick->setCoverImage(null);
             $trickRepository->add($trick, true);
         }
-
         $manager->remove($picture);
         $manager->flush();
 

@@ -66,6 +66,12 @@ class Trick
         $this->slug = (new Slugify())->slugify($this->name);
     }
 
+    #[ORM\PreUpdate]
+    public function updateSlug()
+    {
+        $this->slug = (new Slugify())->slugify(strtolower($this->name));
+    }
+
     public function getId(): ?int
     {
         return $this->id;

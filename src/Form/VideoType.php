@@ -18,17 +18,22 @@ class VideoType extends AbstractType
             'required' => false,
             'attr' => [
                 'class' => 'form-control',
+                'placeholder' => 'https://www.youtube.com/watch?v=_hxLS2ErMiY&t=4s',
             ],
-            'label' => 'New video',
+            'label' => 'New video (YouTube)',
             'label_attr' => [
                 'class' => 'mt-4 mb-2',
             ],
-            'constraints' => [
+        /*    'constraints' => [
                 new Assert\NotBlank([
                     'message' => 'Please upload a file !',
                 ]),
-            ],
-            ]);
+                new Assert\Regex([
+                    'pattern' => '/^htpps?:\/\/(?:www\.)?youtube\.com\/watch\?v=[\w\-]+(?:&t=\d+s?)?$/',
+                    'message' => 'Invalid YouTube video URL format !',
+                    ]),
+            ],*/
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
