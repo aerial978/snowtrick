@@ -20,7 +20,7 @@ class VideoType extends AbstractType
                 'class' => 'form-control',
                 'placeholder' => 'https://www.youtube.com/watch?v=_hxLS2ErMiY&t=4s',
             ],
-            'label' => 'New video (YouTube)',
+            'label' => 'YouTube video link',
             'label_attr' => [
                 'class' => 'mt-4 mb-2',
             ],

@@ -5,12 +5,10 @@ namespace App\Controller;
 use App\Entity\Message;
 use App\Entity\Picture;
 use App\Entity\Trick;
-use App\Entity\Video;
 use App\Form\EditTrickType;
 use App\Form\MessageType;
 use App\Form\NameTrickType;
 use App\Form\TrickType;
-use App\Form\VideoType;
 use App\Repository\MessageRepository;
 use App\Repository\PictureRepository;
 use App\Repository\TrickRepository;
@@ -29,18 +27,15 @@ class TrickController extends AbstractController
     private $coverImageController;
     private $pictureController;
     private $videoController;
-    private $videoService;
 
     public function __construct(
         CoverImageController $coverImageController,
         PictureController $pictureController,
-        VideoService $videoService,
         VideoController $videoController
     ) {
         $this->coverImageController = $coverImageController;
         $this->pictureController = $pictureController;
         $this->videoController = $videoController;
-        $this->videoService = $videoService;
     }
 
     #[Route('/trick/new', name: 'trick.new', methods: ['GET', 'POST'])]
@@ -138,9 +133,7 @@ class TrickController extends AbstractController
         Trick $trick,
         TrickRepository $trickRepository,
         PictureRepository $pictureRepository,
-        PictureService $pictureService,
         VideoRepository $videoRepository,
-        VideoService $videoService,
         EntityManagerInterface $manager,
         Request $request,
         $slug
@@ -171,11 +164,11 @@ class TrickController extends AbstractController
             return $this->redirectToRoute('trick.edit', ['slug' => $slug]);
         }
 
-        // MODIFICATION PICTURE
+        // MODIFICATION PICTURE TRICK
         $formEditPicture = $this->pictureController->editPicture($trick, $request, $picture);
 
         // AJOUT VIDEO TRICK
-        $formVideo = $this->addVideo($trick, $request, $slug);
+        $formVideo = $this->videoController->addVideo($trick, $request);
         if (!$formVideo) {
             return $this->redirectToRoute('trick.edit', ['slug' => $slug]);
         }
@@ -236,21 +229,5 @@ class TrickController extends AbstractController
         );
 
         return $this->redirectToRoute('home.index');
-    }
-
-    private function addVideo($trick, $request)
-    {
-        $video = new Video();
-        $formVideo = $this->createForm(VideoType::class, $video);
-        $formVideo->handleRequest($request);
-
-        if ($formVideo->isSubmitted() && $formVideo->isValid()) {
-            $video = $formVideo->get('newVideoLink')->getData();
-            $this->videoService->newVideo($trick, [$video]);
-
-            return false;
-        }
-
-        return $formVideo->createView();
     }
 }

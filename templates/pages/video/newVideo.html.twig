@@ -1,19 +1,19 @@
 <!-- Modal -->
 <div class="modal fade" id="newVideoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
+        <div class="modal-content p-2">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel"></h1>
             </div>
             {{ form_start(formVideo, { 'attr': { 'id': 'videoForm' } }) }}
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <div class="form-group">
+                    <div>
+                        <div class="form-group mb-3">
                             {{ form_label(formVideo.newVideoLink) }}
                             {{ form_widget(formVideo.newVideoLink) }}
                         </div>
                     </div>
-                    <div id="errorMessages"></div>
+                    <div id="messagesNew"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -23,101 +23,106 @@
         </div>
     </div>
 </div>
-
 <script>
-    // Efface les messages d'erreur
+    // Ajouter un événement qui se déclenche lorsque le DOM est entièrement chargé
+    document.addEventListener("DOMContentLoaded", function(){
+    // Fonction effacer le message d'erreur
     function clearErrorMessage() {
-        document.getElementById('errorMessages').innerHTML = '';
+        document.getElementById('messagesNew').innerHTML = '';
     }
-
-    // Affiche un message d'erreur
+    // Fonction afficher un message d'erreur
     function displayErrorMessage(message) {
-        var errorMessageHTML = '<div class="alert alert-danger">' + message + '</div>';
-        document.getElementById('errorMessages').innerHTML = errorMessageHTML;
-        document.getElementById('errorMessages').style.display = 'block';
+        let errorMessageHTML = '<div class="alert alert-danger">' + message + '</div>';
+        document.getElementById('messagesNew').innerHTML = errorMessageHTML;
+        document.getElementById('messagesNew').style.display = 'block';
     }
-
-    // Affiche un message de succès
+    // Fonction afficher un message de succès
     function displaySuccessMessage(message) {
-        var successMessageHTML = '<div class="alert alert-success">' + message + '</div>';
-        document.getElementById('errorMessages').innerHTML = successMessageHTML;
-        document.getElementById('errorMessages').style.display = 'block';
+        let successMessageHTML = '<div class="alert alert-success">' + message + '</div>';
+        document.getElementById('messagesNew').innerHTML = successMessageHTML;
+        document.getElementById('messagesNew').style.display = 'block';
     }
-
-    // Valide le lien vidéo en utilisant une expression régulière
+    // Fonction valider un lien vidéo
     function validateVideoLink(videoLink) {
-        var regex = /^https?:\/\/(?:www\.)?youtube\.com\/watch\?v=[\w\-]+(?:&t=\d+s?)?$/;
+        let regex = /^https?:\/\/(?:www\.)?youtube\.com\/watch\?v=[\w\-]+(?:&t=\d+s?)?$/;
         return regex.test(videoLink);
     }
-
-    // Gére la soumission du formulaire
+    // Gèrer la soumission du formulaire lorsqu'il est envoyé
     function submitForm(event) {
         event.preventDefault();
-        var form = document.getElementById('videoForm');
-        var videoLink = document.getElementById('video_newVideoLink').value;
-
-        // Vérifie si le lien vidéo est vide
+        let form = document.getElementById('videoForm');
+        let videoLink = document.getElementById('video_newVideoLink').value;
+        // Vérifier si le lien vidéo est vide
         if (!videoLink) {
-            displayErrorMessage('The field must not be empty !');
+            displayErrorMessage('Please enter a YouTube link !');
             return;
         }
-
-        // Vérifie la validité des éléments du formulaire
+        // Vérifier la validité des éléments du formulaire
         if (!form.checkValidity()) {
             displayErrorMessage(form.newVideoLink.validationMessage);
             return;
         }
-
-        // Valide le format du lien vidéo
+        // Valider le format du lien vidéo
         if (!validateVideoLink(videoLink)) {
-            displayErrorMessage('The format of the video link is incorrect !');
+            displayErrorMessage('The format of the YouTube link is incorrect !');
             return;
         }
-
-        // Crée une requête XMLHttpRequest pour soumettre les données du formulaire au serveur
-        var xhr = new XMLHttpRequest();
+        // Créer une requête XMLHttpRequest pour soumettre les données du formulaire au serveur
+        let xhr = new XMLHttpRequest();
+        // Ouvrir la connexion pour la requête avec la méthode et l'action spécifiées
         xhr.open(form.method, form.action, true);
+        // Définir l'en-tête HTTP pour spécifier le type de contenu
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        // Configurer le gestionnaire d'état pour détecter quand la requête est terminée
         xhr.onreadystatechange = function () {
+            // Si l'état de la requête est 4 (terminé)
             if (xhr.readyState === 4) {
+                // Si le statut de la requête est 200 (OK)
                 if (xhr.status === 200) {
-                    // Affiche un message de succès et recharger la page après un court délai
+                    // Afficher un message de succès
                     displaySuccessMessage('The form has been submitted successfully !');
-                    clearFormFields(); // Efface le champ du formulaire en cas de succès
+                    // Attendre pendant 2000 millisecondes (2 secondes) avant d'exécuter le code à l'intérieur de cette fonction
                     setTimeout(function () {
+                        // Recharge la page actuelle après 2 secondes
                         location.reload();
                     }, 2000);
                 } else {
-                    // Affiche les messages d'erreur renvoyés par le serveur
-                    var errorMessages = JSON.parse(xhr.responseText).errors;
-                    var errorMessageHTML = '<div class="alert alert-danger"><ul>';
+                    // Convertir les messages d'erreur renvoyés par la réponse JSON de la requête
+                    let errorMessages = JSON.parse(xhr.responseText).errors;
+                    // Créer le code HTML pour afficher les messages d'erreur
+                    let errorMessageHTML = '<div class="alert alert-danger"><ul>';
+                    // Parcourir chaque message d'erreur dans le tableau "errorMessages"
                     errorMessages.forEach(function (value) {
                         errorMessageHTML += '<li>' + value + '</li>';
                     });
+                    // Fermer la liste non ordonnée et la balise div pour afficher les messages d'erreur
                     errorMessageHTML += '</ul></div>';
-
-                    document.getElementById('errorMessages').innerHTML = errorMessageHTML;
-                    document.getElementById('errorMessages').style.display = 'block';
+                    // Insèrer les messages d'erreur dans l'élément avec l'ID "messagesNew"
+                    document.getElementById('messagesNew').innerHTML = errorMessageHTML;
+                    // Afficher l'élément contenant les messages d'erreur
+                    document.getElementById('messagesNew').style.display = 'block';
+                    // Affiche le modal
                     document.getElementById('newVideoModal').style.display = 'block';
                 }
             }
         };
-        // Envoie les données du formulaire via XMLHttpRequest
+        // Envoyer les données du formulaire via XMLHttpRequest
         xhr.send(new URLSearchParams(new FormData(form)));
     }
-
-    // Réinitialise le champ du formulaire
+    // Fonction réinitialiser le champ du formulaire
     function clearFormFields() {
         document.getElementById('video_newVideoLink').value = '';
     }
-
-    // Gére l'événement de masquage du modal
+    // Fonction gèrer l'événement de masquage du modal
     function handleModalHidden() {
-        clearErrorMessage(); // Efface les messages d'erreur
-        clearFormFields(); // Efface le champ du formulaire
+        // Effacer les messages d'erreur
+        clearErrorMessage();
+        // Effacer le champ du formulaire
+        clearFormFields(); 
     }
-
-    // Ajoute les écouteurs d'événements
+    // Ajouter les écouteurs d'événements
     document.getElementById('newVideoModal').addEventListener('hidden.bs.modal', handleModalHidden);
     document.getElementById('videoForm').addEventListener('submit', submitForm);
+});
 </script>
+

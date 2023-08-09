@@ -116,6 +116,7 @@ class ApiController extends AbstractController
         $videoId = $request->request->get('videoId');
 
         $editVideo = $videoRepository->findOneBy(['id' => $videoId]);
+        $videoLink = null;
 
         if (str_starts_with($videoUrl, 'https://www.youtube.com/watch?')) {
             $explode = explode('?', $videoUrl);

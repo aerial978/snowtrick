@@ -14,14 +14,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class VideoController extends AbstractController
 {
-    /*private $videoService;
+    private $videoService;
 
     public function __construct(VideoService $videoService)
     {
         $this->videoService = $videoService;
     }
 
-    public function addVideo(Trick $trick, Request $request, $slug)
+    public function addVideo(Trick $trick, Request $request)
     {
         $video = new Video();
         $formVideo = $this->createForm(VideoType::class, $video);
@@ -31,10 +31,11 @@ class VideoController extends AbstractController
             $video = $formVideo->get('newVideoLink')->getData();
             $this->videoService->newVideo($trick, [$video]);
 
-            return $this->redirectToRoute('trick.edit', ['slug' => $slug]);
+            return false;
         }
+
         return $formVideo->createView();
-    }*/
+    }
 
     #[Route('/video/delete/{slug}/{id}', name: 'video.delete', methods: ['GET'])]
     public function deleteVideo($slug, Video $video, EntityManagerInterface $manager): Response
