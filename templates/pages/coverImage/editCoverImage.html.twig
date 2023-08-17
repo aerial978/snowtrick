@@ -27,7 +27,7 @@
 					{% else %}
 						{% set dataImage = 'default' %}
 					{% endif %}
-					<button type="button" class="btn btn-lg btn-success me-3 btn-modify" data-bs-toggle="modal" data-bs-target="#editCoverImageModal" data-image="{{ dataImage }}">
+					<button type="button" class="btn btn-lg btn-success me-3 btn-modify" data-bs-toggle="modal" data-bs-target="#editCoverImageModal" data-trick-id="{{ trick.id }}" data-cover-image="{{ trick.coverImage }}">
 						<i class="fa-solid fa-pen text-light"></i>
 					</button>
 				</div>
@@ -37,8 +37,6 @@
 					</a>
 				</div>
 			</div>
-			
-			<!-- Edit cover image modal -->
 			<div class="modal fade" id="editCoverImageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-lg">
 					<div class="modal-content">
@@ -46,73 +44,111 @@
 							<h1 class="modal-title fs-5" id="exampleModalLabel"></h1>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
-						<input id="trickId" value="{{ trick.id }}" hidden>
-						{{ form_start(formEditCoverImage) }}	
-						<div class="modal-body">
-						<input id="coverImage" hidden>
-							<div class="mb-3">
+						{{ form_start(formEditCoverImage, { 'attr': { 'id': 'editCoverForm' } }) }}
+						<div class="modal-body alert alert-warning">
+							<input type="hidden" id="coverImage">
+						 	<input type="hidden" id="trickId">
+							<div class="form-group mb-3">
 								{{ form_label(formEditCoverImage.coverImage) }}
 								{{ form_widget(formEditCoverImage.coverImage) }}
 							</div>
+							<div id="messagesEditCover"></div>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-							<button type="button" id="cover_button" class="btn btn-warning" data-bs-dismiss="modal">Submit</button>
+							<button type="button" id="cover_button" class="btn btn-warning">Submit</button>
 						</div>
 						{{ form_end(formEditCoverImage) }}
 					</div>
 				</div>
 			</div>
-			<!-- End cover image modal -->
 		{% endif %}
 	</div>
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script>
-$(document).ready(function () { 
-	// créer un evenement au click sur le bouton btn-modify
-	$('.btn-modify').click(function () { 
-		// on recupere la valeur de l'attribut data-image
-		let coverImage = $(this).attr("data-image");
-		// on insere la valeur de l'attribut à l'interieur de l'input pictureId
-		$("#coverImage").val(coverImage);
+document.addEventListener('DOMContentLoaded', function () {
+	let modifyButtons = document.querySelectorAll('.btn-modify');
+	modifyButtons.forEach(function (button) {
+		button.addEventListener('click', function () {
+			let coverImage = this.getAttribute('data-cover-image');
+			let trickId = this.getAttribute("data-trick-id");
+			document.getElementById("coverImage").value = coverImage;
+			document.getElementById("trickId").value = trickId;
+		});
 	});
-	// soumet le formulaire
-	$('#cover_button').click(function (e) { 
-		e.preventDefault();
-		// recupere la valeur de l'input image
-		var covImage = $('#coverImage').val();
-		let coverFile = $('form[name="cover_image"] :input')[1].files[0];
-		// teste si image existe
-		if (coverFile != undefined) { 
-			// recupere l'image soumis dans l'input
-			// creation objet formdata
-			let trickId = $('#trickId').val();
+	
+	// Fonction effacer le message d'erreur
+    function clearErrorMessage() {
+        document.getElementById('messagesEditCover').innerHTML = '';
+    }
+    // Fonction afficher un message d'erreur
+    function displayErrorMessage(message) {
+        let errorMessageHTML = '<div class="alert alert-danger">' + message + '</div>';
+        document.getElementById('messagesEditCover').innerHTML = errorMessageHTML;
+        //document.getElementById('messagesEditCover').style.display = 'block';
+    }
+    // Fonction afficher un message de succès
+    function displaySuccessMessage(message) {
+        let successMessageHTML = '<div class="alert alert-success">' + message + '</div>';
+        document.getElementById('messagesEditCover').innerHTML = successMessageHTML;
+        document.getElementById('messagesEditCover').style.display = 'block';
+    }
+
+    function isImageFormatValid(coverFile) {
+        let allowedFormats = ['jpg', 'jpeg', 'png'];
+        let fileExtension = coverFile.name.split('.').pop().toLowerCase();
+        return allowedFormats.includes(fileExtension);
+    }
+
+	let editButton = document.querySelector('#cover_button');
+        editButton.addEventListener("click", function() {
+		event.preventDefault();
+		let coverInput = document.querySelector('#editCoverForm input[type="file"]');
+		let trickId = document.querySelector("#trickId").value;
+		let coverFile = coverInput.files[0];
+
+		if (coverFile) {
+			if (!isImageFormatValid(coverFile)) {
+			displayErrorMessage('Invalid image format. Allowed formats: JPG, JPEG, PNG');
+			return;
+			}
+
 			let formData = new FormData();
-			// recupere formData
-			formData.append("cover", coverFile);
-			formData.append("trickId", trickId);
-			/* au clique sur le bouton #edit_button, récupérer l'ID 
-			qui se trouve dans l'input à l'intérieur de la modal */
-			/* Faire un autre append sur le formData pour y ajouter 
-			l'ID de l'image */
-			formData.append("coverImage", covImage);
-			$.ajax({
-				url: "{{ path('app_modify_cover') }}",
-				method: "POST",
-				data: formData,
-				success: function (res) {
-					window.location.reload();
-				},
-				processData: false,
-				cache: false,
-				contentType: false
-			});
+			// code ici
+			formData.append('cover', coverFile);
+			formData.append('coverImage', coverFile.name);
+            formData.append('trickId', trickId);
+
+			let xhr = new XMLHttpRequest();
+			xhr.open("POST", "{{ path('app_modify_cover') }}", true);
+			xhr.onload = function() {
+				if (xhr.readyState === 4) {
+					if (xhr.status === 200) {
+						displaySuccessMessage('The form has been submitted successfully !');
+						setTimeout(function () {
+							location.reload();
+						}, 2000);
+					} else {
+						displayErrorMessage('Error: An issue occurred while processing the request. Please try again later !');
+					}
+				} else {
+					displayErrorMessage('Error: The request was processed, but the response is not fully ready yet !');
+				}
+			};
+			xhr.send(formData);
 		} else {
-			alert("The field can't be empty !");
-		} 
+			displayErrorMessage('Please enter a image !');
+			return;	
+		}
 	});
+	function clearFormFields() {
+        document.getElementById('cover_image_coverImage').value = '';
+    }
+    
+    function handleModalHidden() {
+        clearErrorMessage();
+        clearFormFields(); 
+    }
+    document.getElementById('editCoverImageModal').addEventListener('hidden.bs.modal', handleModalHidden);       
 });
 </script>
-
-

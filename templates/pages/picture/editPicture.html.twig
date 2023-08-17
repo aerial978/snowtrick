@@ -1,80 +1,126 @@
 <!-- Modal -->
 <div class="modal fade" id="editPictureModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered modal-lg">
-		<div class="modal-content p-2">
-			<div class="modal-header">
-				<h1 class="modal-title fs-5" id="exampleModalLabel"></h1>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<img class="img-fluid modal-img" id="editPicturePreview" src="">
-			{{ form_start(formEditPicture)}}
-			<div class="modal-body">
-				<input id="pictureId" hidden>
-				<div class="mb-3">
-					<div class="form-group">		
-						{{ form_label(formEditPicture.editPicture) }}
-						{{ form_widget(formEditPicture.editPicture) }}
-						{{ form_errors(formEditPicture.editPicture) }}
-					</div>
-				</div>
-			</div>
-			{{ form_end(formEditPicture)}}
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-				<button type="submit" id="edit_button" class="btn btn-warning" data-bs-dismiss="modal">Submit</button>
-			</div>
-		</div>
-	</div>
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content p-2">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+           
+            {{ form_start(formEditPicture, { 'attr': { 'id': 'editPictureForm' } }) }}
+            <div class="modal-body alert alert-warning">
+                <div id="editPicturePreview"></div>
+                <input type="hidden" id="pictureId">
+                <div class="form-group mb-3">
+                    {{ form_label(formEditPicture.editPicture) }}
+                    {{ form_widget(formEditPicture.editPicture) }}
+                </div>
+                <div id="messagesEditPicture"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" id="edit_button" class="btn btn-warning">Submit</button>
+            </div>
+            {{ form_end(formEditPicture) }}
+        </div>
+    </div>
 </div>
 <script>
-$(document).ready(function () { 
-	// créer un evenement au click sur le bouton btn-modify
-	$('.btn-modify').click(function () { 
-		// on recupere la valeur de l'attribut data-image
-		let pictureId = $(this).attr("data-image");
-		let pictureName = $(this).attr("data-image-name");
-		// on insere la valeur de l'attribut à l'interieur de l'input pictureId
-		$("#pictureId").val(pictureId);
-		if (pictureName != undefined) {
-			let url = "{{ asset('upload/') }}";
-			$("#editPicturePreview").show().attr("src",url + pictureName);
-		}
-	});
-	// soumet le formulaire
-	$('#edit_button').click(function (e) { 
-		e.preventDefault();
-		// recupere la valeur de l'input image
-		var picture = $('#pictureId').val();
-		// recupere l'image soumis dans l'input
-		let imageFile = $('form[name="edit_picture"] :input')[1].files[0];
-		// teste si image existe
-		if (imageFile != undefined) { 
-			// creation objet formdata
-			let formData = new FormData();
-			// recupere formData
-			formData.append("image", imageFile);
-			/* au clique sur le bouton #edit_button, récupérer l'ID 
-			qui se trouve dans l'input à l'intérieur de la modal */
-			/* Faire un autre append sur le formData pour y ajouter 
-			l'ID de l'image */
-			formData.append("pictureId", picture);
-			$.ajax({
-				url: "{{ path('app_modify_picture') }}",
-				method: "POST",
-				data: formData,
-				success: function (res) { 
-					/*pointer sur l'image en question qui contient le data-image avec
-					l'ID qui nous intéresse
-					modifier le src : $('#monImage).attr('src', NOUVELLE_VALEUR); */
-					$('#picture' + res.pictureId).attr('src', res.image);
-				},
-				processData: false,
-				cache: false,
-				contentType: false
-			});
-		} else {
-			alert("The field can't be empty !");
-		}
-	});
+document.addEventListener("DOMContentLoaded", function() {
+    let modifyButtons = document.querySelectorAll(".btn-modify");
+    modifyButtons.forEach(function(button) {
+        button.addEventListener("click", function() {
+            let pictureId = this.getAttribute("data-image");
+            let pictureName = this.getAttribute('data-image-name');
+            //let pictureIdInput = document.querySelector("#pictureId");
+            document.getElementById("pictureId").value = pictureId;
+
+            if (pictureName !== null) {
+                const url = "{{ asset('upload/') }}";
+                //const editPicturePreview = document.querySelector("#editPicturePreview");
+                //editPicturePreview.style.display = "block";
+                const imageElement = document.createElement("img");
+                imageElement.src = url + pictureName;
+                imageElement.classList.add("img-fluid");
+                //editPicturePreview.innerHTML = "";
+                editPicturePreview.appendChild(imageElement);
+            }
+        });
+    });
+    // Fonction effacer le message d'erreur
+    function clearErrorMessage() {
+        document.getElementById('messagesEditPicture').innerHTML = '';
+    }
+    // Fonction afficher un message d'erreur
+    function displayErrorMessage(message) {
+        let errorMessageHTML = '<div class="alert alert-danger">' + message + '</div>';
+        document.getElementById('messagesEditPicture').innerHTML = errorMessageHTML;
+        document.getElementById('messagesEditPicture').style.display = 'block';
+    }
+    // Fonction afficher un message de succès
+    function displaySuccessMessage(message) {
+        let successMessageHTML = '<div class="alert alert-success">' + message + '</div>';
+        document.getElementById('messagesEditPicture').innerHTML = successMessageHTML;
+        document.getElementById('messagesEditPicture').style.display = 'block';
+    }
+
+    function isImageFormatValid(imageFile) {
+        let allowedFormats = ['jpg', 'jpeg', 'png'];
+        let fileExtension = imageFile.name.split('.').pop().toLowerCase();
+        return allowedFormats.includes(fileExtension);
+    }
+
+    let editButton = document.querySelector('#edit_button');
+        editButton.addEventListener("click", function() {
+        event.preventDefault();
+        let pictureId = document.querySelector("#pictureId").value;
+        let imageFileInput = document.querySelector('#editPictureForm input[type="file"]');
+        let imageFile = imageFileInput.files[0];
+        
+        if (imageFile) {
+            if (!isImageFormatValid(imageFile)) {
+            // Afficher un message d'erreur si le format du lien vidéo est incorrect
+            displayErrorMessage('Invalid image format. Allowed formats: JPG, JPEG, PNG');
+            // Arrêter l'exécution en cas d'erreur de format
+            return;
+            }
+
+            let formData = new FormData();
+            formData.append("image", imageFile);
+            formData.append("pictureId", pictureId);
+
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", "{{ path('app_modify_picture') }}", true);
+            xhr.onload = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        displaySuccessMessage('The form has been submitted successfully !');
+                        setTimeout(function () {
+                            location.reload();
+                        }, 2000);
+                    } else {
+                        displayErrorMessage('Error: An issue occurred while processing the request. Please try again later !');
+                    }
+                } else {
+                    displayErrorMessage('Error: The request was processed, but the response is not fully ready yet !');
+                }
+            };
+            xhr.send(formData);
+        } else {
+            displayErrorMessage('Please enter a image !');
+        return;
+        }
+    });
+    function clearFormFields() {
+        document.getElementById('edit_picture_editPicture').value = '';
+    }
+    
+    function handleModalHidden() {
+        clearErrorMessage();
+        clearFormFields(); 
+    }
+    document.getElementById('editPictureModal').addEventListener('hidden.bs.modal', handleModalHidden);
 });
 </script>
+
+
+

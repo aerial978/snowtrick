@@ -115,6 +115,10 @@ section {
     filter: brightness(75%);
 }
 
+.cover-responsive{
+    
+}
+
 .hero-trick .hero-name {
     position: absolute;
     top: 50%;
@@ -329,6 +333,13 @@ section {
 
 #editVideoPreview {
     display: none;
+}
+
+.centered-iframe {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 }
 
 /* error pages */

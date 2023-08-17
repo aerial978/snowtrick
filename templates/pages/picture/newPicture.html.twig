@@ -3,25 +3,119 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg">
 		<div class="modal-content p-2">
 			<div class="modal-header">
-				<h1 class="modal-title fs-5" id="exampleModalLabel"></h1>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
-			{{ form_start(formPicture) }}
-				<div class="modal-body">
-					<div class="mb-3">
-						<div class="form-group">
-							<div class="form-group">
-								{{ form_label(formPicture.newPictureLink) }}
-								{{ form_widget(formPicture.newPictureLink) }}
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-					<button type="submit" class="btn btn-warning" data-bs-dismiss="modal">Submit</button>
-				</div>
+			{{ form_start(formPicture, { 'attr': { 'id': 'pictureForm' } }) }}
+            <div class="modal-body alert alert-info">
+                <div class="form-group mb-3">
+                    {{ form_label(formPicture.newPictureLink) }}
+                    {{ form_widget(formPicture.newPictureLink) }}
+                </div>
+                <div id="messagesNewPicture"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-warning">Submit</button>
+            </div>
 			{{ form_end(formPicture) }}
 		</div>
 	</div>
 </div>
+<script>
+// Ajouter un événement qui se déclenche lorsque le DOM est entièrement chargé
+document.addEventListener("DOMContentLoaded", function(){
+    // Fonction effacer le message d'erreur
+    function clearErrorMessage() {
+        document.getElementById('messagesNewPicture').innerHTML = '';
+    }
+    // Fonction afficher un message d'erreur
+    function displayErrorMessage(message) {
+        let errorMessageHTML = '<div class="alert alert-danger">' + message + '</div>';
+        document.getElementById('messagesNewPicture').innerHTML = errorMessageHTML;
+        document.getElementById('messagesNewPicture').style.display = 'block';
+    }
+    // Fonction afficher un message de succès
+    function displaySuccessMessage(message) {
+        let successMessageHTML = '<div class="alert alert-success">' + message + '</div>';
+        document.getElementById('messagesNewPicture').innerHTML = successMessageHTML;
+        document.getElementById('messagesNewPicture').style.display = 'block';
+        // Attendre pendant 2000 millisecondes (2 secondes) avant d'exécuter le code
+        setTimeout(function () {
+            // empêcher la modal de se fermer automatiquement
+            $('#newPictureModal').modal('hide');
+        }, 2500);
+    }
+    // Vérifier si le format de l'image est valide
+    function isImageFormatValid(link) {
+        let allowedFormats = ['jpg', 'jpeg', 'png'];
+        let fileExtension = link.split('.').pop().toLowerCase();
+        return allowedFormats.includes(fileExtension);
+    }
+    // Gèrer la soumission du formulaire lorsqu'il est envoyé
+    function submitForm(event) {
+        let form = document.getElementById('pictureForm');
+        let pictureLink = document.getElementById('picture_newPictureLink').value;
+        // Vérifier si le champ image est vide
+        if (!pictureLink) {
+            displayErrorMessage('Please enter a picture !');
+            event.preventDefault();
+            return;
+        }
+        // Vérifier si le format de l'image est valide
+        if (!isImageFormatValid(pictureLink)) {
+            displayErrorMessage('Invalid image format. Allowed formats: JPG, JPEG, PNG');
+            event.preventDefault();
+            return;
+        }
+        // Créer une requête XMLHttpRequest pour soumettre les données du formulaire au serveur
+        let xhr = new XMLHttpRequest();
+        // Ouvrir la connexion pour la requête avec la méthode et l'action spécifiées
+        xhr.open(form.method, form.action, true);
+        // Définir l'en-tête HTTP pour spécifier le type de contenu
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        // Configurer le gestionnaire d'état pour détecter quand la requête est terminée
+        xhr.onreadystatechange = function () {
+            //console.log("Ready state:", xhr.readyState, "Status:", xhr.status);
+            // Si l'état de la requête est 4 (terminé)
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    displaySuccessMessage('The form has been submitted successfully !');
+                    setTimeout(function () {
+                        location.reload();
+                    }, 2000);
+                } else {
+                    displayErrorMessage('Error: An issue occurred while processing the request. Please try again later !');
+                }
+            } else {
+                displayErrorMessage('Error: The request was processed, but the response is not fully ready yet !');
+            }
+        };
+        // Envoyer les données du formulaire via XMLHttpRequest
+        xhr.send(new URLSearchParams(new FormData(form)));
+    }
+    // Fonction réinitialiser le champ du formulaire
+    function clearFormFields() {
+        document.getElementById('picture_newPictureLink').value = '';
+    }
+    // Fonction gèrer l'événement de masquage du modal
+    function handleModalHidden() {
+        // Effacer les messages d'erreur
+        clearErrorMessage();
+        // Effacer le champ du formulaire
+        clearFormFields(); 
+    }
+    // Ajouter les écouteurs d'événements
+    document.getElementById('newPictureModal').addEventListener('hidden.bs.modal', handleModalHidden);
+    document.getElementById('pictureForm').addEventListener('submit', submitForm);
+});
+</script>
+
+
+
+
+
+
+
+
+
+

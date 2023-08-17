@@ -2,14 +2,13 @@
 <div class="modal fade" id="editVideoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered modal-lg">
 		<div class="modal-content p-2">
-			<div class="modal-header">
-				<h1 class="modal-title fs-5" id="exampleModalLabel"></h1>
+            <div class="modal-header">
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
-			<iframe class="w-auto" width="325" height="205" id="editVideoPreview" src="" title="YouTube video player" frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-			<div class="modal-body">
-				<input type= "hidden" id="videoId">
-				<form>
+			<div class="modal-body alert alert-warning">
+				<input type="hidden" id="videoId">
+                <div id="videoPreviewContainer" class="centered-iframe"></div>
+				<form class="mt-3">
 					<label for="text" class="form-label fw-bold">YouTube video link</label>
 					<input class="form-control mb-3" type="text" placeholder="https://www.youtube.com/watch?v=_hxLS2ErMiY&t=4s" id="video_url">
                     <div id="messagesEdit"></div>
@@ -24,19 +23,44 @@
 </div>
 <script>
     // Ajouter un événement qui se déclenche lorsque le DOM est entièrement chargé
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function(){
     // Sélectionner tous les boutons avec la classe "btn-modify"
     let modifyButtons = document.querySelectorAll(".btn-modify");
     // Pour chaque bouton sélectionné précédemment
     modifyButtons.forEach(function(button) {
         // Ajouter un gestionnaire d'événement au clic
         button.addEventListener("click", function() {
-            // Récupèrer l'attribut "data-video" du bouton cliqué
+            // Récupèrer l'attribut "data-video" du bouton edit dans fichier editTrick.html.twig
             let videoId = this.getAttribute("data-video");
-            // Sélectionner l'élément avec l'ID "videoId"
+            // Récupèrer l'attribut "data-video-name" du bouton edit dans fichier editTrick.html.twig
+            let videoName = this.getAttribute("data-video-name");
+            // Sélectionner l'élément avec l'ID "videoId" de la balise input dans modal-body
             let videoIdInput = document.querySelector("#videoId");
+             // On insère la valeur de l'attribut dans l'input ayant l'id "videoId"
+            document.getElementById("videoId").value = videoId;
+            // Vérifier si le nom de la vidéo n'est pas nul
+            if (videoName !== null) {
+                // Construire l'URL de prévisualisation de la vidéo YouTube
+                let url = "https://www.youtube.com/embed/" + videoName;
+                // Créer un nouvel élément iframe
+                let iframe = document.createElement("iframe");
+                iframe.className = "w-auto";
+                iframe.width = "325";
+                iframe.height = "205";
+                iframe.title = "Lecteur vidéo YouTube";
+                iframe.frameBorder = "0";
+                iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+                iframe.allowFullscreen = true;
+                iframe.src = url;
+                // Sélectionner le conteneur pour la prévisualisation de la vidéo
+                let videoPreviewContainer = document.getElementById("videoPreviewContainer");
+                // Supprimer tout iframe précédent
+                videoPreviewContainer.innerHTML = "";
+                // Ajouter le nouvel iframe
+                videoPreviewContainer.appendChild(iframe);
+            }
             // Mettre à jour la valeur de l'élément avec l'ID "videoId"
-            videoIdInput.value = videoId;
+            //videoIdInput.value = videoId;
         });
     });
     // Fonction effacer le message d'erreur
@@ -64,6 +88,7 @@
     let buttonEdit = document.querySelector("#button_edit");
     // Ajouter un gestionnaire d'événement au clic sur le bouton "button_edit"
     buttonEdit.addEventListener("click", function() {
+        event.preventDefault();
         // Sélectionner l'élément avec l'ID "video_url"
         let videoUrlInput = document.querySelector("#video_url");
         // Récupèrer et nettoie la valeur de l'élément "video_url"
@@ -93,37 +118,17 @@
             // Cette fonction est appelée lorsque la requête XMLHttpRequest est terminée
             xhr.onload = function() {
                 // Si le statut de la réponse de la requête est 200 (OK)
-                if (xhr.status === 200) {
-                    // Afficher un message de succès
-                    displaySuccessMessage('The form has been submitted successfully !');
-                    // Attendre pendant 2000 millisecondes (2 secondes) avant d'exécuter le code à l'intérieur de cette fonction
-                    setTimeout(function () {
-                        // Recharge la page actuelle après 2 secondes
-                        location.reload();
-                    }, 2000);
-                    // Convertir le contenu de la réponse JSON renvoyée par la requête
-                    let res = JSON.parse(xhr.responseText);
-                    // Sélectionner l'élément vidéo correspondant à l'ID vidéo dans la réponse
-                    let videoElement = document.querySelector("#video" + res.videoId);
-                    // Mettre à jour la source de l'élément vidéo avec l'URL de la vidéo modifiée
-                    videoElement.src = res.video_url;
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        displaySuccessMessage('The form has been submitted successfully !');
+                        setTimeout(function () {
+                            location.reload();
+                        }, 2000);
+                    } else {
+                        displayErrorMessage('Error: An issue occurred while processing the request. Please try again later !');
+                    }
                 } else {
-                    // Convertir les messages d'erreur renvoyés par la réponse JSON de la requête
-                    let errorMessages = JSON.parse(xhr.responseText).errors;
-                    // Créer le code HTML pour afficher les messages d'erreur
-                    let errorMessageHTML = '<div class="alert alert-danger"><ul>';
-                    // Parcourir chaque message d'erreur dans le tableau "errorMessages"
-                    errorMessages.forEach(function (value) {
-                        errorMessageHTML += '<li>' + value + '</li>';
-                    });
-                    // Fermer la liste non ordonnée et la balise div pour afficher les messages d'erreur
-                    errorMessageHTML += '</ul></div>';
-                    // Insèrer les messages d'erreur dans l'élément avec l'ID "messagesEdit"
-                    document.getElementById('messagesEdit').innerHTML = errorMessageHTML;
-                    // Afficher l'élément contenant les messages d'erreur
-                    document.getElementById('messagesEdit').style.display = 'block';
-                    // Affiche le modal
-                    document.getElementById('editVideoModal').style.display = 'block';
+                    displayErrorMessage('Error: The request was processed, but the response is not fully ready yet !');
                 }
             };
             // Envoyer le FormData avec la requête XMLHttpRequest

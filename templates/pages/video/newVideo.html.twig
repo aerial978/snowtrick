@@ -3,17 +3,15 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content p-2">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             {{ form_start(formVideo, { 'attr': { 'id': 'videoForm' } }) }}
-                <div class="modal-body">
-                    <div>
-                        <div class="form-group mb-3">
-                            {{ form_label(formVideo.newVideoLink) }}
-                            {{ form_widget(formVideo.newVideoLink) }}
-                        </div>
+                <div class="modal-body alert alert-info">
+                    <div class="form-group mb-3">
+                        {{ form_label(formVideo.newVideoLink) }}
+                        {{ form_widget(formVideo.newVideoLink) }}
                     </div>
-                    <div id="messagesNew"></div>
+                    <div id="messagesNewVideo"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -28,19 +26,19 @@
     document.addEventListener("DOMContentLoaded", function(){
     // Fonction effacer le message d'erreur
     function clearErrorMessage() {
-        document.getElementById('messagesNew').innerHTML = '';
+        document.getElementById('messagesNewVideo').innerHTML = '';
     }
     // Fonction afficher un message d'erreur
     function displayErrorMessage(message) {
         let errorMessageHTML = '<div class="alert alert-danger">' + message + '</div>';
-        document.getElementById('messagesNew').innerHTML = errorMessageHTML;
-        document.getElementById('messagesNew').style.display = 'block';
+        document.getElementById('messagesNewVideo').innerHTML = errorMessageHTML;
+        document.getElementById('messagesNewVideo').style.display = 'block';
     }
     // Fonction afficher un message de succès
     function displaySuccessMessage(message) {
         let successMessageHTML = '<div class="alert alert-success">' + message + '</div>';
-        document.getElementById('messagesNew').innerHTML = successMessageHTML;
-        document.getElementById('messagesNew').style.display = 'block';
+        document.getElementById('messagesNewVideo').innerHTML = successMessageHTML;
+        document.getElementById('messagesNewVideo').style.display = 'block';
     }
     // Fonction valider un lien vidéo
     function validateVideoLink(videoLink) {
@@ -52,7 +50,7 @@
         event.preventDefault();
         let form = document.getElementById('videoForm');
         let videoLink = document.getElementById('video_newVideoLink').value;
-        // Vérifier si le lien vidéo est vide
+        // Vérifier si le champ vidéo est vide
         if (!videoLink) {
             displayErrorMessage('Please enter a YouTube link !');
             return;
@@ -64,7 +62,7 @@
         }
         // Valider le format du lien vidéo
         if (!validateVideoLink(videoLink)) {
-            displayErrorMessage('The format of the YouTube link is incorrect !');
+            displayErrorMessage('The format of this YouTube link is incorrect !');
             return;
         }
         // Créer une requête XMLHttpRequest pour soumettre les données du formulaire au serveur
@@ -77,33 +75,16 @@
         xhr.onreadystatechange = function () {
             // Si l'état de la requête est 4 (terminé)
             if (xhr.readyState === 4) {
-                // Si le statut de la requête est 200 (OK)
                 if (xhr.status === 200) {
-                    // Afficher un message de succès
                     displaySuccessMessage('The form has been submitted successfully !');
-                    // Attendre pendant 2000 millisecondes (2 secondes) avant d'exécuter le code à l'intérieur de cette fonction
                     setTimeout(function () {
-                        // Recharge la page actuelle après 2 secondes
                         location.reload();
                     }, 2000);
                 } else {
-                    // Convertir les messages d'erreur renvoyés par la réponse JSON de la requête
-                    let errorMessages = JSON.parse(xhr.responseText).errors;
-                    // Créer le code HTML pour afficher les messages d'erreur
-                    let errorMessageHTML = '<div class="alert alert-danger"><ul>';
-                    // Parcourir chaque message d'erreur dans le tableau "errorMessages"
-                    errorMessages.forEach(function (value) {
-                        errorMessageHTML += '<li>' + value + '</li>';
-                    });
-                    // Fermer la liste non ordonnée et la balise div pour afficher les messages d'erreur
-                    errorMessageHTML += '</ul></div>';
-                    // Insèrer les messages d'erreur dans l'élément avec l'ID "messagesNew"
-                    document.getElementById('messagesNew').innerHTML = errorMessageHTML;
-                    // Afficher l'élément contenant les messages d'erreur
-                    document.getElementById('messagesNew').style.display = 'block';
-                    // Affiche le modal
-                    document.getElementById('newVideoModal').style.display = 'block';
+                    displayErrorMessage('Error: An issue occurred while processing the request. Please try again later !');
                 }
+            } else {
+                displayErrorMessage('Error: The request was processed, but the response is not fully ready yet !');
             }
         };
         // Envoyer les données du formulaire via XMLHttpRequest

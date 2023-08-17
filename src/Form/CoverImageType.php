@@ -19,7 +19,7 @@ class CoverImageType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                 ],
-                'label' => 'Cover Image',
+                'label' => 'Edit cover Image',
                 'label_attr' => [
                     'class' => 'mt-2 mb-2 fw-bold',
                 ],
