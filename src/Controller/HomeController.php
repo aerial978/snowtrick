@@ -18,6 +18,7 @@ class HomeController extends AbstractController
 
         return $this->render('pages/home.html.twig', [
             'activemenu' => 'homemenu',
+            'specialNavbar' => false,
             'tricks' => $trick,
         ]);
     }

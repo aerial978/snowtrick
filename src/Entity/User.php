@@ -34,7 +34,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $email;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $profilePicture = null;
+    private ?string $profilePicture;
 
     #[ORM\Column(type: 'json')]
     #[Assert\NotNull()]
@@ -45,9 +45,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string')]
     #[Assert\NotNull()]
     private $password = 'password';
-
-    // #[ORM\Column(type:'string', length: 255, nullable: true)]
-    // private $file;
 
     #[ORM\Column(type: 'datetime')]
     protected $createdAt;
@@ -64,11 +61,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $tokenRegistrationLifetime = null;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Trick::class)]
+    private Collection $tricks;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
         $this->messages = new ArrayCollection();
-        $this->tokenRegistrationLifetime = (new \DateTime('now'))->add(new \DateInterval('PT60S'));
+        $this->tokenRegistrationLifetime = (new \DateTime('now'))->add(new \DateInterval('PT3600S'));
+        $this->tricks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -269,6 +270,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setTokenRegistrationLifetime(?\DateTimeInterface $tokenRegistrationLifetime): self
     {
         $this->tokenRegistrationLifetime = $tokenRegistrationLifetime;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Trick>
+     */
+    public function getTricks(): Collection
+    {
+        return $this->tricks;
+    }
+
+    public function addTrick(Trick $trick): self
+    {
+        if (!$this->tricks->contains($trick)) {
+            $this->tricks->add($trick);
+            $trick->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrick(Trick $trick): self
+    {
+        if ($this->tricks->removeElement($trick)) {
+            // set the owning side to null (unless already changed)
+            if ($trick->getUser() === $this) {
+                $trick->setUser(null);
+            }
+        }
 
         return $this;
     }

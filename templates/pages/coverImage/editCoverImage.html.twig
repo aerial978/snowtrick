@@ -4,12 +4,12 @@
 		<img src="{{ trick.pictures[0].pictureLink }}" alt="cover-image" class="w-100 img-fluid">
 	{% else %}
 		{% if trick.coverImage %}
-			<img id="cover{{ trick.coverImage }}" src="{{ asset('upload/'~trick.coverImage)|imagine_filter('coverimage') }}" alt="cover-image" class="w-100 img-fluid">
+			<img id="cover{{ trick.coverImage }}" src="{{ asset('upload/tricks/'~trick.coverImage)|imagine_filter('coverimage') }}" alt="cover-image" class="w-100 img-fluid">
 		{% else %}
 			{# upload #}
 			{% if trick.pictures is not empty %}
 				{% if trick.coverImage is not null %}
-					<img id="cover{{ trick.coverImage }}" src="{{ asset('upload/'~trick.pictures[0].pictureLink)|imagine_filter('coverimage') }}" alt="cover-image" class="w-100 img-fluid">
+					<img id="cover{{ trick.coverImage }}" src="{{ asset('upload/tricks/'~trick.pictures[0].pictureLink)|imagine_filter('coverimage') }}" alt="cover-image" class="w-100 img-fluid">
 				{% else %}
 					<img src="{{ asset('images/snowboarder5.jpg')|imagine_filter('coverimage') }}" alt="cover-image" class="w-100 img-fluid">
 				{% endif %}
@@ -56,7 +56,7 @@
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-							<button type="button" id="cover_button" class="btn btn-warning">Submit</button>
+							<button type="button" id="cover_button" class="btn btn-warning" data-modify-pathCover="{{ path('app_modify_cover') }}">Submit</button>
 						</div>
 						{{ form_end(formEditCoverImage) }}
 					</div>
@@ -65,90 +65,3 @@
 		{% endif %}
 	</div>
 </div>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-	let modifyButtons = document.querySelectorAll('.btn-modify');
-	modifyButtons.forEach(function (button) {
-		button.addEventListener('click', function () {
-			let coverImage = this.getAttribute('data-cover-image');
-			let trickId = this.getAttribute("data-trick-id");
-			document.getElementById("coverImage").value = coverImage;
-			document.getElementById("trickId").value = trickId;
-		});
-	});
-	
-	// Fonction effacer le message d'erreur
-    function clearErrorMessage() {
-        document.getElementById('messagesEditCover').innerHTML = '';
-    }
-    // Fonction afficher un message d'erreur
-    function displayErrorMessage(message) {
-        let errorMessageHTML = '<div class="alert alert-danger">' + message + '</div>';
-        document.getElementById('messagesEditCover').innerHTML = errorMessageHTML;
-        //document.getElementById('messagesEditCover').style.display = 'block';
-    }
-    // Fonction afficher un message de succès
-    function displaySuccessMessage(message) {
-        let successMessageHTML = '<div class="alert alert-success">' + message + '</div>';
-        document.getElementById('messagesEditCover').innerHTML = successMessageHTML;
-        document.getElementById('messagesEditCover').style.display = 'block';
-    }
-
-    function isImageFormatValid(coverFile) {
-        let allowedFormats = ['jpg', 'jpeg', 'png'];
-        let fileExtension = coverFile.name.split('.').pop().toLowerCase();
-        return allowedFormats.includes(fileExtension);
-    }
-
-	let editButton = document.querySelector('#cover_button');
-        editButton.addEventListener("click", function() {
-		event.preventDefault();
-		let coverInput = document.querySelector('#editCoverForm input[type="file"]');
-		let trickId = document.querySelector("#trickId").value;
-		let coverFile = coverInput.files[0];
-
-		if (coverFile) {
-			if (!isImageFormatValid(coverFile)) {
-			displayErrorMessage('Invalid image format. Allowed formats: JPG, JPEG, PNG');
-			return;
-			}
-
-			let formData = new FormData();
-			// code ici
-			formData.append('cover', coverFile);
-			formData.append('coverImage', coverFile.name);
-            formData.append('trickId', trickId);
-
-			let xhr = new XMLHttpRequest();
-			xhr.open("POST", "{{ path('app_modify_cover') }}", true);
-			xhr.onload = function() {
-				if (xhr.readyState === 4) {
-					if (xhr.status === 200) {
-						displaySuccessMessage('The form has been submitted successfully !');
-						setTimeout(function () {
-							location.reload();
-						}, 2000);
-					} else {
-						displayErrorMessage('Error: An issue occurred while processing the request. Please try again later !');
-					}
-				} else {
-					displayErrorMessage('Error: The request was processed, but the response is not fully ready yet !');
-				}
-			};
-			xhr.send(formData);
-		} else {
-			displayErrorMessage('Please enter a image !');
-			return;	
-		}
-	});
-	function clearFormFields() {
-        document.getElementById('cover_image_coverImage').value = '';
-    }
-    
-    function handleModalHidden() {
-        clearErrorMessage();
-        clearFormFields(); 
-    }
-    document.getElementById('editCoverImageModal').addEventListener('hidden.bs.modal', handleModalHidden);       
-});
-</script>

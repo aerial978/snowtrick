@@ -38,7 +38,7 @@ class CoverImageController extends AbstractController
     #[Route('/coverimage/delete/{slug}', name: 'coverimage.delete', methods: ['GET'])]
     public function deleteCoverImage($slug, Trick $trick, Filesystem $filesystem, TrickRepository $trickRepository): Response
     {
-        $filesystem->remove(['upload/'.$trick->getCoverImage()]);
+        $filesystem->remove(['upload/tricks/'.$trick->getCoverImage()]);
 
         $coverImage = $trickRepository->findOneBy(['cover_image' => $trick->getCoverImage()]);
         if ($coverImage) {

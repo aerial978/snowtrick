@@ -53,6 +53,10 @@ class Trick
     #[ORM\Column(length: 255, nullable : true)]
     private ?string $cover_image;
 
+    #[ORM\ManyToOne(inversedBy: 'tricks', fetch: 'EAGER')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
@@ -257,6 +261,18 @@ class Trick
     public function setCoverImage(?string $cover_image): self
     {
         $this->cover_image = $cover_image;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

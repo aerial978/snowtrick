@@ -65,12 +65,11 @@ class RegistrationFormType extends AbstractType
                     new File([
                         'maxSize' => '1024k',
                         'mimeTypes' => [
-                            'image/gif',
                             'image/jpeg',
                             'image/png',
                             'image/jpg',
                         ],
-                        'mimeTypesMessage' => 'please upload an image in gif, png, jpg or jpeg format !',
+                        'mimeTypesMessage' => 'please upload an image in png, jpg or jpeg format !',
                     ]),
                 ],
             ])
@@ -112,7 +111,7 @@ class RegistrationFormType extends AbstractType
                         'minMessage' => 'Your password should be at least {{ limit }} characters !',
                     ]),*/
                     new Assert\Regex([
-                        'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/',
+                        'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$#!%*?&])[A-Za-z\d@$#!%*?&]{8,}$/',
                         'message' => 'Your password must contain at least 8 characters, a lowercase letter, an uppercase letter, a number and a special character !',
                     ]),
                 ],

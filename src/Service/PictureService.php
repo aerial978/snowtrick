@@ -52,7 +52,7 @@ class PictureService extends AbstractController
                 $this->pictureRepository->add($img, true);
 
                 if (0 == $index) {
-                    $this->filesystem->copy('upload/'.$newImage, 'upload/'.$copyImage);
+                    $this->filesystem->copy('upload/tricks/'.$newImage, 'upload/tricks/'.$copyImage);
                     $trick->setCoverImage($copyImage);
                     $this->trickRepository->add($trick, true);
                 }

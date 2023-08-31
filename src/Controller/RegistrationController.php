@@ -31,16 +31,18 @@ class RegistrationController extends AbstractController
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
+        $targetDirectory = $this->getParameter('kernel.project_dir').'/public/upload/profiles';
+
         if ($form->isSubmitted() && $form->isValid()) {
             $profilePicture = $form->get('profilePicture')->getData();
             if (empty($profilePicture)) {
-                $user->setProfilePicture('default.png');
+                $user->setProfilePicture(null);
             } else {
                 $newprofilePicture = uniqid().'.'.$profilePicture->guessExtension();
 
                 try {
                     $profilePicture->move(
-                        $this->getParameter('uploads_directory'),
+                        $targetDirectory,
                         $newprofilePicture
                     );
                 } catch (FileException $e) {

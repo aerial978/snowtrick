@@ -28,7 +28,7 @@ class ApiController extends AbstractController
         if ('default' != $coverImage) {
             if ($cover && 'snowboarder5.jpg' != $cover->getCoverImage()) {
                 $filesystem = new Filesystem();
-                $path = 'upload/'.$cover->getCoverImage();
+                $path = 'upload/tricks/'.$cover->getCoverImage();
                 $filesystem->remove([$path]);
             }
         }
@@ -58,7 +58,7 @@ class ApiController extends AbstractController
         $baseurl = $request->getScheme().'://'.$request->getHttpHost().$request->getBasePath();
 
         return $this->json([
-            'cover' => $baseurl.'/upload/'.$newCover,
+            'cover' => $baseurl.'/upload/tricks/'.$newCover,
             'coverImage' => $coverImage,
         ]);
     }
@@ -74,7 +74,7 @@ class ApiController extends AbstractController
         $picture = $pictureRepository->findOneBy(['id' => $pictureId]);
         if ($picture) {
             $filesystem = new Filesystem();
-            $path = 'upload/'.$picture->getPictureLink();
+            $path = 'upload/tricks/'.$picture->getPictureLink();
             $filesystem->remove([$path]);
         }
 
@@ -103,7 +103,7 @@ class ApiController extends AbstractController
         $baseurl = $request->getScheme().'://'.$request->getHttpHost().$request->getBasePath();
 
         return $this->json([
-            'image' => $baseurl.'/upload/'.$newImage,
+            'image' => $baseurl.'/upload/tricks/'.$newImage,
             'pictureId' => $pictureId,
         ]);
     }

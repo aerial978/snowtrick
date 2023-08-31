@@ -35,7 +35,7 @@ class PictureController extends AbstractController
             $removePicture = $trickRepository->findOneBySlug($slug);
             if ($removePicture->getCoverImage()) {
                 $filesystem = new Filesystem();
-                $path = 'upload/'.$removePicture->getCoverImage();
+                $path = 'upload/tricks/'.$removePicture->getCoverImage();
                 $filesystem->remove([$path]);
             }
             $this->pictureService->newPicture($trick, [$picture]);
@@ -62,7 +62,7 @@ class PictureController extends AbstractController
     #[Route('/picture/delete/{slug}/{id}', name: 'picture.delete', methods: ['GET'])]
     public function deletePicture($slug, Picture $picture, TrickRepository $trickRepository, Filesystem $filesystem, EntityManagerInterface $manager): Response
     {
-        $filesystem->remove(['upload/'.$picture->getPictureLink()]);
+        $filesystem->remove(['upload/tricks/'.$picture->getPictureLink()]);
 
         $trick = $trickRepository->findOneBy(['cover_image' => $picture->getPictureLink()]);
         if ($trick) {

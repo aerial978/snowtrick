@@ -21,13 +21,17 @@
 					<li class="nav-item">
 						<div class="nav-link d-flex justify-content-between ps-3 pe-3 bg-warning">
 							<div class="d-flex">
-								<img src="{{ asset('upload/' ~ app.user.profilePicture) }}" alt="avatar" class="rounded-5" width="50">
+								{% if app.user.profilePicture != null %}
+									<img src="{{ asset('upload/profiles/' ~ app.user.profilePicture) }}" alt="avatar" class="rounded-5" width="50">
+								{% else %}
+									<img src="{{ asset('images/default.png') }}" alt="avatar" class="rounded-5" width="55">
+								{% endif %}
 								<p class="d-flex text-dark my-auto ps-2 fs-5">{{ app.user.userIdentifier }}</p>
 							</div>
 							<a class="nav-link" href="{{ path('security.logout') }}">
 								<span class="fa-stack fa-1x">
 									<i class="fa-solid fa-square fa-stack-2x fa-inverse"></i>
-									<i class="fa-solid fa-right-from-bracket fa-stack-1x" style="color:red"></i>
+									<i class="fa-solid fa-right-from-bracket fa-stack-1x" style="color:Tomato"></i>
 								</span>
 							</a>
 						</div>

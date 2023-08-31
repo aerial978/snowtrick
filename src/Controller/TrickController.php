@@ -51,6 +51,7 @@ class TrickController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $trick = $form->getData();
+            $trick->setUser($this->getUser());
 
             $trickRepository->add($trick, true);
             $images = $form->get('image')->getData();
@@ -71,6 +72,7 @@ class TrickController extends AbstractController
 
         return $this->render('pages/trick/newTrick.html.twig', [
             'activemenu' => 'trickmenu',
+            'specialNavbar' => true,
             'form' => $form->createView(),
         ]);
     }
@@ -119,6 +121,7 @@ class TrickController extends AbstractController
 
         return $this->render('pages/trick/indexTrick.html.twig', [
             'activemenu' => 'trickmenu',
+            'specialNavbar' => false,
             'formEditCoverImage' => $formCoverImage,
             'trick' => $trick,
             'pictures' => $pictures,
@@ -186,6 +189,7 @@ class TrickController extends AbstractController
 
         return $this->render('pages/trick/editTrick.html.twig', [
             'activemenu' => 'trickmenu',
+            'specialNavbar' => false,
             'trick' => $trick,
             'pictures' => $pictures,
             'videos' => $videos,
@@ -206,27 +210,31 @@ class TrickController extends AbstractController
         EntityManagerInterface $manager,
         $slug
     ): Response {
-        $removePictures = $trickRepository->findOneBySlug($slug);
-        // Delete cover image
-        if ($removePictures->getCoverImage()) {
-            $filesystem = new Filesystem();
-            $path = 'upload/'.$removePictures->getCoverImage();
-            $filesystem->remove([$path]);
-        }
-        // Delete all pictures by trick
-        foreach ($removePictures->getPictures() as $image) {
-            $filesystem = new Filesystem();
-            $path = 'upload/'.$image->getPictureLink();
-            $filesystem->remove([$path]);
-        }
+        $currentUser = $this->getUser();
 
-        $manager->remove($trick);
-        $manager->flush();
+        if (null !== $currentUser && $trick->getUser() === $currentUser) {
+            $removePictures = $trickRepository->findOneBySlug($slug);
+            // Delete cover image
+            if ($removePictures->getCoverImage()) {
+                $filesystem = new Filesystem();
+                $path = 'upload/tricks/'.$removePictures->getCoverImage();
+                $filesystem->remove([$path]);
+            }
+            // Delete all pictures by trick
+            foreach ($removePictures->getPictures() as $image) {
+                $filesystem = new Filesystem();
+                $path = 'upload/tricks/'.$image->getPictureLink();
+                $filesystem->remove([$path]);
+            }
 
-        $this->addFlash(
-            'success',
-            'Delete successfully !'
-        );
+            $manager->remove($trick);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                'Delete successfully !'
+            );
+        }
 
         return $this->redirectToRoute('home.index');
     }

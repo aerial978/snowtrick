@@ -4,148 +4,128 @@
 {% endblock %}
 
 {% block body %}
-	<!-- hero -->
-	<header class="hero w-100 vh-100" id="hero" style="padding: 8em;">
-		<div class="content">
-			<h1 class="text-warning fw-bold">Snowboarding</h1>
-			<h2 class="text-info fw-bold">Share your passion</h2>
+<!-- hero -->
+<header class="hero w-100 vh-100" id="hero">
+	<div class="content">
+		<h1 class="text-warning fw-bold">Snowboarding</h1>
+		<h2 class="text-info fw-bold">Share your passion</h2>
+	</div>
+	<div id="btnDown">
+		<a href="#tricks-list" class="icon-down">
+			<span class="fa-stack fa-2x" style="--fa-inverse: black;">
+				<i class="fa-solid fa-circle fa-stack-2x text-warning"></i>
+				<i class="fa-solid fa-arrow-down fa-stack-1x fa-lg fa-inverse"></i>
+			</span>
+		</a>
+	</div>
+</header>
+<!-- tricks sections -->
+<section class="tricks-list container-fluid text-center py-5" id="tricks-list">
+	<div class="row py-lg-1">
+		<div class="col-lg-6 col-md-8 mx-auto">
+			<h6 class="text-warning fw-bold text-uppercase">to know</h6>
+			<h1 class="text-info fw-bold mb-3">Tricks list</h1>
+			<p class="lead fs-4 p-2 mb-1">
+				Snowboard tricks are aerials or maneuvers performed on snowboards for fun, 
+				or in competitions. Most often, these maneuvers are performed on obstacles such as jumps, halfpipes, quarterpipes, 
+				hips, handrails, funboxes, or ledges, or on the surface of the snow. Many have their origins in precursory board 
+				sports such as skateboarding and surfing.
+			</p>
 		</div>
-		<div id="btnDown">
-			<a href="#tricks-list" class="icon-down">
-				<span class="fa-stack fa-2x" style="--fa-inverse: black;">
-					<i class="fa-solid fa-circle fa-stack-2x text-warning"></i>
-					<i class="fa-solid fa-arrow-down fa-stack-1x fa-lg fa-inverse"></i>
-				</span>
-			</a>
-		</div>
-	</header>
-	<!-- tricks sections -->
-	<section class="tricks-list container-fluid text-center py-5" id="tricks-list">
-		<div class="row py-lg-1">
-			<div class="col-lg-6 col-md-8 mx-auto">
-				<h6 class="text-warning fw-bold text-uppercase" style="letter-spacing: 5px;">to know</h6>
-				<h1 class="text-info fw-bold mb-3">Tricks list</h1>
-				<p class="lead fs-4 p-2 mb-1">
-					Snowboard tricks are aerials or maneuvers performed on snowboards for fun, 
-					or in competitions. Most often, these maneuvers are performed on obstacles such as jumps, halfpipes, quarterpipes, 
-					hips, handrails, funboxes, or ledges, or on the surface of the snow. Many have their origins in precursory board 
-					sports such as skateboarding and surfing.
-				</p>
-			</div>
-		</div>
-		<div class="album py-5">
-			<div class="container">
-				{% for message in app.flashes('success') %}
-					<div class="text-center alert alert-success mt-4 fs-5">
-						{{ message }}
+	</div>
+	<div class="album py-5">
+		<div class="container">
+			{% for message in app.flashes('success') %}
+				<div class="text-center alert alert-success mt-4 fs-5">
+					{{ message }}
+				</div>
+			{% endfor %}
+			<div class="row g-4">
+				{% if tricks is empty %}
+					<div class="alert alert-danger mt-4 fs-5">
+						<p>Tricks list is empty !</p>
 					</div>
-				{% endfor %}
-				<div class="row g-4">
-					{% if tricks is empty %}
-						<div class="alert alert-danger mt-4 fs-5">
-							<p>Tricks list is empty !</p>
+				{% endif %}
+				{% if app.user %}
+				<!-- button new trick -->
+					<div class="col-lg-4 col-md-6">
+						<div class="card shadow rounded-2">
+							<img src="{{ asset('images/snowboarder5.jpg')|imagine_filter('trick') }}" class="img-fluid rounded-2">
+							<a href="{{ path('trick.new') }}" class="trick-add btn-plus">
+								<span class="fa-stack fa-2x" style="--fa-inverse: black;">
+									<i class="fa-solid fa-circle fa-stack-2x text-light"></i>
+									<i class="fa-solid fa-plus fa-stack-1x fa-lg fa-inverse"></i>
+								</span>
+							</a>	
 						</div>
-					{% endif %}
-					{% if app.user %}
-					<!-- button new trick -->
+					</div>
+				{% endif %}
+				{% if tricks %}
+				<!-- list tricks -->
+					{% for trick in tricks %}
 						<div class="col-lg-4 col-md-6">
-							<div class="card shadow rounded-2">
-								<img src="{{ asset('images/snowboarder5.jpg')|imagine_filter('trick') }}" class="img-fluid rounded-2">
-								<a href="{{ path('trick.new') }}" class="trick-add btn-plus">
-									<span class="fa-stack fa-2x" style="--fa-inverse: black;">
-										<i class="fa-solid fa-circle fa-stack-2x text-light"></i>
-										<i class="fa-solid fa-plus fa-stack-1x fa-lg fa-inverse"></i>
-									</span>
-								</a>	
-							</div>
-						</div>
-					{% endif %}
-					{% if tricks %}
-					<!-- list tricks -->
-						{% for trick in tricks %}
-							<div class="col-lg-4 col-md-6">
-								<div class="card rounded-2 shadow" id="card">
-									{% if trick.pictures[0] is defined and 'http' in trick.pictures[0].pictureLink %}
-										{# fixture #}
-										<img src="{{ trick.pictures[0].pictureLink }}" class="img-fluid rounded-top">
+							<div class="card rounded-2 shadow" id="card">
+								{% if trick.pictures[0] is defined and 'http' in trick.pictures[0].pictureLink %}
+									{# fixture #}
+									<img src="{{ trick.pictures[0].pictureLink }}" class="img-fluid rounded-top">
+								{% else %}
+									{% if trick.coverImage %}
+										<img src="{{ asset('upload/tricks/'~trick.coverImage)|imagine_filter('trick') }}" class="img-fluid rounded-top">
 									{% else %}
-										{% if trick.coverImage %}
-											<img src="{{ asset('upload/'~trick.coverImage)|imagine_filter('trick') }}" class="img-fluid rounded-top">
+										{# upload #}
+										{% if trick.pictures[0] is defined %}
+											<img src="{{ asset('upload/tricks/'~trick.pictures[0].pictureLink)|imagine_filter('trick') }}" class="img-fluid rounded-top">
 										{% else %}
-											{# upload #}
-											{% if trick.pictures[0] is defined %}
-												<img src="{{ asset('upload/'~trick.pictures[0].pictureLink)|imagine_filter('trick') }}" class="img-fluid rounded-top">
-											{% else %}
-												<img src="{{ asset('images/snowboarder5.jpg') }}" class="img-fluid">
-											{% endif %}
+											<img src="{{ asset('images/snowboarder5.jpg') }}" class="img-fluid">
 										{% endif %}
 									{% endif %}
-									<div class="card-body">
-										<div class="card-meta d-flex justify-content-between">
-											{% if trick.slug %}
-												<a href="{{ path('trick.index', {'slug': trick.slug}) }}" class="text-info text-decoration-none fw-bold my-auto fs-4">{{ trick.name }}</a>
-											{% endif %}
-											{% if app.user %}
-												<div class="btn-group fs-3 bg-warning p-2">
-													<a class="button-edit" href="{{ path('trick.edit', {'slug': trick.slug}) }}">
-														<button class="btn btn-lg btn-success me-3">
-															<i class="fa-solid fa-pen text-light"></i>
-														</button>
-													</a>
-													<a class="button-delete">
+								{% endif %}
+								<div class="card-body">
+									<div class="card-meta d-flex justify-content-between">
+										{% if trick.slug %}
+											<a href="{{ path('trick.index', {'slug': trick.slug}) }}" class="text-info text-decoration-none fw-bold my-auto fs-4">{{ trick.name }}</a>
+										{% endif %}
+										{% if app.user %}
+											<div class="btn-group fs-3 bg-warning p-2">
+												<a class="button-edit" href="{{ path('trick.edit', {'slug': trick.slug}) }}">
+													<button class="btn btn-lg btn-success">
+														<i class="fa-solid fa-pen text-light"></i>
+													</button>
+												</a>
+												{% if app.user.id == trick.user.id %}
+													<a class="button-delete ms-2">
 														<button type="button" class="btn btn-lg btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ trick.id }}">
 															<i class="fa-solid fa-trash-can text-light"></i>
 														</button>
 													</a>
-													<!-- modal delete trick confirmation -->
-													{% include "pages/trick/deleteTrick.html.twig" %}
-													<!-- -->
-												</div>
-											{% endif %}
-										</div>
+												{% endif %}	
+												<!-- modal delete trick confirmation -->
+												{% include "pages/trick/deleteTrick.html.twig" %}
+												<!-- -->
+											</div>
+										{% endif %}
 									</div>
 								</div>
 							</div>
-						{% endfor %}
-						<!-- end list tricks -->						
-					{% endif %}
-				</div>
+						</div>
+					{% endfor %}
+					<!-- end list tricks -->						
+				{% endif %}
 			</div>
 		</div>
-		{% if tricks|length >= 15  %}
-			<button type="button" id="btn-more" class="btn btn-warning fw-bold fs-4">More</button>
-		{% endif %}
-			<div id="btnUp">
-				<a href="#hero" id="scroll-up" class="icon-up">
-					<span class="fa-stack fa-2x" style="--fa-inverse: black;">
-						<i class="fa-solid fa-circle fa-stack-2x text-warning"></i>
-						<i class="fa-solid fa-arrow-up fa-stack-1x fa-lg fa-inverse"></i>
-					</span>
-				</a>
-			</div>
-	</section>
+	</div>
+	<button type="button" id="btn-more" class="btn btn-warning fw-bold fs-4">More</button>
+	<div id="btnUp">
+		<div id="scroll-up" class="icon-up">
+			<span class="fa-stack fa-2x" style="--fa-inverse: black;">
+				<i class="fa-solid fa-circle fa-stack-2x text-warning"></i>
+				<i class="fa-solid fa-arrow-up fa-stack-1x fa-lg fa-inverse"></i>
+			</span>
+		</div>
+	</div>
+</section>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-<script>
-	$(".card").slice(15, $(".card").length).hide();
-
-	$("#btn-more").on('click', function (e) {e.preventDefault();
-		$(".card:hidden").slice(0,3).slideDown();
-		if($(".card:hidden").length == 0) {
-			$("#btn-more").hide();
-		}
-		if($(".card").not(':hidden').length >= 15) {
-		$("#scroll-up").show();
-	}
-	});
-</script>
-<style>
-	#scroll-up {
-		display: none;
-	}
-</style>
-
 {% endblock %}
-
 {% block js %}
 	{% if app.flashes("connected")[0] is defined %}
 		<script>
