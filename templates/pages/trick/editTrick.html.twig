@@ -210,8 +210,8 @@
 									{{ picture.pictureLink }}
 									<div class="edit-button">
 										<button type="button" class="gallery-item btn btn-sm btn-success me-3 rounded btn-modify" 
-										data-link="{{ asset('upload/tricks/') }}{{ picture.pictureLink }}" data-bs-toggle="modal" data-bs-target="#editPictureModal" 
-										data-image="{{ picture.id }}" data-image-name="{{ picture.pictureLink }}" data-image-baseurl="{{ asset('upload/tricks/') }}">
+										data-link="{{ asset('upload/tricks/'~picture.pictureLink)|imagine_filter('coverimage') }}" data-bs-toggle="modal" data-bs-target="#editPictureModal" 
+										data-image="{{ picture.id }}">
 											<i class="fa-solid fa-pen fa-2xs text-light"></i>
 										</button>
 										<a href="{{ path('picture.delete', {slug: trick.slug, id: picture.id}) }}" type="button" class="btn btn-sm btn-danger rounded">

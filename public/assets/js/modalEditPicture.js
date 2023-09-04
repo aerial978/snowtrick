@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 // Si le format d'image n'est pas valide
                 if (!isImageFormatValid(imageFile)) {
                     // Affiche un message d'erreur dans un élément modal
-                    modalDisplayMessage.displayErrorMessage('messagesEditPicture', 'Format d\'image non valide. Formats autorisés : JPG, JPEG, PNG');
+                    modalDisplayMessage.displayErrorMessage('messagesEditPicture', 'Invalid image format. Authorized formats: JPG, JPEG, PNG');
                     return;
                 }
 
@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 // Quand la requête aboutit
                 xhr.onload = function() {
                     // Affiche un message de succès dans un élément modal
-                    modalDisplayMessage.displaySuccessMessage('messagesEditPicture', 'Le formulaire a été soumis avec succès !');
+                    modalDisplayMessage.displaySuccessMessage('messagesEditPicture', 'The form has been submitted successfully !');
                     // Attend deux secondes, puis recharge la page
                     setTimeout(function () {
                         location.reload();
@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 xhr.send(formData);
             } else {
                 // Si aucun fichier image n'est sélectionné, affiche un message d'erreur
-                modalDisplayMessage.displayErrorMessage('messagesEditPicture', 'Veuillez sélectionner une image !');
+                modalDisplayMessage.displayErrorMessage('messagesEditPicture', 'Please select an image !');
                 return;
             }
         });

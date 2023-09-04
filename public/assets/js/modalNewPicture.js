@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function(){
         // Si le lien d'image est vide
         if (!pictureLink) {
             // Affiche un message d'erreur dans un élément modal
-            modalDisplayMessage.displayErrorMessage('messagesNewPicture', 'Veuillez entrer une image !');
+            modalDisplayMessage.displayErrorMessage('messagesNewPicture', 'Please select an image !');
             event.preventDefault();
             return;
         }
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function(){
         // Si le format d'image n'est pas valide
         if (!isImageFormatValid(pictureLink)) {
             // Affiche un message d'erreur dans un élément modal
-            modalDisplayMessage.displayErrorMessage('messagesNewPicture', 'Format d\'image non valide. Formats autorisés : JPG, JPEG, PNG');
+            modalDisplayMessage.displayErrorMessage('messagesNewPicture', 'Invalid image format. Authorized formats: JPG, JPEG, PNG');
             event.preventDefault();
             return;
         }
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function(){
         // Quand la requête aboutit
         xhr.onload = function () {
             // Affiche un message de succès dans un élément modal
-            modalDisplayMessage.displaySuccessMessage('messagesNewPicture', 'Le formulaire a été soumis avec succès !');
+            modalDisplayMessage.displaySuccessMessage('messagesNewPicture', 'The form has been submitted successfully !');
             // Attend deux secondes, puis recharge la page
             setTimeout(function () {
                 location.reload();

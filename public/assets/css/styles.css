@@ -40,7 +40,7 @@ section {
     background-image: linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)),url('/../../images/snowboarder5.jpg');
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: center;
+    background-position: center right;
     display: flex;
     align-items: flex-end;
     padding: 9em;
@@ -132,6 +132,8 @@ section {
     position: absolute;
     top: 50%;
     width: 100%;
+    text-align: center;
+    transform: translateY(-50%);
 }
 
 .btn-trick {
@@ -162,6 +164,13 @@ section {
 }
 
 @media (max-width: 500px) {
+
+    .hero-trick .hero-name {
+        font-size: 30px;
+        text-align: center;
+        line-height: 1.2;
+    }
+
     .add-comment {
         flex-direction: column;
         align-items: center;
@@ -255,6 +264,10 @@ section {
 
     .navbar-responsive .link-info:hover {
         color: #17a2b8!important;
+    }
+
+    .hero {
+        background-position: 85% 75%;
     }
 
     footer {
@@ -353,6 +366,18 @@ section {
     letter-spacing: 3px;
 }
 
+@media (max-width: 992px) {
+    .about-name {
+        text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .about-name {
+        font-size: 15px!important;
+    }
+}
+
 .pagination > .active > .page-link {
     background-color: #ffc107!important;
     border-color: #ffc107!important;
@@ -381,7 +406,9 @@ section {
     display: none;
 }
 
-.trick-media .trick-media-title h4 {
+.trick-media-title h4,
+.trick-about-title h4,
+.trick-messages-title h4 {
     letter-spacing: 5px;
 }
 

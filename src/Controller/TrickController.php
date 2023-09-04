@@ -95,6 +95,7 @@ class TrickController extends AbstractController
         // MODIFICATION COVERIMAGE
         $formCoverImage = $this->coverImageController->editCoverImage($trick, $request, $picture);
 
+        // ADD MESSAGE
         $message = new Message();
         $form = $this->createForm(MessageType::class, $message);
         $form->handleRequest($request);
@@ -107,8 +108,8 @@ class TrickController extends AbstractController
             $manager->flush();
 
             $this->addFlash(
-                'success',
-                ' Message was successfully added !'
+                'success2',
+                ' Message added !'
             );
 
             return $this->redirect($this->generateUrl('trick.index', ['slug' => $slug]).'#card-message');
@@ -155,6 +156,11 @@ class TrickController extends AbstractController
             $manager->persist($trickName);
             $manager->flush();
 
+            $this->addFlash(
+                'success',
+                'Edit successfully !'
+            );
+
             return $this->redirectToRoute('trick.index', ['slug' => $trick->getSlug()]);
         }
 
@@ -185,6 +191,13 @@ class TrickController extends AbstractController
 
             $manager->persist($trick);
             $manager->flush();
+
+            $this->addFlash(
+                'success',
+                'Edit successfully !'
+            );
+
+            return $this->redirectToRoute('trick.index', ['slug' => $trick->getSlug()]);
         }
 
         return $this->render('pages/trick/editTrick.html.twig', [

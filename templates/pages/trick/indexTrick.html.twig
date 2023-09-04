@@ -15,6 +15,18 @@
 			</div>
 		</div>
 	</header>
+	<div class="container pt-2">
+		{% for message in app.flashes('danger') %}
+			<div class="alert alert-danger text-center mt-4 fs-5">
+				{{ message }}
+			</div>
+		{% endfor %}
+			{% for message in app.flashes('success') %}
+				<div class="alert alert-success text-center mt-4 fs-5">
+					{{ message }}
+				</div>
+			{% endfor %}
+	</div>
 	<section class="trick-media py-5">
 		<div class="container py-lg-5">
 			<div class="trick-media-title text-center mb-3 pb-3">
@@ -42,7 +54,8 @@
 									alt="picture" data-bs-toggle="modal" data-bs-target="#displayPictureModal">
 								{% else %}
 									<img src="{{ asset('upload/tricks/'~picture.pictureLink)|imagine_filter('trick') }}" type="button" class="img-fluid img-thumbnail shadow" 
-									alt="picture" data-bs-toggle="modal" data-bs-target="#displayPictureModal" data-image="{{ picture.id }}" data-link="{{ asset('upload/tricks/') }}{{ picture.pictureLink }}">
+									alt="picture" data-bs-toggle="modal" data-bs-target="#displayPictureModal" data-image="{{ picture.id }}" 
+									data-link="{{ asset('upload/tricks/'~picture.pictureLink)|imagine_filter('coverimage') }}">
 								{% endif %}
 							</div>
 						</div>
@@ -101,7 +114,7 @@
 								<li class="img-thumbnail dropdown-item bg-warning" data-link="{{ picture.pictureLink }}" data-bs-toggle="modal" 
 								data-bs-target="#displayPictureModal">{{ picture.pictureLink }}</li>
 							{% else %}
-								<li class="img-thumbnail dropdown-item bg-warning" data-link="{{ asset('upload/tricks/') }}{{ picture.pictureLink }}" 
+								<li class="img-thumbnail dropdown-item bg-warning" data-link="{{ asset('upload/tricks/'~picture.pictureLink)|imagine_filter('coverimage') }}" 
 								data-bs-toggle="modal" data-image="{{ picture.id }}" data-bs-target="#displayPictureModal">{{ picture.pictureLink }}</li>
 							{% endif %}
 						{% endfor %}
@@ -135,7 +148,7 @@
 	{% include "pages/video/displayVideo.html.twig" %}
 	<section class="trick-about">
 		<div class="container-fluid py-5">
-			<div class="about-title text-center mb-3 pb-3">
+			<div class="trick-about-title text-center mb-3 pb-3">
 				<h4 class="text-warning fw-bold text-uppercase">about</h4>
 				<h1 class="text-info fw-bold">Technical Description</h1>
 			</div>
@@ -192,18 +205,13 @@
 		</div>
 	</section>
 	<section class="trick-messages py-5" id="message">
-		<div class="text-center mb-3 py-3">
+		<div class="trick-messages-title text-center mb-3 py-3">
 			<h4 class="text-warning fw-bold text-uppercase">Blog</h4>
 			<h1 class="text-info fw-bold">Related Messages</h1>
 		</div>
 		<div class="container my-5 py-2">
 			<div class="row d-flex justify-content-center">
 				<div class="col-md-12 col-lg-10">
-					{% for message in app.flashes('success') %}
-						<div class="text-center alert alert-success mt-4 fs-5">
-							{{ message }}
-						</div>
-					{% endfor %}
 					<div class="card text-dark shadow" id="card-message">
 						{% if app.user %}
 							{{ form_start(form) }}
@@ -223,47 +231,52 @@
 							</div>
 							{{ form_end(form) }}
 						{% endif %}
-							{% if trick.messages is empty %}
-								<div class="alert alert-danger m-3" role="alert">
-									<h4 class="text-center">No message yet !</h4>
-								</div>
-							{% else %}
-								{% for message in messages.data %}
- 									<div class="card-body py-4 alert alert-warning m-3">
-										<div class="container">
-											<div class="row flex-start py-2">
-												<div class="d-flex profile-message">
-													<div>
-														{% if message.user.profilePicture != null %}
-															<img class="rounded-circle shadow-1-strong me-3" src="{{ asset('upload/profiles/' ~ message.user.profilePicture) }}" alt="avatar" width="60" height="60"/>
-														{% else %}
-															<img class="rounded-circle shadow-1-strong me-3" src="{{ asset('images/default.png') }}" alt="avatar" width="60" height="60"/>
-														{% endif %}
-													</div>
-													<div class="d-flex flex-column mb-3 p-2">
-														<p class="fw-bold mb-0">{{ message.user.username }}</p>
-														<p class="mb-0">{{ message.createdAt|date('d/m/Y') }}</p>
-													</div>
+						{% for message in app.flashes('success2') %}
+							<div class="alert alert-success text-center m-3 fs-5">
+								{{ message }}
+							</div>
+						{% endfor %}
+						{% if trick.messages is empty %}
+							<div class="alert alert-danger m-3" role="alert">
+								<h4 class="text-center">No message yet !</h4>
+							</div>
+						{% else %}
+							{% for message in messages.data %}
+								<div class="card-body py-4 alert alert-warning m-3">
+									<div class="container">
+										<div class="row flex-start py-2">
+											<div class="d-flex profile-message">
+												<div>
+													{% if message.user.profilePicture != null %}
+														<img class="rounded-circle shadow-1-strong me-3" src="{{ asset('upload/profiles/' ~ message.user.profilePicture) }}" alt="avatar" width="60" height="60"/>
+													{% else %}
+														<img class="rounded-circle shadow-1-strong me-3" src="{{ asset('images/default.png') }}" alt="avatar" width="60" height="60"/>
+													{% endif %}
 												</div>
-												<div class="col-12 bg-white p-3 my-3 rounded-2">
-													<p class="mb-0">{{ message.content }}</p>
+												<div class="d-flex flex-column mb-3 p-2">
+													<p class="fw-bold mb-0">{{ message.user.username }}</p>
+													<p class="mb-0">{{ message.createdAt|date('d/m/Y') }}</p>
 												</div>
 											</div>
-										</div>			
-									</div>
-								{% endfor %}
-								{% embed "_partials/_pagination.html.twig" %}
-									{# variables servant pour la pagination #}
-									{# cibler la bonne page #}
-									{% set path = 'trick.index' %}
-									{# fabriquer l'url avec le slug #}
-									{% set slug = trick.slug %}
-									{# nbre de pages #}
-									{% set pages = messages.pages %}
-									{# page en cours #}
-									{% set currentPage = messages.page %}
-								{% endembed %}
-							{% endif %}
+											<div class="col-12 bg-white p-3 my-3 rounded-2">
+												<p class="mb-0">{{ message.content }}</p>
+											</div>
+										</div>
+									</div>			
+								</div>
+							{% endfor %}
+							{% embed "_partials/_pagination.html.twig" %}
+								{# variables servant pour la pagination #}
+								{# cibler la bonne page #}
+								{% set path = 'trick.index' %}
+								{# fabriquer l'url avec le slug #}
+								{% set slug = trick.slug %}
+								{# nbre de pages #}
+								{% set pages = messages.pages %}
+								{# page en cours #}
+								{% set currentPage = messages.page %}
+							{% endembed %}
+						{% endif %}
 					</div>
 				</div>
 			</div>

@@ -25,7 +25,11 @@ class ResetPasswordRequestFormType extends AbstractType
                 ],
                 'constraints' => [
                     new Assert\NotBlank([
-                        'message' => 'Please enter your email',
+                        'message' => 'Please enter your email !',
+                    ]),
+                    new Assert\Regex([
+                        'pattern' => '/^\S+@\S+\.\S+$/',
+                        'message' => 'Invalid email address format !',
                     ]),
                 ],
             ]);

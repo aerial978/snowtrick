@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Vérifie si le format du fichier de couverture sélectionné est valide.
                 if (!isImageFormatValid(coverFile)) {
                     // Affiche un message d'erreur si le format est invalide.
-                    modalDisplayMessage.displayErrorMessage('messagesEditCover', 'Format d\'image invalide. Formats autorisés : JPG, JPEG, PNG');
+                    modalDisplayMessage.displayErrorMessage('messagesEditCover', 'Invalid image format. Authorized formats: JPG, JPEG, PNG');
                     return;
                 }
 
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Définisse la fonction à exécuter lorsque la requête est terminée.
                 xhr.onload = function () {
                     // Affiche un message de succès.
-                    modalDisplayMessage.displaySuccessMessage('messagesEditCover', 'Le formulaire a été soumis avec succès !');
+                    modalDisplayMessage.displaySuccessMessage('messagesEditCover', 'The form has been submitted successfully !');
                     // Recharge la page après un délai.
                     setTimeout(function () {
                         location.reload();
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 xhr.send(formData);
             } else {
                 // Affiche un message d'erreur si aucun fichier de couverture n'a été sélectionné.
-                modalDisplayMessage.displayErrorMessage('messagesEditCover', 'Veuillez sélectionner une image !');
+                modalDisplayMessage.displayErrorMessage('messagesEditCover', 'Please select an image !');
                 return;
             }
         });
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Sélectionne l'élément avec l'ID 'editPictureModal'.
-    let editPictureModal = document.getElementById('editPictureModal');
+    let editPictureModal = document.getElementById('editCoverImageModal');
     // Vérifie si 'editPictureModal' existe.
     if (editPictureModal) {
         // Ajoute un écouteur d'événements pour lorsque la modal Bootstrap est masquée.

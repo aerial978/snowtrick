@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
         thumbnailElement.addEventListener('click', function () {
             // Récupère le lien de données de l'élément cliqué
             let dataLink = this.getAttribute('data-link');
+            console.log(dataLink);
 
             // Si le lien de données n'est pas vide
             if (dataLink !== null) {
@@ -18,6 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const imageElement = document.createElement("img");
 				// Charge l'image à partir du lien de données
                 imageElement.src = dataLink;
+                console.log(imageElement.src);
                 imageElement.classList.add("img-fluid");
                 // Remplace le contenu de l'aperçu par l'image nouvellement créée
                 picturePreview.innerHTML = "";

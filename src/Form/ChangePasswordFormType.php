@@ -51,7 +51,7 @@ class ChangePasswordFormType extends AbstractType
                     'minMessage' => 'Your password should be at least {{ limit }} characters !',
                 ]),*/
                 new Assert\Regex([
-                    'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/',
+                    'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$#!%*?&])[A-Za-z\d@$#!%*?&]{8,}$/',
                     'message' => 'Your password must contain at least 8 characters, one lowercase letter, one uppercase letter, one number and one special character !',
                 ]),
             ],

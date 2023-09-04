@@ -35,15 +35,14 @@ class RegistrationFormType extends AbstractType
             ])
 
             ->add('email', EmailType::class, [
-                'required' => false,
                 'attr' => [
                     'class' => 'form-control',
                 ],
+                'required' => false,
                 'label_attr' => [
                     'class' => 'form-label mt-3 text-info fs-5 fw-bold',
                 ],
                 'constraints' => [
-                    new Assert\Email(),
                     new Assert\NotBlank([
                         'message' => 'Please enter a email !',
                     ]),

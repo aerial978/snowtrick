@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 // Si le format du lien n'est pas valide
                 if (!validateVideoLink(videoUrl)) {
                     // Affiche un message d'erreur dans un élément modal
-                    modalDisplayMessage.displayErrorMessage('messagesEditVideo', 'Le format du lien YouTube est incorrect !');
+                    modalDisplayMessage.displayErrorMessage('messagesEditVideo', 'The format of the YouTube link is incorrect !');
                     return;
                 }
 
@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 // Quand la requête aboutit
                 xhr.onload = function() {
                     // Affiche un message de succès dans un élément modal
-                    modalDisplayMessage.displaySuccessMessage('messagesEditVideo', 'Le formulaire a été soumis avec succès !');
+                    modalDisplayMessage.displaySuccessMessage('messagesEditVideo', 'The form has been submitted successfully !');
                     // Attend deux secondes, puis recharge la page
                     setTimeout(function () {
                         location.reload();
@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 xhr.send(formData);
             } else {
                 // Si aucun lien vidéo n'est saisi, affiche un message d'erreur
-                modalDisplayMessage.displayErrorMessage('messagesEditVideo', 'Veuillez entrer un lien YouTube !');
+                modalDisplayMessage.displayErrorMessage('messagesEditVideo', 'Please enter a YouTube link !');
                 return;
             }
         });
