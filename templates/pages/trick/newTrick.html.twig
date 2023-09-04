@@ -1,17 +1,11 @@
 {% extends 'base.html.twig' %}
-{% set custom_header = 'navbar-form' %}
 {% block body %}
-	<div class="container-fluid" style="background-color:#D1ECF1">
+	<div class="new-trick container-fluid">
 		<div class="row justify-content-center align-items-center">
 			<div class="col-lg-6 p-5">
 				<div class="">
 					<h3 class="mt-5 pt-5 fw-bolder">Add a trick</h3>
 					{{ form_start(form) }}
-					{#	{% for message in app.flashes('warning') %}
-							<div class="alert alert-warning mt-4">
-								{{ message }}
-							</div>
-						{% endfor %} #}
 						<div class="alert-primary">
 							<div class="form-error text-danger">
 								{{ form_errors(form) }}
@@ -45,11 +39,10 @@
 								{{ form_errors(form.image) }}
 							</div>
 						</div>
-
 						<div class="row mt-3">
 							<div class"col-xl-12">
-								<div class="inputVideoType">
-									<label class="mb-2 fw-bold">Video (s)</label>
+								<div class="input-video-type">
+									<label class="mb-2 fw-bold">Videos(s) (optional)</label>
 									<div class="row duplicate-row mb-3">
 										<div class="col-11">
 											<input type="text" name="video[]" id="" class="form-control"/>

@@ -3,10 +3,10 @@
 namespace App\Service;
 
 use App\Entity\Picture;
-use App\Repository\TrickRepository;
 use App\Repository\PictureRepository;
-use Symfony\Component\Filesystem\Filesystem;
+use App\Repository\TrickRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class PictureService extends AbstractController
@@ -26,7 +26,7 @@ class PictureService extends AbstractController
     {
         if (!empty($images)) {
             // Boucle sur les images (multiple)
-            foreach($images as $index => $image) {
+            foreach ($images as $index => $image) {
                 // Nouveau nom de fichier de l'image (unique)
                 $newImage = uniqid().'.'.$image->guessExtension();
                 $copyImage = uniqid().'.'.$image->guessExtension();
@@ -51,8 +51,8 @@ class PictureService extends AbstractController
 
                 $this->pictureRepository->add($img, true);
 
-                if($index == 0) {
-                    $this->filesystem->copy('upload/'.$newImage, 'upload/'.$copyImage);
+                if (0 == $index) {
+                    $this->filesystem->copy('upload/tricks/'.$newImage, 'upload/tricks/'.$copyImage);
                     $trick->setCoverImage($copyImage);
                     $this->trickRepository->add($trick, true);
                 }

@@ -15,27 +15,59 @@
 			</div>
 		</div>
 	</header>
+	<div class="container pt-2">
+		{% for message in app.flashes('danger') %}
+			<div class="alert alert-danger text-center mt-4 fs-5">
+				{{ message }}
+			</div>
+		{% endfor %}
+			{% for message in app.flashes('success') %}
+				<div class="alert alert-success text-center mt-4 fs-5">
+					{{ message }}
+				</div>
+			{% endfor %}
+	</div>
 	<section class="trick-media py-5">
 		<div class="container py-lg-5">
-			<div class="text-center mb-3 pb-3">
-				<h4 class="text-warning fw-bold text-uppercase" style="letter-spacing: 5px;">medias</h4>
+			<div class="trick-media-title text-center mb-3 pb-3">
+				<h4 class="text-warning fw-bold text-uppercase">medias</h4>
 				<h1 class="text-info fw-bold">Let's discover the trick together</h1>
 			</div>
 		</div>
 		<div class="media container">
 			<div class="row g-4 mb-5 p-3 border rounded-2 bg-warning">
-			<div class="title-media picture-title d-flex">
-				<span class="fa-stack fa-1x">
-					<i class="fa-solid fa-square fa-stack-2x"></i>
-					<i class="fa-solid fa-image fa-stack-1x fa-inverse"></i>
-				</span>
-				<p class="fs-4 fw-bold">Gallery Pictures</p>
+				<div class="title-media picture-title d-flex">
+					<span class="fa-stack fa-1x">
+						<i class="fa-solid fa-square fa-stack-2x"></i>
+						<i class="fa-solid fa-image fa-stack-1x fa-inverse"></i>
+					</span>
+					<p class="fs-4 fw-bold">Gallery Pictures</p>
+				</div>
+				<!-- section display media full screen -->
+				<!-- gallery media picture -->
+				{% if pictures is not empty %}
+					{% for picture in pictures %}
+						<div class="col-lg-3 col-md-6 h-100 px-3">
+							<div class="card-gallery">
+								{% if 'http' in picture.pictureLink %}
+									<img src="{{ picture.pictureLink|imagine_filter('trick') }}" type="button" class="img-fluid img-thumbnail shadow" 
+									alt="picture" data-bs-toggle="modal" data-bs-target="#displayPictureModal">
+								{% else %}
+									<img src="{{ asset('upload/tricks/'~picture.pictureLink)|imagine_filter('trick') }}" type="button" class="img-fluid img-thumbnail shadow" 
+									alt="picture" data-bs-toggle="modal" data-bs-target="#displayPictureModal" data-image="{{ picture.id }}" 
+									data-link="{{ asset('upload/tricks/'~picture.pictureLink)|imagine_filter('coverimage') }}">
+								{% endif %}
+							</div>
+						</div>
+					{% endfor %}
+				{% else %}
+				<div class="alert alert-danger" role="alert">
+					<h4 class="text-center">No picture yet !</h4>
+				</div>
+				{% endif %}
+			<!-- end gallery media picture -->
 			</div>
-				<!-- modal display image xl -->
-				{% include "pages/picture/displayPicture.html.twig" %}
-				<!-- -->
-			</div>
-				<div class="row g-4 my-4 p-3 border rounded-2 bg-info">
+			<div class="row g-4 my-4 p-3 border rounded-2 bg-info">
 				<div class="title-media d-flex">
 					<span class="fa-stack fa-1x">
 						<i class="fa-solid fa-square fa-stack-2x"></i>
@@ -43,17 +75,81 @@
 					</span>
 					<p class="fs-4 fw-bold">Gallery Videos</p>
 				</div>
-				<!-- modal display video xl -->
-				{% include "pages/video/displayVideo.html.twig" %}
-				<!-- -->
+				<!-- gallery media video -->
+				{% if videos is not empty %}
+					{% for video in videos %}
+						<div class="col-lg-4 col-md-6 h-100">
+							<div class="card-gallery">
+								{% if 'http' in trick.videos[0].videoLink %}
+									<iframe src="{{ video.videoLink }}" alt="video"></iframe>
+								{% else %}
+									<iframe width="300" height="205" src="https://www.youtube.com/embed/{{ video.videoLink }}" title="YouTube video player" frameborder="0" 
+									allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+								{% endif %}
+							</div>
+						</div>
+					{% endfor %}
+				{% else %}
+					<div class="alert alert-danger" role="alert">
+						<h4 class="text-center">No video yet !</h4>
+					</div>
+				{% endif %}
+				<!-- end gallery media video -->
+				<!-- end section display media full screen -->
 			</div>	
 		</div>
-		{% include "pages/mediaResponsive/mediaDisplayResponsive.html.twig" %}
+		{#{% include "pages/mediaResponsive/mediaDisplayResponsive.html.twig" %}#}
+		<div class="media-responsive container">
+			<div class="dropdown-center">
+				<button class="btn btn-secondary dropdown-toggle w-100 bg-warning border border-none text-dark fs-4 fw-bold" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+					See medias
+				</button>
+				<ul class="dropdown-menu bg-info w-100">
+					<li class="mx-2 bg-info fs-5 fw-bold">Pictures</li>
+					<!-- section display media responsive -->
+					<!-- dropdown display media picture responsive -->
+					{% if trick.pictures is not empty %}
+						{% for picture in trick.pictures %}
+							{% if 'http' in picture.pictureLink %}
+								<li class="img-thumbnail dropdown-item bg-warning" data-link="{{ picture.pictureLink }}" data-bs-toggle="modal" 
+								data-bs-target="#displayPictureModal">{{ picture.pictureLink }}</li>
+							{% else %}
+								<li class="img-thumbnail dropdown-item bg-warning" data-link="{{ asset('upload/tricks/'~picture.pictureLink)|imagine_filter('coverimage') }}" 
+								data-bs-toggle="modal" data-image="{{ picture.id }}" data-bs-target="#displayPictureModal">{{ picture.pictureLink }}</li>
+							{% endif %}
+						{% endfor %}
+					{% else %}
+						<div class="alert alert-danger p-2" role="alert">
+							<h6 class="text-center">No picture yet !</h6>
+						</div>
+					{% endif %}
+					<!-- end dropdown display media picture responsive -->
+					<!-- dropdown display media videos responsive -->
+					<li class="mx-2 bg-info fs-5 fw-bold">Videos</li>
+					{% if trick.videos is not empty %}
+						{% for picture in trick.videos %}
+							<li class="video-item dropdown-item bg-warning" data-link="{{ picture.videoLink }}" data-bs-toggle="modal" 
+							data-bs-target="#displayVideoModal">{{ picture.videoLink }}</li>
+						{% endfor %}
+					{% else %}
+						<div class="alert alert-danger p-2" role="alert">
+							<h6 class="text-center">No video yet !</h6>
+						</div>
+					{% endif %}
+					<!-- end dropdown display media videos responsive -->
+				</ul>
+			</div>
+		</div>
+		<!-- end section edit media responsive -->
 	</section>
-	<section class="trick-about" style="background-color: #fff4d4">
+	<!-- modal display media picture -->
+	{% include "pages/picture/displayPicture.html.twig" %}
+	<!-- modal display media video -->
+	{% include "pages/video/displayVideo.html.twig" %}
+	<section class="trick-about">
 		<div class="container-fluid py-5">
-			<div class="about-title text-center mb-3 pb-3">
-				<h4 class="text-warning fw-bold text-uppercase" style="letter-spacing: 5px;">about</h4>
+			<div class="trick-about-title text-center mb-3 pb-3">
+				<h4 class="text-warning fw-bold text-uppercase">about</h4>
 				<h1 class="text-info fw-bold">Technical Description</h1>
 			</div>
 			<div class="container py-4">
@@ -64,7 +160,7 @@
 								{% if 'http' in pictures[0].pictureLink %}
 									<img src="{{ pictures[0].pictureLink }}" class="img-fluid rounded-2 shadow-lg bg-body">
 								{% else %}
-									<img src="{{ asset('upload/'~pictures[0].pictureLink)|imagine_filter('description') }}" class="img-fluid rounded-2 shadow-lg bg-body">
+									<img src="{{ asset('upload/tricks/'~pictures[0].pictureLink)|imagine_filter('description') }}" class="img-fluid rounded-2 shadow-lg bg-body">
 								{% endif %}
 							{% else %}
 								<img src="{{ asset('images/snowboarder5.jpg') }}" class="img-fluid rounded-2 shadow-lg bg-body">
@@ -108,75 +204,79 @@
 			</div>
 		</div>
 	</section>
-	<section class="trick-messages py-5" style="background-color:#d5f5fa" id="message">
-		<div class="text-center mb-3 py-3">
-			<h4 class="text-warning fw-bold text-uppercase" style="letter-spacing: 5px;">Blog</h4>
+	<section class="trick-messages py-5" id="message">
+		<div class="trick-messages-title text-center mb-3 py-3">
+			<h4 class="text-warning fw-bold text-uppercase">Blog</h4>
 			<h1 class="text-info fw-bold">Related Messages</h1>
 		</div>
 		<div class="container my-5 py-2">
 			<div class="row d-flex justify-content-center">
 				<div class="col-md-12 col-lg-10">
-					{% for message in app.flashes('success') %}
-						<div class="text-center alert alert-success mt-4 fs-5">
-							{{ message }}
-						</div>
-					{% endfor %}
 					<div class="card text-dark shadow" id="card-message">
 						{% if app.user %}
 							{{ form_start(form) }}
-								<div class="d-flex add-comment-section rounded bg-warning p-3 m-3 my-5">
-									<img class="img-fluid img-responsive rounded-circle mx-3" src="{{ asset('images/' ~ app.user.file) }}" alt="avatar" width="60" height="60"/>	
-									{{ form_widget(form.content) }}
-									<div>
-										<a href="#message">{{ form_row(form.submit) }}</a>
-									</div>
+							<div class="d-flex add-comment rounded bg-warning p-3 m-3 my-5">
+								{% if app.user.profilePicture != null %}
+									<img class="img-fluid img-responsive rounded-circle mx-3" src="{{ asset('upload/profiles/' ~ app.user.profilePicture) }}" alt="avatar" width="60" height="60"/>	
+								{% else %}
+									<img class="img-fluid img-responsive rounded-circle mx-3" src="{{ asset('images/default.png') }}" alt="avatar" width="60" height="60"/>
+								{% endif %}
+								{{ form_widget(form.content) }}
+								<div>
+									<a href="#message">{{ form_row(form.submit) }}</a>
 								</div>
-								<div class="form-error text-danger fw-bolder">
-									{{ form_errors(form.content) }}
-								</div>
+							</div>
+							<div class="form-error text-danger fw-bolder">
+								{{ form_errors(form.content) }}
+							</div>
 							{{ form_end(form) }}
 						{% endif %}
-							{% if trick.messages is empty %}
-								<div class="alert alert-danger m-3" role="alert">
-									<h4 class="text-center">No message yet !</h4>
-								</div>
-							{% else %}
-							
-								{% for message in messages.data %}
-							{#	{% if messages.data > 0 %} #}
- 									<div class="card-body py-4 alert alert-warning m-3">
-										<div class="container">
-											<div class="row flex-start py-2">
-												<div class="d-flex">
-													<div>
-														<img class="rounded-circle shadow-1-strong me-3" src="{{ asset('images/' ~ message.user.file) }}" alt="avatar" width="60" height="60"/>
-													</div>
-													<div class="d-flex flex-column mb-3 p-2">
-														<p class="fw-bold mb-0">{{ message.user.username }}</p>
-														<p class="mb-0">{{ message.createdAt|date('d/m/Y') }}</p>
-													</div>
+						{% for message in app.flashes('success2') %}
+							<div class="alert alert-success text-center m-3 fs-5">
+								{{ message }}
+							</div>
+						{% endfor %}
+						{% if trick.messages is empty %}
+							<div class="alert alert-danger m-3" role="alert">
+								<h4 class="text-center">No message yet !</h4>
+							</div>
+						{% else %}
+							{% for message in messages.data %}
+								<div class="card-body py-4 alert alert-warning m-3">
+									<div class="container">
+										<div class="row flex-start py-2">
+											<div class="d-flex profile-message">
+												<div>
+													{% if message.user.profilePicture != null %}
+														<img class="rounded-circle shadow-1-strong me-3" src="{{ asset('upload/profiles/' ~ message.user.profilePicture) }}" alt="avatar" width="60" height="60"/>
+													{% else %}
+														<img class="rounded-circle shadow-1-strong me-3" src="{{ asset('images/default.png') }}" alt="avatar" width="60" height="60"/>
+													{% endif %}
 												</div>
-												<div class="col-12 bg-white p-3 my-3 rounded-2">
-													<p class="mb-0">{{ message.content }}</p>
+												<div class="d-flex flex-column mb-3 p-2">
+													<p class="fw-bold mb-0">{{ message.user.username }}</p>
+													<p class="mb-0">{{ message.createdAt|date('d/m/Y') }}</p>
 												</div>
 											</div>
-										</div>			
-									</div>
-								{# {% endif %} #}
-								{% endfor %}
-							
-								{% embed "_partials/_pagination.html.twig" %}
-									{# variables servant pour la pagination #}
-									{# cibler la bonne page #}
-									{% set path = 'trick.index' %}
-									{# fabriquer l'url avec le slug #}
-									{% set slug = trick.slug %}
-									{# nbre de pages #}
-									{% set pages = messages.pages %}
-									{# page en cours #}
-									{% set currentPage = messages.page %}
-								{% endembed %}
-							{% endif %}
+											<div class="col-12 bg-white p-3 my-3 rounded-2">
+												<p class="mb-0">{{ message.content }}</p>
+											</div>
+										</div>
+									</div>			
+								</div>
+							{% endfor %}
+							{% embed "_partials/_pagination.html.twig" %}
+								{# variables servant pour la pagination #}
+								{# cibler la bonne page #}
+								{% set path = 'trick.index' %}
+								{# fabriquer l'url avec le slug #}
+								{% set slug = trick.slug %}
+								{# nbre de pages #}
+								{% set pages = messages.pages %}
+								{# page en cours #}
+								{% set currentPage = messages.page %}
+							{% endembed %}
+						{% endif %}
 					</div>
 				</div>
 			</div>

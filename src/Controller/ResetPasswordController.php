@@ -98,7 +98,7 @@ class ResetPasswordController extends AbstractController
                 $translator->trans($e->getReason(), [], 'ResetPasswordBundle')
             ));
 
-        $this->resetPasswordHelper->removeResetRequest($token);
+            $this->resetPasswordHelper->removeResetRequest($token);
 
             return $this->redirectToRoute('app_forgot_password_request');
         }
@@ -125,7 +125,7 @@ class ResetPasswordController extends AbstractController
 
             $this->addFlash('connection', true);
 
-            return $this->redirectToRoute('home.index');
+            return $this->redirectToRoute('security.login');
         }
 
         return $this->render('pages/reset_password/reset.html.twig', [
@@ -142,8 +142,9 @@ class ResetPasswordController extends AbstractController
         // Do not reveal whether a user account was found or not.
         if (!$user) {
             $this->addFlash('reset_password_error', 'No account corresponds to this email address !');
+
             return $this->redirectToRoute('app_forgot_password_request');
-        } 
+        }
 
         try {
             $resetToken = $this->resetPasswordHelper->generateResetToken($user);
@@ -166,6 +167,7 @@ class ResetPasswordController extends AbstractController
         $this->setTokenObjectInSession($resetToken);
 
         $this->addFlash('emailPassword', true);
+
         return $this->redirectToRoute('app_forgot_password_request');
     }
 }

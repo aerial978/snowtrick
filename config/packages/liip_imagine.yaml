@@ -26,4 +26,5 @@ liip_imagine:
                 thumbnail:
                     size: [600, 400]
                     mode: outbound
-        
+    twig:
+        mode: lazy

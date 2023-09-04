@@ -5,13 +5,11 @@ namespace App\Command;
 use App\Entity\Category;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Attribute\AsCommand;
-use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'app:list-category',
@@ -29,7 +27,7 @@ class ListCategoryCommand extends Command
 
         parent::__construct();
     }
-    
+
     protected function configure(): void
     {
         /* Nothing */
@@ -42,11 +40,8 @@ class ListCategoryCommand extends Command
         $category = $this->categoryRepository->findAll();
 
         if ($category) {
-
             $io->error('Categories has been already loaded !');
-
         } else {
-    
             $categories = [
                 ['name' => 'Grabs'],
                 ['name' => 'Rotations'],
@@ -54,7 +49,7 @@ class ListCategoryCommand extends Command
                 ['name' => 'Rotations désaxées'],
                 ['name' => 'Slides'],
                 ['name' => 'One foot tricks'],
-                ['name' => 'Old school']
+                ['name' => 'Old school'],
             ];
 
             foreach ($categories as $values) {

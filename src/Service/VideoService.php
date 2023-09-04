@@ -20,7 +20,6 @@ class VideoService extends AbstractController
         if (!empty($videoUrl)) {
             foreach ($videoUrl as $newVideo) {
                 if (str_starts_with($newVideo, 'https://www.youtube.com/watch?')) {
-
                     $explode = explode('?', $newVideo);
 
                     $arguments = explode('&', $explode[1]);

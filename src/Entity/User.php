@@ -2,16 +2,14 @@
 
 namespace App\Entity;
 
+use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\UserRepository;
-use DateInterval;
-use DateTime;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[UniqueEntity(fields: ['email'], message: 'This email is already used !')]
@@ -25,30 +23,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
-    
-    #[ORM\Column(type:'string', length: 50, unique: true)]
+
+    #[ORM\Column(type: 'string', length: 50, unique: true)]
     #[Assert\Length(min: 8, max: 50)]
     private $username;
 
-    #[ORM\Column(type:'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255)]
     #[Assert\Email()]
     #[Assert\Length(min: 2, max: 255)]
     private $email;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $profilePicture;
 
     #[ORM\Column(type: 'json')]
     #[Assert\NotNull()]
     private $roles = [];
 
-    private $plainPassword = Null;
+    private $plainPassword;
 
     #[ORM\Column(type: 'string')]
     #[Assert\NotNull()]
     private $password = 'password';
 
-    #[ORM\Column(type:'string', length: 255, nullable: true)]
-    private $file;
-
-    #[ORM\Column(type:'datetime')]
+    #[ORM\Column(type: 'datetime')]
     protected $createdAt;
 
     #[ORM\Column(type: 'boolean')]
@@ -63,11 +61,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $tokenRegistrationLifetime = null;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Trick::class)]
+    private Collection $tricks;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
         $this->messages = new ArrayCollection();
-        $this->tokenRegistrationLifetime = (new DateTime('now'))->add(new DateInterval("PT60S"));
+        $this->tokenRegistrationLifetime = (new \DateTime('now'))->add(new \DateInterval('PT3600S'));
+        $this->tricks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -95,6 +97,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function getProfilePicture(): ?string
+    {
+        return $this->profilePicture;
+    }
+
+    public function setProfilePicture(?string $profilePicture): self
+    {
+        $this->profilePicture = $profilePicture;
 
         return $this;
     }
@@ -155,7 +169,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->plainPassword;
     }
 
-    public function getFile(): ?string
+    /*public function getFile(): ?string
     {
         return $this->file;
     }
@@ -163,13 +177,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setFile(string $file): self
     {
         $this->file = $file;
-        
+
         return $this;
     }
+    */
 
     public function onPrePersist()
     {
-        $this->createdAt = new \DateTime("now");
+        $this->createdAt = new \DateTime('now');
     }
 
     public function getCreatedAt(): ?\DateTime
@@ -180,7 +195,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCreatedAt(\DateTime $createdAt): self
     {
         $this->createdAt = $createdAt;
-        
+
         return $this;
     }
 
@@ -258,5 +273,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-}
 
+    /**
+     * @return Collection<int, Trick>
+     */
+    public function getTricks(): Collection
+    {
+        return $this->tricks;
+    }
+
+    public function addTrick(Trick $trick): self
+    {
+        if (!$this->tricks->contains($trick)) {
+            $this->tricks->add($trick);
+            $trick->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrick(Trick $trick): self
+    {
+        if ($this->tricks->removeElement($trick)) {
+            // set the owning side to null (unless already changed)
+            if ($trick->getUser() === $this) {
+                $trick->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+}

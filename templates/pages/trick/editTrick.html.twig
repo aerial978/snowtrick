@@ -9,7 +9,7 @@
 			{{ form_start(formNameEdit) }}
 			<section class="trick-name hero-name py-3">
 				<div class="container d-flex justify-content-center">
-					<div class="form-group w-75 my-2 p-4 rounded shadow" style="background-color: #D1ECF1">
+					<div class="form-group w-75 my-2 p-4 rounded shadow">
 						<div class="title-description d-flex mb-2">
 							<span class="fa-stack fa-1x">
 								<i class="fa-solid fa-square fa-stack-2x"></i>
@@ -45,7 +45,7 @@
 	</div>
 	<!-- section edit medias full screen -->
 	<section class="media container mt-5">
-		<div class="row g-4 p-3 border rounded-2 shadow" style="background-color: #FFF3CD">
+		<div class="gallery-pictures row g-4 p-3 border rounded-2 shadow">
 			<div class="title-media picture-title d-flex">
 				<span class="fa-stack fa-1x">
 					<i class="fa-solid fa-square fa-stack-2x"></i>
@@ -65,43 +65,50 @@
 					</a>	
 				</div>
 			</div>
-			<!-- list media picture -->
-			{% for picture in pictures %}
-				<div class="col-lg-3 col-md-6">
-					<div class="card">
-						{% if 'http' in picture.pictureLink %}
-							{# fixture #}
-							<img id="picture{{ picture.id }}" src="{{ picture.pictureLink }}" class="img-fluid rounded-top">
-						{% else %}
-							{# upload #}
-							<img id="picture{{ picture.id }}" src="{{ asset('upload/'~picture.pictureLink)|imagine_filter('media') }}" class="img-fluid rounded-top">
-						{% endif %}
-						<div class="card-body">
-							<div class="card-meta d-flex justify-content-between alert-info">
-							{% if app.user %}
-								<div class="btn-group fs-3 bg-warning p-2">
-									<div class="edit-button">
-										<button type="button" class="btn btn-lg btn-success me-3 rounded btn-modify" data-bs-toggle="modal" data-bs-target="#editPictureModal" data-image="{{ picture.id }}">
-											<i class="fa-solid fa-pen text-light"></i>
-										</button>
-									</div>
-									<div class="delete-button">
-										{% if picture.id %}
-										<a href="{{ path('picture.delete', {slug: trick.slug, id: picture.id}) }}" type="button" class="btn btn-lg btn-danger rounded">
-											<i class="fa-solid fa-trash-can text-light"></i>
-										</a>
-										{% endif %}
-									</div>
-								</div>
+			<!-- list edit media picture -->
+			{% if pictures is not empty %}
+				{% for picture in pictures %}
+					<div class="col-lg-3 col-md-6">
+						<div class="card">
+							{% if 'http' in picture.pictureLink %}
+								{# fixture #}
+								<img id="picture{{ picture.id }}" src="{{ picture.pictureLink }}" class="img-fluid rounded-top">
+							{% else %}
+								{# upload #}
+								<img id="picture{{ picture.id }}" src="{{ asset('upload/tricks/'~picture.pictureLink)|imagine_filter('media') }}" class="img-fluid rounded-top">
 							{% endif %}
+							<div class="card-body">
+								<div class="card-meta d-flex justify-content-between alert-info">
+								{% if app.user %}
+									<div class="btn-group fs-3 bg-warning p-2">
+										<div class="edit-button">
+											<button type="button" class="btn btn-lg btn-success me-3 rounded btn-modify" data-bs-toggle="modal" data-bs-target="#editPictureModal" 
+											data-image="{{ picture.id }}">
+												<i class="fa-solid fa-pen text-light"></i>
+											</button>
+										</div>
+										<div class="delete-button">
+											{% if picture.id %}
+											<a href="{{ path('picture.delete', {slug: trick.slug, id: picture.id}) }}" type="button" class="btn btn-lg btn-danger rounded">
+												<i class="fa-solid fa-trash-can text-light"></i>
+											</a>
+											{% endif %}
+										</div>
+									</div>
+								{% endif %}
+								</div>
 							</div>
 						</div>
 					</div>
+				{% endfor %}
+			{% else %}
+				<div class="alert alert-danger" role="alert">
+					<h4 class="text-center">No picture yet !</h4>
 				</div>
-			{% endfor %}
-			<!-- end list media picture -->
+			{% endif %}
+			<!-- end list edit media picture -->
 		</div>
-		<div class="row g-4 my-4 p-3 border rounded-2 shadow" style="background-color: #D1ECF1">
+		<div class="gallery-videos row g-4 my-4 p-3 border rounded-2 shadow">
 			<div class="title-media d-flex">
 				<span class="fa-stack fa-1x">
 					<i class="fa-solid fa-square fa-stack-2x"></i>
@@ -122,42 +129,48 @@
 					</img>
 				</div>
 			</div>
-			<!-- list media video -->
-			{% for video in videos %}
-				<div class="col-lg-3 col-md-6">
-					<div class="card">
-						{% if 'http' in trick.videos[0].videoLink %}
-							<iframe id="video{{ video.id }}" height="220" src="{{ video.videoLink }}" alt="video" class="rounded-top" title="YouTube video player" frameborder="0" 
-							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>></iframe>
-						{% else %}
-							<iframe id="video{{ video.id }}" height="220" class="rounded-top" src="https://www.youtube.com/embed/{{ video.videoLink }}" 
-							title="YouTube video player" frameborder="0" 
-							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-						{% endif %}
-						<div class="card-body">
-							<div class="card-meta d-flex justify-content-between alert-info">
-							{% if app.user %}
-								<div class="btn-group fs-3 bg-warning p-2">
-									<div class="button-edit">
-										<button type="button" class="btn btn-lg btn-success me-3 rounded btn-modify" data-bs-toggle="modal" data-bs-target="#editVideoModal" data-video="{{ video.id }}">
-											<i class="fa-solid fa-pen text-light"></i>
-										</button>
-									</div>
-									<div class="button-delete">
-										{% if video.id %}
-											<a href="{{ path('video.delete', {slug: trick.slug, id: video.id}) }}" type="button" class="btn btn-lg btn-danger rounded">
-												<i class="fa-solid fa-trash-can text-light"></i>
-											</a>
-										{% endif %}
-									</div>
-								</div>
+			<!-- list edit media video -->
+			{% if videos is not empty %}
+				{% for video in videos %}
+					<div class="col-lg-3 col-md-6">
+						<div class="card">
+							{% if 'http' in trick.videos[0].videoLink %}
+								<iframe id="video{{ video.id }}" height="220" src="{{ video.videoLink }}" alt="video" class="rounded-top" title="YouTube video player" frameborder="0" 
+								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>></iframe>
+							{% else %}
+								<iframe id="video{{ video.id }}" height="220" class="rounded-top" src="https://www.youtube.com/embed/{{ video.videoLink }}" 
+								title="YouTube video player" frameborder="0" 
+								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 							{% endif %}
+							<div class="card-body">
+								<div class="card-meta d-flex justify-content-between alert-info">
+								{% if app.user %}
+									<div class="btn-group fs-3 bg-warning p-2">
+										<div class="button-edit">
+											<button type="button" class="btn btn-lg btn-success me-3 rounded btn-modify" data-bs-toggle="modal" data-bs-target="#editVideoModal" data-video="{{ video.id }}" data-video-url="https://www.youtube.com/embed/">
+												<i class="fa-solid fa-pen text-light"></i>
+											</button>
+										</div>
+										<div class="button-delete">
+											{% if video.id %}
+												<a href="{{ path('video.delete', {slug: trick.slug, id: video.id}) }}" type="button" class="btn btn-lg btn-danger rounded">
+													<i class="fa-solid fa-trash-can text-light"></i>
+												</a>
+											{% endif %}
+										</div>
+									</div>
+								{% endif %}
+								</div>
 							</div>
 						</div>
 					</div>
+				{% endfor %}
+			{% else %}
+				<div class="alert alert-danger" role="alert">
+					<h4 class="text-center">No video yet !</h4>
 				</div>
-			{% endfor %}
-			<!-- end list media video -->
+			{% endif %}
+			<!-- end list edit media video -->
 		</div>
 	</section>
 	<!-- end section edit medias full screen -->
@@ -170,7 +183,7 @@
 					See medias
 				</button>
 				<ul class="dropdown-menu bg-info w-100">
-				<!-- dropdown pictures responsive -->
+				<!-- dropdown edit pictures responsive -->
 					<li class="mx-2 bg-info fs-5 fw-bold py-2">Picture(s)
 						<!-- button new picture -->
 						<a href="" class="trick-add" data-bs-toggle="modal" data-bs-target="#newPictureModal">
@@ -180,35 +193,41 @@
 							</span>
 						</a>
 					</li>
-					{% for picture in pictures %}
-						{% if 'http' in picture.pictureLink %}
-						{# fixtures #}
-							<li class="dropdown-item bg-warning d-flex justify-content-between">
-								{{ picture.pictureLink }}
-								<button type="button" class="btn btn-lg btn-success me-3 rounded btn-modify" data-bs-toggle="modal" 
-								data-bs-target="#editPictureModal" data-image="{{ picture.id }}" data-image-name="{{ picture.pictureLink }}">
-									<i class="fa-solid fa-pen text-light"></i>
-								</button>
-							</li>
-						{% else %}
-						{# upload #}
-							<li class="dropdown-item bg-warning d-flex justify-content-between">
-								{{ picture.pictureLink }}
-								<div class="edit-button">
-									<button type="button" class="gallery-item btn btn-sm btn-success me-3 rounded btn-modify" 
-									data-link="{{ asset('upload/') }}{{ picture.pictureLink }}" data-bs-toggle="modal" data-bs-target="#editPictureModal" 
-									data-image="{{ picture.id }}" data-image-name="{{ picture.pictureLink }}">
-										<i class="fa-solid fa-pen fa-2xs text-light"></i>
+					{% if pictures is not empty %}
+						{% for picture in pictures %}
+							{% if 'http' in picture.pictureLink %}
+							{# fixtures #}
+								<li class="dropdown-item bg-warning d-flex justify-content-between">
+									{{ picture.pictureLink }}
+									<button type="button" class="btn btn-lg btn-success me-3 rounded btn-modify" data-bs-toggle="modal" 
+									data-bs-target="#editPictureModal" data-image="{{ picture.id }}" data-image-name="{{ picture.pictureLink }}">
+										<i class="fa-solid fa-pen text-light"></i>
 									</button>
-									<a href="{{ path('picture.delete', {slug: trick.slug, id: picture.id}) }}" type="button" class="btn btn-sm btn-danger rounded">
-										<i class="fa-solid fa-trash-can fa-2xs text-light"></i>
-									</a>
-								</div>
-							</li>
-						{% endif %}
-					{% endfor %}
-					<!-- end dropdown pictures responsive -->
-					<!-- dropdown videos responsive -->
+								</li>
+							{% else %}
+							{# upload #}
+								<li class="dropdown-item bg-warning d-flex justify-content-between">
+									{{ picture.pictureLink }}
+									<div class="edit-button">
+										<button type="button" class="gallery-item btn btn-sm btn-success me-3 rounded btn-modify" 
+										data-link="{{ asset('upload/tricks/'~picture.pictureLink)|imagine_filter('coverimage') }}" data-bs-toggle="modal" data-bs-target="#editPictureModal" 
+										data-image="{{ picture.id }}">
+											<i class="fa-solid fa-pen fa-2xs text-light"></i>
+										</button>
+										<a href="{{ path('picture.delete', {slug: trick.slug, id: picture.id}) }}" type="button" class="btn btn-sm btn-danger rounded">
+											<i class="fa-solid fa-trash-can fa-2xs text-light"></i>
+										</a>
+									</div>
+								</li>
+							{% endif %}
+						{% endfor %}
+					{% else %}
+						<div class="alert alert-danger p-2" role="alert">
+							<h6 class="text-center">No picture yet !</h6>
+						</div>
+					{% endif %}
+					<!-- end dropdown edit picture responsive -->
+					<!-- dropdown edit video responsive -->
 					<li class="mx-2 bg-info fs-5 fw-bold py-2">Video(s)
 						<!-- button new video -->
 						<a href="" class="trick-add" data-bs-toggle="modal" data-bs-target="#newVideoModal">
@@ -218,27 +237,35 @@
 							</span>
 						</a>	
 					</li>
-					{% for video in videos %}
-						<li class="video-item dropdown-item bg-warning d-flex justify-content-between">
-							{{ video.videoLink }}
-							<div class"edit-button">
-								<button type="button" class="btn btn-sm btn-success me-3 rounded btn-modify" 
-								data-link="{{ video.videoLink }}" data-bs-toggle="modal" data-bs-target="#editVideoModal" data-video="{{ video.id }}" data-video-name="{{ video.videoLink }}">
-									<i class="fa-solid fa-pen fa-2xs text-light"></i>
-								</button>
-								<a href="{{ path('video.delete', {slug: trick.slug, id: video.id}) }}" type="button" class="btn btn-sm btn-danger rounded">
-									<i class="fa-solid fa-trash-can fa-2xs text-light"></i>
-								</a>
-							</div>
-						</li>
-					{% endfor %}
-					<!-- end dropdown videos responsive -->	
+					{% if videos is not empty %}
+						{% for video in videos %}
+							<li class="video-item dropdown-item bg-warning d-flex justify-content-between">
+								{{ video.videoLink }}
+								<div class"edit-button">
+									<button type="button" class="btn btn-sm btn-success me-3 rounded btn-modify" 
+									data-link="https://www.youtube.com/embed/{{ video.videoLink }}" data-bs-toggle="modal" data-bs-target="#editVideoModal" data-video="{{ video.id }}" data-video-name="{{ video.videoLink }}" data-video-url="https://www.youtube.com/embed/">
+										<i class="fa-solid fa-pen fa-2xs text-light"></i>
+									</button>
+									{% if app.user %}
+									<a href="{{ path('video.delete', {slug: trick.slug, id: video.id}) }}" type="button" class="btn btn-sm btn-danger rounded">
+										<i class="fa-solid fa-trash-can fa-2xs text-light"></i>
+									</a>
+									{% endif %}
+								</div>
+							</li>
+						{% endfor %}
+					{% else %}
+						<div class="alert alert-danger p-2" role="alert">
+							<h6 class="text-center">No video yet !</h6>
+						</div>
+					{% endif %}
+					<!-- end dropdown edit video responsive -->	
 				</ul>
 			</div>
 		</div>
 	</section>
-	<!-- end section edit medias responsive -->
-	<!-- modal create media image -->
+	<!-- end section edit media responsive -->
+	<!-- modal create media picture -->
 	{% include "pages/picture/newPicture.html.twig" %}
 	<!-- modal edit media image -->	
 	{% include "pages/picture/editPicture.html.twig" %}
@@ -250,7 +277,7 @@
 	{{ form_start(formEdit) }}
 	<section class="trick-description py-3">
 		<div class="container d-flex justify-content-center">
-			<div class="form-group w-75 my-2 p-4 rounded shadow" style="background-color: #FFF3CD">
+			<div class="form-group w-75 my-2 p-4 rounded shadow">
 				<div class="title-description d-flex mb-2">
 					<span class="fa-stack fa-1x">
 						<i class="fa-solid fa-square fa-stack-2x"></i>
@@ -269,7 +296,7 @@
 	<!-- edit trick category select -->
 	<section class="trick-group py-3">
 		<div class="container d-flex justify-content-center">
-			<div class="form-group w-50 my-3 p-4 rounded shadow" style="background-color: #D1ECF1">
+			<div class="trick-category form-group w-50 my-3 p-4 rounded shadow">
 				<div class="title-description d-flex mb-2">
 					<span class="fa-stack fa-1x">
 						<i class="fa-solid fa-square fa-stack-2x"></i>
@@ -286,12 +313,14 @@
 	</section>
 	<!-- end edit trick category select -->
 	<div class="edit-button py-5">
-		<div class="container d-flex justify-content-center">
-			<div class="d-flex justify-content-between" style="width:200px;">
-				<a href="{{ path('trick.delete', {slug: trick.slug}) }}" type="button" class="btn btn-lg btn-danger" data-bs-toggle="modal" 
-				data-bs-target="#deleteModal{{ trick.id }}">Delete</a>
+		<div class="container d-flex justify-content-center aligns-items-center">
+			<div class="d-flex justify-content-between">
+				{% if app.user.id == trick.user.id %}
+					<a href="{{ path('trick.delete', {slug: trick.slug}) }}" type="button" class="btn btn-lg btn-danger me-2" data-bs-toggle="modal" 
+					data-bs-target="#deleteModal{{ trick.id }}">Delete</a>
+				{% endif %}
 				{% include "pages/trick/deleteTrick.html.twig" %}
-				<div class="form-group">
+				<div class="form-group mb-0">
 					{{ form_row(formEdit.submit) }}
 				</div>
 			</div>

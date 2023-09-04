@@ -4,14 +4,15 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\File;
 
 class RegistrationFormType extends AbstractType
 {
@@ -20,14 +21,14 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('username', TextType::class, [
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'form-control',
                 ],
                 'required' => false,
                 'label_attr' => [
-                    'class' => 'form-label mt-3 text-info fs-5 fw-bold'
+                    'class' => 'form-label mt-3 text-info fs-5 fw-bold',
                 ],
                 'constraints' => [
-                    new NotBlank ([
+                    new Assert\NotBlank([
                         'message' => 'Please enter a name !',
                     ]),
                 ],
@@ -35,19 +36,41 @@ class RegistrationFormType extends AbstractType
 
             ->add('email', EmailType::class, [
                 'attr' => [
-                    'minlength' => '2',
-                    'maxlength' => '180',
-                    'class' => 'form-control'
+                    'class' => 'form-control',
                 ],
                 'required' => false,
                 'label_attr' => [
-                    'class' => 'form-label mt-3 text-info fs-5 fw-bold'
+                    'class' => 'form-label mt-3 text-info fs-5 fw-bold',
                 ],
                 'constraints' => [
-                    new NotBlank ([
+                    new Assert\NotBlank([
                         'message' => 'Please enter a email !',
                     ]),
-                ]
+                ],
+            ])
+
+            ->add('profilePicture', FileType::class, [
+                'mapped' => false,
+                'multiple' => false,
+                'required' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                ],
+                'label' => 'Profile picture (optional)',
+                'label_attr' => [
+                    'class' => 'mt-2 mb-2 text-info fs-5 fw-bold',
+                ],
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                            'image/jpg',
+                        ],
+                        'mimeTypesMessage' => 'please upload an image in png, jpg or jpeg format !',
+                    ]),
+                ],
             ])
 
             ->add('plainPassword', RepeatedType::class, [
@@ -56,41 +79,42 @@ class RegistrationFormType extends AbstractType
                 'mapped' => false,
                 'attr' => [
                     'autocomplete' => 'new-password',
-                    'class' => 'text-danger'
+                    'class' => 'text-danger',
                 ],
                 'required' => false,
                 'first_options' => [
                     'attr' => [
-                        'class' => 'form-control'
+                        'class' => 'form-control',
                     ],
                     'label' => 'Password',
                     'label_attr' => [
-                        'class' => 'form-label mt-3 text-info fs-5 fw-bold'
-                    ]
+                        'class' => 'form-label mt-3 text-info fs-5 fw-bold',
+                    ],
                 ],
                 'second_options' => [
                     'attr' => [
-                        'class' => 'form-control'
+                        'class' => 'form-control',
                     ],
                     'label' => 'Password Confirmation',
                     'label_attr' => [
-                        'class' => 'form-label mt-3 text-info fs-5 fw-bold'
-                    ]
+                        'class' => 'form-label mt-3 text-info fs-5 fw-bold',
+                    ],
                 ],
                 'constraints' => [
-                    new NotBlank([
+                    new Assert\NotBlank([
                         'message' => 'Please enter a password !',
                     ]),
-                    new Length([
-                        'min' => 2,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters !',
-                        // max length allowed by Symfony for security reasons
+                    /*new Assert\Length([
+                        'min' => 8,
                         'max' => 255,
+                        'minMessage' => 'Your password should be at least {{ limit }} characters !',
+                    ]),*/
+                    new Assert\Regex([
+                        'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$#!%*?&])[A-Za-z\d@$#!%*?&]{8,}$/',
+                        'message' => 'Your password must contain at least 8 characters, one lowercase letter, one uppercase letter, one number and one special character !',
                     ]),
                 ],
-            ])
-            /*->add('picture')*/
-            ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

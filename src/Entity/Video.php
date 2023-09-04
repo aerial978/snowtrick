@@ -17,16 +17,16 @@ class Video
     #[ORM\Column(length: 255)]
     private ?string $videoLink = null;
 
-    #[Gedmo\Timestampable(on:'create')]
-    #[ORM\Column(type:'datetime', nullable : true)]
+    #[Gedmo\Timestampable(on: 'create')]
+    #[ORM\Column(type: 'datetime', nullable : true)]
     protected $createdAt;
 
-    #[Gedmo\Timestampable(on:'update')]
-    #[ORM\Column(type:'datetime', nullable : true)]
+    #[Gedmo\Timestampable(on: 'update')]
+    #[ORM\Column(type: 'datetime', nullable : true)]
     protected $updatedAt;
 
     #[ORM\ManyToOne(inversedBy: 'videos')]
-    #[ORM\JoinColumn(nullable: false, onDelete:"CASCADE")]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Trick $trick = null;
 
     public function getId(): ?int
@@ -50,7 +50,7 @@ class Video
     {
         return $this->createdAt;
     }
-    
+
     public function getUpdatedAt(): ?\DateTime
     {
         return $this->updatedAt;

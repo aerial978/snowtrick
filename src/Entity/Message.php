@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\MessageRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MessageRepository::class)]
@@ -18,11 +17,11 @@ class Message
     #[ORM\Column(type: 'text')]
     private ?string $content = null;
 
-    #[ORM\Column(type:'datetime')]
+    #[ORM\Column(type: 'datetime')]
     protected $createdAt;
 
     #[ORM\ManyToOne(inversedBy: 'messages')]
-    #[ORM\JoinColumn(nullable: false, onDelete:"CASCADE")]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Trick $trick = null;
 
     #[ORM\ManyToOne(inversedBy: 'messages', fetch: 'EAGER')]
@@ -53,7 +52,7 @@ class Message
 
     public function onPrePersist()
     {
-        $this->createdAt = new \DateTime("now");
+        $this->createdAt = new \DateTime('now');
     }
 
     public function getCreatedAt(): ?\DateTime

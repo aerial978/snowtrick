@@ -1,8 +1,7 @@
-
-<nav class="navbar fixed-top navbar-expand-sm p-md-3">
-	<div class="container" style="max-width:90%;">
+<nav class="navbar fixed-top navbar-expand-sm p-md-3 {% if specialNavbar %}navbar-dark special-navbar{% endif %}">
+	<div class="container">
 		<div class="navbar-brand text-center">
-            <a href="{{ path('home.index') }}" class="fs-1 link-warning text-warning text-decoration-none">Snowtricks</a>
+			<a href="{{ path('home.index') }}" class="fs-1 link-warning text-warning text-decoration-none">Snowtricks</a>
 		</div>
 		<div class="collapse navbar-collapse" id="navbarNav">
 			<ul class="navbar-nav ms-auto">
@@ -14,29 +13,32 @@
 				</li>
 			</ul>
 			<ul class="navbar-nav ms-auto">
-                {% if app.user %}
-                    <li class="nav-item me-3 me-lg-1">
-                        <div class="nav-link d-sm-flex align-items-sm-center">
-							<img src="{{ asset('images/' ~ app.user.file) }}" class="rounded-5" width="40">
-                            <p class="d-flex text-light my-auto ps-3 fs-5">{{ app.user.userIdentifier }}</p>
-                            <a class="nav-link" href="{{ path('security.logout') }}">
+				{% if app.user %}
+					<li class="nav-item me-3 me-lg-1">
+						<div class="nav-link d-sm-flex align-items-sm-center">
+							{% if app.user.profilePicture != null %}
+								<img src="{{ asset('upload/profiles/' ~ app.user.profilePicture) }}" alt="avatar" class="rounded-5" width="55">
+							{% else %}
+								<img src="{{ asset('images/default.png') }}" alt="avatar" class="rounded-5" width="55">
+							{% endif %}
+							<p class="d-flex text-light my-auto ps-3 fs-5">{{ app.user.userIdentifier }}</p>
+							<a class="nav-link" href="{{ path('security.logout') }}">
 								<span class="fa-stack fa-2x">
 									<i class="fa-solid fa-square fa-stack-2x fa-inverse"></i>
 									<i class="fa-solid fa-right-from-bracket fa-stack-1x" style="color:red"></i>
 								</span>
-                            </a>
-                        </div>
-                    </li>
-                {% else %}
-				<li class="nav-item">
-					<a class="nav-link link-info text-info fw-bold fs-3" href="{{ path('security.registration') }}">Sign up</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link link-info fw-bold fs-3" href="{{ path('security.login') }}">Sign in</a>
-				</li>
-                {% endif %}
+							</a>
+						</div>
+					</li>
+				{% else %}
+					<li class="nav-item">
+						<a class="nav-link link-info text-info fw-bold fs-3" href="{{ path('security.registration') }}">Sign up</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link link-info fw-bold fs-3" href="{{ path('security.login') }}">Sign in</a>
+					</li>
+				{% endif %}
 			</ul>
 		</div>
 	</div>
 </nav>
-

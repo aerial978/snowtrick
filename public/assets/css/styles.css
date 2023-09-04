@@ -16,8 +16,12 @@ section {
     background-color: rgba(0,0,0,.3);
 }
 
-.navbar-form {
-    background-color: rgb(0,0,0)!important;
+.navbar.special-navbar {
+    background-color: black;
+}
+
+.navbar .container {
+    max-width: 90%;
 }
 
 .navbar-responsive {
@@ -36,9 +40,10 @@ section {
     background-image: linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)),url('/../../images/snowboarder5.jpg');
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: center;
+    background-position: center right;
     display: flex;
     align-items: flex-end;
+    padding: 9em;
 }
 
 .content h1 {
@@ -60,6 +65,10 @@ section {
     position: relative;
 }
 
+.trick-list h6 {
+    letter-spacing: 5px;
+}
+
 .album .card img {
     width: 100%;
     height: 100%;
@@ -73,6 +82,10 @@ section {
     position: absolute;
     right: 50px;
     bottom: 10px;
+}
+
+#btnUp .icon-up {
+    display: none;
 }
 
 @media (max-width: 1200px) {
@@ -119,6 +132,8 @@ section {
     position: absolute;
     top: 50%;
     width: 100%;
+    text-align: center;
+    transform: translateY(-50%);
 }
 
 .btn-trick {
@@ -148,6 +163,50 @@ section {
     display: none;
 }
 
+@media (max-width: 500px) {
+
+    .hero-trick .hero-name {
+        font-size: 30px;
+        text-align: center;
+        line-height: 1.2;
+    }
+
+    .add-comment {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .add-comment img {
+        margin-bottom: 10px;
+    }
+
+    .form-error {
+        text-align: center;
+    }
+
+    .add-comment .btn {
+        font-size: 15px;
+        padding: 5px 10px;
+        margin-top : 10px;
+    }
+
+    .title-description {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .profile-message {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .profile-message img {
+        margin-right: 0px!important;
+    }
+}
+
+
 @media (max-width: 576px) {
 
     .media-responsive {
@@ -161,14 +220,6 @@ section {
     .media {
         display: none;
     }
-}
-
-.main {
-    padding: 60px 0;
-}
-
-.sign {
-    padding-bottom: 150px;
 }
 
 .sign-image img {
@@ -213,6 +264,10 @@ section {
 
     .navbar-responsive .link-info:hover {
         color: #17a2b8!important;
+    }
+
+    .hero {
+        background-position: 85% 75%;
     }
 
     footer {
@@ -311,6 +366,18 @@ section {
     letter-spacing: 3px;
 }
 
+@media (max-width: 992px) {
+    .about-name {
+        text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .about-name {
+        font-size: 15px!important;
+    }
+}
+
 .pagination > .active > .page-link {
     background-color: #ffc107!important;
     border-color: #ffc107!important;
@@ -331,12 +398,61 @@ section {
     visibility: hidden;
 }
 
+.new-trick {
+    background-color:#D1ECF1;
+}
+
+.input-video-type button {
+    display: none;
+}
+
+.trick-media-title h4,
+.trick-about-title h4,
+.trick-messages-title h4 {
+    letter-spacing: 5px;
+}
+
+.trick-about {
+    background-color: #fff4d4;
+}
+
+.trick-messages {
+    background-color:#d5f5fa;
+}
+
+.trick-about h4 {
+    letter-spacing: 5px;
+}
+
+.gallery-pictures {
+    background-color: #FFF3CD;
+}
+
+.hero-trick .trick-name .form-group, .gallery-videos {
+    background-color: #D1ECF1;
+}
+
 #editPicturePreview {
     display: none;
 }
 
 #editVideoPreview {
     display: none;
+}
+
+.centered-iframe {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.trick-description .form-group {
+    background-color: #FFF3CD;
+}
+
+.trick-category {
+    background-color: #D1ECF1;
 }
 
 /* error pages */

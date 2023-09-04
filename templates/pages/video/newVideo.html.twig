@@ -1,27 +1,24 @@
 <!-- Modal -->
 <div class="modal fade" id="newVideoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h1 class="modal-title fs-5" id="exampleModalLabel"></h1>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-            {{ form_start(formVideo) }}
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <div class="form-group">
-                            <div class="form-group">
-                                {{ form_label(formVideo.newVideoLink) }}
-								{{ form_widget(formVideo.newVideoLink) }}
-                            </div>
-                        </div>
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content p-2">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            {{ form_start(formVideo, { 'attr': { 'id': 'videoForm' } }) }}
+                <div class="modal-body alert alert-info">
+                    <div class="form-group mb-3">
+                        {{ form_label(formVideo.newVideoLink) }}
+                        {{ form_widget(formVideo.newVideoLink) }}
                     </div>
+                    <div id="messagesNewVideo"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-warning" data-bs-dismiss="modal">Submit</button>
+                    <button type="submit" class="btn btn-warning">Submit</button>
                 </div>
-			{{ form_end(formVideo) }}
-		</div>
-	</div>
+            {{ form_end(formVideo) }}
+        </div>
+    </div>
 </div>
+
